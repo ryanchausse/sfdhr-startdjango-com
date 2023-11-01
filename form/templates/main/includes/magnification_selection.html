@@ -1,0 +1,30 @@
+{% load static %}
+{% if magnification_levels %}
+    <div class="container-fluid">
+        <div class="row">
+            <h2>Magnification</h2>
+        </div>
+        <div class="row">
+            {% for magnification_level in magnification_levels %}
+                {% if magnification_level.name not in request.session %}
+                    <div style="float: left; width: 300px; padding-top: 1em; padding-bottom:1em; padding-right:1em;">
+                        <div style="color:gray; font-size: 1.1em;">{{ magnification_level.name }}</div>
+                        <div style="color:green; font-size: 1.1em;">{% if magnification_level.retail_price == 0.00 %}FREE{% else %}${{ magnification_level.retail_price }}{% endif %}</div>
+                        <form action="/" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="{{ magnification_level.name }}" value="true">
+                            {% if magnification_level.uploaded_img %}
+                                <input type="image" src="{{ magnification_level.uploaded_img.url }}" alt="{{ magnification_level.name }}" style="max-height: 167px; max-width:300px;" />
+                            {% elif magnification_level.static_img_url %}
+                                <input type="image" src="{% static 'img/'|add:magnification_level.static_img_url %}" alt="{{ magnification_level.name }}" style="max-height: 167px; max-width:300px;" />
+                            {% else %}
+                                <input type="image" src="" alt="Lens Type" style="max-height: 167px; max-width:300px;" />
+                            {% endif %}
+                        </form>
+                        <div>{{ magnification_level.description }}</div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

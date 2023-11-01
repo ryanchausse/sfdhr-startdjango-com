@@ -1,0 +1,23 @@
+{% load static %}
+<tr>
+    <th>Magnification Level</th>
+</tr>
+{% for magnification_level in magnification_levels %}
+    {% if magnification_level.name in request.session %}
+        <tr>
+            <td style="padding-bottom:1em">
+                {{ magnification_level.name }}
+            </td>
+            <td style="padding-bottom:1em">
+                <span style="color:green">{% if magnification_level.retail_price == 0.00 %}FREE{% else %}${{ magnification_level.retail_price }}{% endif %}</span>
+            </td>
+            <td style="padding-bottom:1em">
+                <form action="/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="no_{{ magnification_level.name }}" value="true">
+                    <button type="submit" class="btn close" aria-label="remove"><span aria-hidden="true">&times;</span></button>
+                </form>
+            </td>
+        </tr>
+    {% endif %}
+{% endfor %}
