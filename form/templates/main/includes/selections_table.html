@@ -1,0 +1,18 @@
+{% load static %}
+<table width="100%" height="100%">
+    {% if request.session.lens_type_selected %}
+        {% include 'includes/lens_types.html' %}
+    {% endif %}
+    {% if request.session.magnification_level_selected %}
+        {% include 'includes/magnification_levels.html' %}
+    {% endif %}
+    {% if request.session.lens_design_selected %}
+        {% include 'includes/lens_designs.html' %}
+    {% endif %}
+    {% if request.session.lens_material_selected %}
+        {% include 'includes/lens_materials.html' %}
+    {% endif %}
+    {% if request.session.lens_add_on_selected %}
+        {% include 'includes/lens_add_ons.html' %}
+    {% endif %}
+</table>

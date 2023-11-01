@@ -1,0 +1,29 @@
+{% load static %}
+<!-- Bootstrap core JavaScript-->
+<!-- Had to load jquery in <head> because of a badly written JS dependency -->
+<!--<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>-->
+<script type="text/javascript">
+    if (window.location.href == "http://127.0.0.1:8000/" || window.location.href == "https://form.hendricksenphd.com") {
+        // Notes for django-jsignature:
+        // We're on a page requiring signature, load JQuery up front as jsignature requires
+    } else {
+        // We're not on a page requiring signature, load JQuery at end
+    }
+</script>
+<script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+<!-- Page level plugins -->
+<!--<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>-->
+
+<!-- Page level custom scripts -->
+<!--<script src="{% static 'js/demo/chart-area-demo.js' %}"></script>-->
+<!--<script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>-->
+<!--<script src="{% static 'js/demo/chart-bar-demo.js' %}"></script>-->
+<script src="{% static 'js/demo/datatables-demo.js' %}"></script>

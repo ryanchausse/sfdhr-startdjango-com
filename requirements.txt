@@ -1,0 +1,8 @@
+Django==3.2.8
+django-allauth
+psycopg2-binary
+pillow
+reportlab
+pypdf2
+django-jsignature==0.11
+requests

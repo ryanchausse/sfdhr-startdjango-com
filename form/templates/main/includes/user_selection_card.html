@@ -1,0 +1,19 @@
+{% load static %}
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header">
+        <table width="100%">
+            <tr>
+                {% include 'includes/kiosk_buttons.html' %}
+            </tr>
+        </table>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        <div id="card_body_content_wrapper_name">
+            <table width="100%" height="100%">
+                {% include 'includes/first_name_table.html' %}
+            </table>
+        </div>
+    </div>
+</div>

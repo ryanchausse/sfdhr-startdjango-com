@@ -1,0 +1,76 @@
+variables:
+  # DJANGO_CONFIG: "test"
+  STARTDJANGO_POSTGRES_DATABASE: $STARTDJANGO_POSTGRES_DATABASE
+  STARTDJANGO_POSTGRES_USER: $STARTDJANGO_POSTGRES_USER
+  STARTDJANGO_POSTGRES_PASSWORD: $STARTDJANGO_POSTGRES_PASSWORD
+  SSH_PRIVKEY_FOR_STARTDJANGO_COM: $SSH_PRIVKEY_FOR_STARTDJANGO_COM
+  USERNAME: $USERNAME
+  DEPLOY_TOKEN: $DEPLOY_TOKEN
+  TZ: "America/Los_Angeles"
+
+default:
+  image: ubuntu:22.04
+  before_script:
+    - echo 'Doing things...'
+
+#connect_to_postgres:
+#  image: postgres
+#  script:
+#  # official way to provide password to psql: http://www.postgresql.org/docs/9.3/static/libpq-envars.html
+#  - export PGPASSWORD=$STARTDJANGO_POSTGRES_PASSWORD
+#  - psql -h "postgres" -U "$STARTDJANGO_POSTGRES_USER" -d "$STARTDJANGO_POSTGRES_DATABASE" -c "SELECT 'OK' AS status;"
+
+stages:
+  - deploy
+
+setup_docker_container_and_deploy:
+  stage: deploy
+  script:
+    - export TZ=America/Los_Angeles
+    - export DEBIAN_FRONTEND=noninteractive
+    #- apt -y update
+    #- apt -y upgrade
+    #- apt -y install apt-utils
+    #- apt -y install net-tools openssh-client git
+    - 'which ssh-agent || ( apt update && apt install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - touch ~/.ssh/id_rsa
+    - echo 'Set startdjango.com privkey'
+    - echo "$SSH_PRIVKEY_FOR_STARTDJANGO_COM" | ssh-add - > ~/.ssh/id_rsa
+    - chmod 0600 ~/.ssh/id_rsa
+    - ssh-keyscan -p 2986 startdjango.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    #- git config --global user.email "chausse@gmail.com"
+    #- git config --global user.name "Ryan Chausse"
+    - echo 'try to connect to startdjango.com'
+    #- ssh -i ~/.ssh/id_rsa root@form.hendricksenphd.com
+    #  "cd /var/www;
+    #  git clone https://$USERNAME:$DEPLOY_TOKEN@code.ryanchausse.com/ryanchausse/sfdhr-startdjango-com.git;"
+    - ssh -i ~/.ssh/id_rsa chausse@startdjango.com -p 2986
+      "hostname;
+      chmod 644 ~/.ssh/known_hosts;
+      echo 'Pulling startdjango repo';
+      cd /var/www/startdjango;
+      git config --global --add safe.directory "/var/www/sfdhr-startdjango-com";
+      git pull https://$USERNAME:$DEPLOY_TOKEN@code.ryanchausse.com/ryanchausse/sfdhr-startdjango-com.git;
+      pip3 install virtualenv;
+      virtualenv venv_sfdhr-startdjango-com;
+      source venv_sfdhr-startdjango-com/bin/activate;
+      pip3 install -r requirements.txt;
+      python3 manage.py makemigrations;
+      python3 manage.py migrate;
+      python3 manage.py check;
+      python3 manage.py test;
+      sudo /etc/init.d/apache2 restart;
+      deactivate;"
+    # Could want to add collectstatic later within SSH commands:
+    # python3 manage.py collectstatic --no-input;
+    # Also:
+    # apt install -y python3-pip;
+    # Also:
+    # ssh-keyscan code.ryanchausse.com >> ~/.ssh/known_hosts;
+    # Might want to chown -R www-data:www-data /var/www; in the future, but do not. Beware of root owned admin directory
+    - echo "Great success."
+
