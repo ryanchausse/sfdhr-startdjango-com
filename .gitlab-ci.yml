@@ -48,7 +48,7 @@ setup_docker_container_and_deploy:
     #- ssh -i ~/.ssh/id_rsa root@form.hendricksenphd.com
     #  "cd /var/www;
     #  git clone https://$USERNAME:$DEPLOY_TOKEN@code.ryanchausse.com/ryanchausse/sfdhr-startdjango-com.git;"
-    - ssh -v -i ~/.ssh/id_rsa chausse@startdjango.com
+    - ssh -i ~/.ssh/id_rsa chausse@startdjango.com
       "hostname;
       chmod 644 ~/.ssh/known_hosts;
       echo 'Pulling startdjango repo';
