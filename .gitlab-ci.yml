@@ -52,7 +52,7 @@ setup_docker_container_and_deploy:
       "hostname;
       chmod 644 ~/.ssh/known_hosts;
       echo 'Pulling startdjango repo';
-      cd /var/www/startdjango;
+      cd /var/www/sfdhr-startdjango-com;
       git config --global --add safe.directory "/var/www/sfdhr-startdjango-com";
       git pull https://$USERNAME:$DEPLOY_TOKEN@code.ryanchausse.com/ryanchausse/sfdhr-startdjango-com.git;
       pip3 install virtualenv;
