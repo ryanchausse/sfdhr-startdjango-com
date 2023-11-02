@@ -55,7 +55,7 @@ setup_docker_container_and_deploy:
       cd /var/www/sfdhr-startdjango-com;
       git config --global --add safe.directory "/var/www/sfdhr-startdjango-com";
       git pull https://$USERNAME:$DEPLOY_TOKEN@code.ryanchausse.com/ryanchausse/sfdhr-startdjango-com.git;
-      python3 venv -m venv_sfdhr-startdjango-com;
+      # python3 venv -m venv_sfdhr-startdjango-com;
       source venv_sfdhr-startdjango-com/bin/activate;
       pip3 install -r requirements.txt;
       python3 manage.py makemigrations;
