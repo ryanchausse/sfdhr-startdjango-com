@@ -171,8 +171,8 @@ class HRHomePage(TemplateView):
             context['user_is_in_admins'] = True
         else:
             context['user_is_in_admins'] = False
-        eligible_lists = EligibleList.objects.all().order_by('-created_at')
-        positions = Position.objects.all().order_by('-created_at')
+        context['eligible_lists'] = EligibleList.objects.all().order_by('-created_at')
+        context['positions'] = Position.objects.all().order_by('-created_at')
         return context
 
 
