@@ -11,33 +11,92 @@
         </ul>
     {% endif %}
     {% if user.is_authenticated and user_is_in_admins %}
-        <div class="card-body">
-            <div class="table-responsive">
-                <table id="dtBasicExample" class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Eligible List</th>
-                            <th>Position ID</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Eligible List</th>
-                            <th>Position ID</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        {% if hr_forms %}
-                            {% for hr_form in hr_forms %}
-                                <tr>
-                                    <td>{{ hr_form.eligible_list }}</td>
-                                    <td>{{ hr_form.position_id }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
     {% endif %}
+
+    <h2>Eligible Lists</h2>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="dtBasicExample" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Specialty</th>
+                        <th>Posted</th>
+                        <th>Inspection Start</th>
+                        <th>Inspection End</th>
+                        <th>Adopted</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Code</th>
+                        <th>Specialty</th>
+                        <th>Posted</th>
+                        <th>Inspection Start</th>
+                        <th>Inspection End</th>
+                        <th>Adopted</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if eligible_lists %}
+                        {% for eligible_list in eligible_lists %}
+                            <tr>
+                                <td>{{ eligible_list.code }}</td>
+                                <td>{{ eligible_list.specialty }}</td>
+                                <td>{{ eligible_list.posted }}</td>
+                                <td>{{ eligible_list.inspection_start }}</td>
+                                <td>{{ eligible_list.inspection_end }}</td>
+                                <td>{{ eligible_list.adopted }}</td>
+                                <td>{{ eligible_list.created_at }}</td>
+                                <td>{{ eligible_list.updated_at }}</td>
+                                <td>{{ eligible_list.created_by }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>Positions</h2>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="dtBasicExample" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Number</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if positions %}
+                        {% for position in positions %}
+                            <tr>
+                                <td>{{ position.number }}</td>
+                                <td>{{ position.created_at }}</td>
+                                <td>{{ position.updated_at }}</td>
+                                <td>{{ position.created_by }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>

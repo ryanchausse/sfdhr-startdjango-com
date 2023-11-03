@@ -28,7 +28,7 @@ class Candidate(models.Model):
 
 
 class Position(models.Model):
-    position_id = models.IntegerField()
+    number = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
@@ -37,7 +37,7 @@ class Position(models.Model):
                                    on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'Position ID: {self.position_id}'
+        return f'{self.number}'
 
     class Meta:
         verbose_name = 'Position'
@@ -59,7 +59,7 @@ class EligibleList(models.Model):
                                    on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'Eligible List Code: {self.code}'
+        return f'{self.code}'
 
     class Meta:
         verbose_name = 'Eligible List'
@@ -77,7 +77,7 @@ class Referral(models.Model):
                                    on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'Referral for Position: {self.position}, Eligible List: {self.eligible_list}'
+        return f'Pos: {self.position} - EL: {self.eligible_list}'
 
     class Meta:
         verbose_name = 'Referral'
@@ -96,7 +96,7 @@ class ReferralCandidate(models.Model):
                                    on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'Candidate referred: {self.candidate}, Referral: {self.referral}'
+        return f'Referral: {self.referral} - Candidate: {self.candidate}'
 
     class Meta:
         verbose_name = 'ReferralCandidate'
@@ -135,7 +135,7 @@ class Application(models.Model):
                                    on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'Application ID: {self.sr_uuid}'
+        return f'{self.sr_uuid}'
 
     class Meta:
         verbose_name = 'Application'

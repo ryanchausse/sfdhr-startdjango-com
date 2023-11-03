@@ -34,6 +34,8 @@ from django.http.response import JsonResponse
 # from .models import SubjectiveOption
 # from .models import DiscussionTreatmentOption
 # from .models import Icd10Codes
+from .models import EligibleList
+from .models import Position
 from jsignature.utils import draw_signature
 
 
@@ -165,16 +167,12 @@ class HRHomePage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # if self.request.user.groups.filter(name='NonBal').exists():
-        #     context['user_is_in_non_bal_group'] = True
-        # else:
-        #     context['user_is_in_non_bal_group'] = False
         if self.request.user.groups.filter(name='Admins').exists():
             context['user_is_in_admins'] = True
-            # context['norm_forms'] = NormForm.objects.all().order_by('-created_at')
         else:
             context['user_is_in_admins'] = False
-            # context['norm_forms'] = None
+        eligible_lists = EligibleList.objects.all().order_by('-created_at')
+        positions = Position.objects.all().order_by('-created_at')
         return context
 
 
