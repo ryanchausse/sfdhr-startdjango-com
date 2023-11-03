@@ -8,11 +8,10 @@ class NormSocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
         email_address = user_email(sociallogin.user)
         email_domain = email_address.split("@")[1]
-        if email_domain != 'gmail.com' or email_domain != 'hendricksenphd.com' or email_domain != 'hendricksenlabs.com':
+        if email_domain != 'gmail.com':
             return HttpResponse('Please log in with a Google account. You \
                                 may have to log out of your current Gmail account. \
                                 Try again at <a href="./">Norm Form</a>')
-        elif email_address not in ['chausse@gmail.com', 'paul@hendricksenlabs.com',
-                                   'norm@hendricksenphd.com', 'balbains@mbsbills.com']:
+        elif email_address not in ['chausse@gmail.com',]:
             return HttpResponse('You are not authorized to log in. \
                                 Try again at <a href="./">SFDHR MB Replacement</a>')

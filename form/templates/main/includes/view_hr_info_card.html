@@ -1,0 +1,43 @@
+{% load static %}
+<div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">HR Information</h6>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div style="margin-top:1em; margin-bottom:1em; margin-right:2em;" class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if user.is_authenticated and user_is_in_admins %}
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="dtBasicExample" class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Eligible List</th>
+                            <th>Position ID</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Eligible List</th>
+                            <th>Position ID</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% if hr_forms %}
+                            {% for hr_form in hr_forms %}
+                                <tr>
+                                    <td>{{ hr_form.eligible_list }}</td>
+                                    <td>{{ hr_form.position_id }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% endif %}

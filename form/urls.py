@@ -18,7 +18,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.NormFormPage.as_view(), name='form'),
+    path('', views.HRHomePage.as_view(), name='hr_home_page'),
     path('index.html', views.NormFormPage.as_view(), name='index'),
     path('<int:pk>', views.NormFormPage.as_view(), name='index'),
     path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),

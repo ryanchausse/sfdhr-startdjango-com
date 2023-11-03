@@ -157,6 +157,27 @@ class ViewNormFormsPage(TemplateView):
         return context
 
 
+class HRHomePage(TemplateView):
+    """
+    View HR Home Page
+    """
+    template_name = 'hr_home_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # if self.request.user.groups.filter(name='NonBal').exists():
+        #     context['user_is_in_non_bal_group'] = True
+        # else:
+        #     context['user_is_in_non_bal_group'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+            # context['norm_forms'] = NormForm.objects.all().order_by('-created_at')
+        else:
+            context['user_is_in_admins'] = False
+            # context['norm_forms'] = None
+        return context
+
+
 def get_pdf_page(request, pk=None):
     """
     Get PDF of a given NormForm via pk id
