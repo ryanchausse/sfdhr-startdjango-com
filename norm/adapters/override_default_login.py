@@ -14,4 +14,4 @@ class NormSocialAccountAdapter(DefaultSocialAccountAdapter):
                                 Try again at <a href="./">Norm Form</a>')
         elif email_address not in ['chausse@gmail.com',]:
             return HttpResponse('You are not authorized to log in. \
-                                Try again at <a href="./">SFDHR MB Replacement</a>')
+                                Try again at <a href="./">MeritBridge Replacement App</a>')
