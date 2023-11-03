@@ -19,10 +19,10 @@ from . import views
 
 urlpatterns = [
     path('', views.HRHomePage.as_view(), name='hr_home_page'),
-    path('index.html', views.NormFormPage.as_view(), name='index'),
-    path('<int:pk>', views.NormFormPage.as_view(), name='index'),
+    path('index.html', views.HRHomePage.as_view(), name='index'),
+    path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),
-    path('form/', views.NormFormPage.as_view(), name='form'),
+    path('form/', views.HRHomePage.as_view(), name='form'),
     path('submit_form', views.SubmitNormForm.as_view(), name='submit_form'),
     path('view_psych_forms', views.ViewNormFormsPage.as_view(), name='view_psych_forms'),
     path('email_bal/<int:pk>', views.email_bal, name='email_bal'),
