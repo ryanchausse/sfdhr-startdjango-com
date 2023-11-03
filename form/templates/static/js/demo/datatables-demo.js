@@ -1,5 +1,6 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function() {
-  $('#dtBasicExample').DataTable();
+  $('#eligible_list_table').DataTable();
+  $('#position_table').DataTable();
   $('.dataTables_length').addClass('bs-select');
 });
