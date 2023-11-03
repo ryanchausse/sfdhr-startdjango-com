@@ -46,7 +46,7 @@ class Position(models.Model):
 
 class EligibleList(models.Model):
     code = models.IntegerField()
-    job_class = models.IntegerField()
+    job_class = models.CharField(max_length=255, blank=True, null=True, default='')
     specialty = models.CharField(max_length=255, blank=True, null=True, default='')
     posted = models.DateTimeField(blank=True, null=True)
     inspection_start = models.DateTimeField(blank=True, null=True)
