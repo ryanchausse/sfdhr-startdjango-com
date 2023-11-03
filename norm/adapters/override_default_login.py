@@ -11,7 +11,7 @@ class NormSocialAccountAdapter(DefaultSocialAccountAdapter):
         if email_domain != 'gmail.com':
             return HttpResponse('Please log in with a Google account. You \
                                 may have to log out of your current Gmail account. \
-                                Try again at <a href="./">Norm Form</a>')
+                                Try again at <a href="./">MeritBridge Replacement App</a>')
         elif email_address not in ['chausse@gmail.com',]:
             return HttpResponse('You are not authorized to log in. \
                                 Try again at <a href="./">MeritBridge Replacement App</a>')
