@@ -122,4 +122,3 @@ norm/settings.py
 form/templates/static/admin
 form/patient_files/*
 form/templates/forms/sample_form_template.pdf
-form/migrations/*
