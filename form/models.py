@@ -138,7 +138,7 @@ class Application(models.Model):
                                    on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'{self.sr_uuid}'
+        return f'{self.position} - {self.candidate}'
 
     class Meta:
         verbose_name = 'Application'
