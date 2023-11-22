@@ -25,10 +25,11 @@ class Candidate(models.Model):
     class Meta:
         verbose_name = 'Candidate'
         verbose_name_plural = 'Candidates'
+        unique_together = ('first_name', 'last_name', 'email')
 
 
 class Position(models.Model):
-    number = models.IntegerField()
+    number = models.IntegerField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
@@ -45,7 +46,7 @@ class Position(models.Model):
 
 
 class EligibleList(models.Model):
-    code = models.CharField(max_length=255, blank=True, null=True, default='')
+    code = models.CharField(max_length=255, blank=True, null=True, default='', unique=True)
     job_class = models.CharField(max_length=255, blank=True, null=True, default='')
     specialty = models.CharField(max_length=255, blank=True, null=True, default='')
     posted = models.DateTimeField(blank=True, null=True)
@@ -105,7 +106,7 @@ class ReferralCandidate(models.Model):
 
 
 class Job(models.Model):
-    sr_uuid = models.UUIDField()
+    sr_uuid = models.UUIDField(unique=True)
     title = models.CharField(max_length=255, blank=True, null=True, default='')
     description = models.CharField(max_length=255, blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -124,7 +125,7 @@ class Job(models.Model):
 
 
 class Application(models.Model):
-    sr_uuid = models.UUIDField(editable=False)
+    sr_uuid = models.UUIDField(editable=False, unique=True)
     position = models.ForeignKey(Position, blank=True, null=True, default=None, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, blank=True, null=True, default=None, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, blank=True, null=True, default=None, on_delete=models.CASCADE)
