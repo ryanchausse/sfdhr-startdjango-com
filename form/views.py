@@ -36,6 +36,7 @@ from django.http.response import JsonResponse
 # from .models import Icd10Codes
 from .models import EligibleList
 from .models import Position
+from .models import ReferralCandidate
 from jsignature.utils import draw_signature
 
 
@@ -173,6 +174,7 @@ class HRHomePage(TemplateView):
             context['user_is_in_admins'] = False
         context['eligible_lists'] = EligibleList.objects.all().order_by('-created_at')
         context['positions'] = Position.objects.all().order_by('-created_at')
+        context['referred_candidates'] = ReferralCandidate.objects.all().order_by('-created_at')
         return context
 
 
