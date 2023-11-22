@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -8,7 +9,7 @@ from jsignature.fields import JSignatureField
 
 
 class Candidate(models.Model):
-    sr_uuid = models.UUIDField(editable=False)
+    sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
@@ -106,7 +107,7 @@ class ReferralCandidate(models.Model):
 
 
 class Job(models.Model):
-    sr_uuid = models.UUIDField(unique=True)
+    sr_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     title = models.CharField(max_length=255, blank=True, null=True, default='')
     description = models.CharField(max_length=255, blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -125,7 +126,7 @@ class Job(models.Model):
 
 
 class Application(models.Model):
-    sr_uuid = models.UUIDField(editable=False, unique=True)
+    sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     position = models.ForeignKey(Position, blank=True, null=True, default=None, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, blank=True, null=True, default=None, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, blank=True, null=True, default=None, on_delete=models.CASCADE)
