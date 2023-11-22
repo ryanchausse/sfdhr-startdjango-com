@@ -9,7 +9,7 @@ from jsignature.fields import JSignatureField
 
 
 class Candidate(models.Model):
-    sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
@@ -107,7 +107,7 @@ class ReferralCandidate(models.Model):
 
 
 class Job(models.Model):
-    sr_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=255, blank=True, null=True, default='')
     description = models.CharField(max_length=255, blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
