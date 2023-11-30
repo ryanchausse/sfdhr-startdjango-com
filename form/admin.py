@@ -13,6 +13,7 @@ from .models import Referral
 from .models import ReferralCandidate
 from .models import Job
 from .models import Application
+from .models import Department
 
 
 # admin.site.register(NormForm)
@@ -30,3 +31,4 @@ admin.site.register(Referral)
 admin.site.register(ReferralCandidate)
 admin.site.register(Job)
 admin.site.register(Application)
+admin.site.register(Department)

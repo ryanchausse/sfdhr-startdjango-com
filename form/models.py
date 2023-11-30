@@ -106,10 +106,30 @@ class ReferralCandidate(models.Model):
         verbose_name_plural = 'ReferralCandidates'
 
 
+class Department(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True, default='')
+    description = models.CharField(max_length=255, blank=True, null=True, default='')
+    code = models.CharField(max_length=255, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.title}'
+
+    class Meta:
+        verbose_name = 'Department'
+        verbose_name_plural = 'Departments'
+
+
 class Job(models.Model):
     sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=255, blank=True, null=True, default='')
     description = models.CharField(max_length=255, blank=True, null=True, default='')
+    department = models.ForeignKey(Department, blank=True, null=True, default=None, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
