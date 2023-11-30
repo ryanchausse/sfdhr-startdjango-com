@@ -16,9 +16,10 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>App for Replacing MeritBridge</h3>
+            <h3>New, Modern Web Application for Replacing MeritBridge</h3>
 
-            <p>Created and maintained by Ryan Chausse (chausse@gmail.com) in my spare time, with my own resources.</p>
+            <p>Created and maintained by <span style='color:black;'>Ryan Chausse (chausse@gmail.com)</span> in my spare time, with my own resources.</p>
+            <p>Goal: to create a more fault tolerant, predictable, performant, and easy-to-use interface to implement San Francisco's civil service rules regarding hiring.</p>
 
             <h4>Main functions (TODO)</h4>
             <ul>
@@ -69,7 +70,7 @@
 
             <h4>View Candidates and their statuses on a Referral</h4>
             <ul>
-                <li>Statuses to include Reachable/Alternate/Unavailable/Hired/etc.</li>
+                <li>Statuses to include Reachable / Alternate / Unavailable / Hired / etc.</li>
                 <li>Needs to sync with SmartRecruiters</li>
                 <ul>
                     <li>Receive webhook from SmartRecruiters when a Candidate is hired, rejected, etc.</li>
@@ -89,11 +90,11 @@
                 <li>Needs to sync with SmartRecruiters</li>
                 <ul>
                     <li>Robust rate limiting of requests and responses via Singleton design pattern</li>
-                    <li>Robust error handling/pre- and post-condition checks to ensure correctness</li>
+                    <li>Robust error handling / pre- and post-condition checks to ensure correctness</li>
                 </ul>
             </ul>
 
-            <p>All of this is achievable at scale in a monolithic architectural pattern, with background workers spawned to handle incoming webhooks (use Celery?).</p>
+            <p>All of this is achievable at scale in a monolithic architectural pattern with background workers spawned to handle incoming webhooks (use Celery?).</p>
 
         </div>
     </div>
