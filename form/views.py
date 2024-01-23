@@ -35,6 +35,7 @@ from django.http.response import JsonResponse
 # from .models import DiscussionTreatmentOption
 # from .models import Icd10Codes
 from .models import EligibleList
+from .forms import EligibleListForm
 from .models import Position
 from .models import ReferralCandidate
 from jsignature.utils import draw_signature
@@ -176,6 +177,65 @@ class HRHomePage(TemplateView):
         context['positions'] = Position.objects.all().order_by('-created_at')
         context['referred_candidates'] = ReferralCandidate.objects.all().order_by('-created_at')
         return context
+
+
+class EligibleLists(TemplateView):
+    """
+    Eligible List CRUD page
+    """
+    template_name = 'eligible_lists.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            eligible_list_form = EligibleList.objects.get(id=pk)
+            form = EligibleListForm(initial=model_to_dict(eligible_list_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = EligibleListForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['eligible_lists'] = EligibleList.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateEligibleList(TemplateView):
+    template_name = 'eligible_lists.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = EligibleListForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, "Could not save Eligible List")
+            messages.add_message(request, messages.ERROR, form.errors)
+            return redirect('/eligible_lists')
+        # Create Eligible List
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Eligible List")
+        return redirect('/eligible_lists')
+
+
+class UpdateEligibleList(TemplateView):
+    template_name = 'eligible_lists.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        print(pk)
+        context = self.get_context_data(**kwargs)
+        # Update Eligible List
+        el_object = EligibleList.objects.get(pk=pk)
+        el_object.code = request.POST['code']
+        el_object.job_class = request.POST['job_class']
+        el_object.specialty = request.POST['specialty']
+        el_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List")
+        return redirect('/eligible_lists')
 
 
 # def get_pdf_page(request, pk=None):

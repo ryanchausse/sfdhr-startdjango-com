@@ -63,6 +63,7 @@ setup_docker_container_and_deploy:
       python3 manage.py test;
       sudo /etc/init.d/apache2 restart;
       deactivate;"
+    # TODO: Remember to specify the venv in Apache config
     # Could want to add collectstatic later within SSH commands:
     # python3 manage.py collectstatic --no-input;
     # Also:

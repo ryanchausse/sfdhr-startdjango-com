@@ -2,6 +2,7 @@ from django import forms
 from django.forms import SelectDateWidget
 # from .models import NormForm
 import datetime
+from .models import EligibleList
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -10,6 +11,29 @@ import datetime
 # from .models import Icd10Codes
 from jsignature.forms import JSignatureField
 from jsignature.widgets import JSignatureWidget
+
+
+class EligibleListForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    code = forms.TextInput()
+    job_class = forms.TextInput()
+    specialty = forms.TextInput()
+    posted = forms.DateField(required=False,
+                             initial=datetime.date.today(),
+                             widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+    inspection_start = forms.DateField(required=False,
+                                       initial=datetime.date.today(),
+                                       widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+    inspection_end = forms.DateField(required=False,
+                                     initial=datetime.date.today(),
+                                     widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+    adopted = forms.DateField(required=False,
+                              initial=datetime.date.today(),
+                              widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+
+    class Meta:
+        model = EligibleList
+        fields = ['id', 'code', 'job_class', 'specialty', 'posted', 'inspection_start', 'inspection_end', 'adopted']
 
 
 # class NormFormForm(forms.ModelForm):
