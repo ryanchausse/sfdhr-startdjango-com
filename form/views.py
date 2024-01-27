@@ -36,6 +36,8 @@ from django.http.response import JsonResponse
 # from .models import Icd10Codes
 from .models import EligibleList
 from .forms import EligibleListForm
+from .models import Candidate
+from .forms import CandidateForm
 from .models import Position
 from .models import ReferralCandidate
 from jsignature.utils import draw_signature
@@ -211,10 +213,8 @@ class CreateEligibleList(TemplateView):
         context = self.get_context_data(**kwargs)
         form = EligibleListForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.ERROR, "Could not save Eligible List")
-            messages.add_message(request, messages.ERROR, form.errors)
+            messages.add_message(request, messages.ERROR, f"Could not save Eligible List: {form.errors}")
             return redirect('/eligible_lists')
-        # Create Eligible List
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
         form_to_save.save()
@@ -226,9 +226,7 @@ class UpdateEligibleList(TemplateView):
     template_name = 'eligible_lists.html'
 
     def post(self, request, pk=None, *args, **kwargs):
-        print(pk)
         context = self.get_context_data(**kwargs)
-        # Update Eligible List
         el_object = EligibleList.objects.get(pk=pk)
         el_object.code = request.POST['code']
         el_object.job_class = request.POST['job_class']
@@ -236,6 +234,61 @@ class UpdateEligibleList(TemplateView):
         el_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List")
         return redirect('/eligible_lists')
+
+
+class Candidates(TemplateView):
+    """
+    Candidate CRUD page
+    """
+    template_name = 'candidates.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            candidate_form = Candidate.objects.get(id=pk)
+            form = CandidateForm(initial=model_to_dict(candidate_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = CandidateForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['candidates'] = Candidate.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateCandidate(TemplateView):
+    template_name = 'candidates.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = CandidateForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Could not save Candidate: {form.errors}")
+            return redirect('/candidates')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Candidate")
+        return redirect('/candidates')
+
+
+class UpdateCandidate(TemplateView):
+    template_name = 'candidates.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        candidate_object = Candidate.objects.get(pk=pk)
+        candidate_object.first_name = request.POST['first_name']
+        candidate_object.last_name = request.POST['last_name']
+        candidate_object.email = request.POST['email']
+        candidate_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Candidate")
+        return redirect('/candidates')
 
 
 # def get_pdf_page(request, pk=None):

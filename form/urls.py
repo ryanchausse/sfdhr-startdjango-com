@@ -20,10 +20,17 @@ from . import views
 urlpatterns = [
     path('', views.HRHomePage.as_view(), name='hr_home_page'),
     path('index.html', views.HRHomePage.as_view(), name='index'),
+    # Eligible Lists
     path('eligible_lists', views.EligibleLists.as_view(), name='eligible_lists'),
     path('eligible_lists/<int:pk>', views.EligibleLists.as_view(), name='eligible_lists'),
     path('create_eligible_list_form', views.CreateEligibleList.as_view(), name='create_eligible_list_form'),
     path('update_eligible_list_form/<int:pk>', views.UpdateEligibleList.as_view(), name='update_eligible_list_form'),
+    # Candidates
+    path('candidates', views.Candidates.as_view(), name='candidates'),
+    path('candidates/<int:pk>', views.Candidates.as_view(), name='candidates'),
+    path('create_candidate_form', views.CreateCandidate.as_view(), name='create_candidate_form'),
+    path('update_candidate_form/<int:pk>', views.UpdateCandidate.as_view(), name='update_candidate_form'),
+
     # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),
     # path('form/', views.HRHomePage.as_view(), name='form'),

@@ -3,6 +3,7 @@ from django.forms import SelectDateWidget
 # from .models import NormForm
 import datetime
 from .models import EligibleList
+from .models import Candidate
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -15,8 +16,8 @@ from jsignature.widgets import JSignatureWidget
 
 class EligibleListForm(forms.ModelForm):
     id = forms.HiddenInput()
-    code = forms.TextInput()
-    job_class = forms.TextInput()
+    code = forms.TextInput(attrs={'required': True})
+    job_class = forms.TextInput(attrs={'required': True})
     specialty = forms.TextInput()
     posted = forms.DateField(required=False,
                              initial=datetime.date.today(),
@@ -34,6 +35,17 @@ class EligibleListForm(forms.ModelForm):
     class Meta:
         model = EligibleList
         fields = ['id', 'code', 'job_class', 'specialty', 'posted', 'inspection_start', 'inspection_end', 'adopted']
+
+
+class CandidateForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    first_name = forms.TextInput(attrs={'required': True})
+    last_name = forms.TextInput(attrs={'required': True})
+    email = forms.TextInput(attrs={'required': True})
+
+    class Meta:
+        model = Candidate
+        fields = ['id', 'first_name', 'last_name', 'email']
 
 
 # class NormFormForm(forms.ModelForm):
