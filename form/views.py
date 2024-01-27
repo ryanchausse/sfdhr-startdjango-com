@@ -40,6 +40,8 @@ from .models import Candidate
 from .forms import CandidateForm
 from .models import Position
 from .forms import PositionForm
+from .models import Referral
+from .forms import ReferralForm
 from .models import ReferralCandidate
 from jsignature.utils import draw_signature
 
@@ -344,6 +346,59 @@ class UpdatePosition(TemplateView):
         messages.add_message(request, messages.SUCCESS, "Successfully updated Position")
         return redirect('/positions')
 
+
+class Referrals(TemplateView):
+    """
+    Referral CRUD page
+    """
+    template_name = 'referrals.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            referral_form = Referral.objects.get(id=pk)
+            form = ReferralForm(initial=model_to_dict(referral_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = ReferralForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['referrals'] = Referral.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateReferral(TemplateView):
+    template_name = 'referrals.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = ReferralForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Could not save Referral: {form.errors}")
+            return redirect('/referrals')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Referral")
+        return redirect('/referrals')
+
+
+class UpdateReferral(TemplateView):
+    template_name = 'referrals.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        referral_object = Referral.objects.get(pk=pk)
+        referral_object.eligible_list = EligibleList.objects.get(pk=request.POST['eligible_list'])
+        referral_object.position = Position.objects.get(pk=request.POST['position'])
+        referral_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Referral")
+        return redirect('/referrals')
 
 # def get_pdf_page(request, pk=None):
 #     """

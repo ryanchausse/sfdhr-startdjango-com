@@ -1,0 +1,99 @@
+{% load static %}
+<div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div style="margin-top:1em; margin-bottom:1em; margin-right:2em;" class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="card-body">
+        {% if user.is_authenticated and user_is_in_admins %}
+            <div class="table-responsive">
+                {% if form_data_present %}
+                    <h3>Update Referral <span style="font-size:0.7em">(or <a href='/referrals'>create a new referral</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_referral_form/{{ pk }}" method="post">
+                {% else %}
+                    <h3>Create Referral</h3>
+                    <form id='form_to_submit' action="/create_referral_form" method="post">
+                {% endif %}
+                    {% csrf_token %}
+
+                    {% if form.errors or form.non_field_errors %}
+                        <p>{{ form.errors }}</p>
+                        <p>{{ form.non_field_errors }}</p>
+                    {% endif %}
+
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.eligible_list.errors }}
+                        <label for="{{ form.eligible_list.id_for_label }}">Eligible List</label>
+                        <br />
+                        {{ form.eligible_list }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.position.errors }}
+                        <label for="{{ form.position.id_for_label }}">Position</label>
+                        <br />
+                        {{ form.position }}
+                    </div>
+                    <br />
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="margin-left:1em;" id="button-submit">
+                            {% if form_data_present %}
+                                Update
+                            {% else %}
+                                Create
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <h3>Referrals</h3>
+            <table id="referral_table" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Referral ID</th>
+                        <th>Eligible List</th>
+                        <th>Position</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Referral ID</th>
+                        <th>Eligible List</th>
+                        <th>Position</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if referrals %}
+                        {% for referral in referrals %}
+                            <tr>
+                                <td><a href="/referrals/{{ referral.id }}">{{ referral.id }}</a></td>
+                                <td>{{ referral.eligible_list }}</td>
+                                <td>{{ referral.position }}</td>
+                                <td>{{ referral.created_at }}</td>
+                                <td>{{ referral.updated_at }}</td>
+                                <td>{{ referral.created_by }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>

@@ -5,6 +5,7 @@ import datetime
 from .models import EligibleList
 from .models import Candidate
 from .models import Position
+from .models import Referral
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -56,6 +57,17 @@ class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
         fields = ['id', 'number']
+
+
+class ReferralForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    eligible_list = forms.ModelChoiceField(queryset=EligibleList.objects.all())
+    position = forms.ModelChoiceField(queryset=Position.objects.all())
+
+    class Meta:
+        model = Referral
+        fields = ['id', 'eligible_list', 'position']
+
 
 # class NormFormForm(forms.ModelForm):
 #     patient = forms.ModelChoiceField(queryset=Patient.objects.all())

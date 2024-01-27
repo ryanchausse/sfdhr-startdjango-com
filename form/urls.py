@@ -35,6 +35,11 @@ urlpatterns = [
     path('positions/<int:pk>', views.Positions.as_view(), name='positions'),
     path('create_position_form', views.CreatePosition.as_view(), name='create_position_form'),
     path('update_position_form/<int:pk>', views.UpdatePosition.as_view(), name='update_position_form'),
+    # Referrals
+    path('referrals', views.Referrals.as_view(), name='referrals'),
+    path('referrals/<int:pk>', views.Referrals.as_view(), name='referrals'),
+    path('create_referral_form', views.CreateReferral.as_view(), name='create_referral_form'),
+    path('update_referral_form/<int:pk>', views.UpdateReferral.as_view(), name='update_referral_form'),
 
     # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),
