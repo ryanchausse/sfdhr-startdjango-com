@@ -6,7 +6,9 @@ $(document).ready(function() {
   $('#candidate_table').DataTable({
     order: [[1, 'desc']]
   });
-  $('#position_table').DataTable();
+  $('#position_table').DataTable({
+    order: [[0, 'asc']]
+  });
   $('#referred_candidate_table').DataTable();
   $('.dataTables_length').addClass('bs-select');
 });

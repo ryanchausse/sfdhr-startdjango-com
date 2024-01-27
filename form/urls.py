@@ -30,6 +30,11 @@ urlpatterns = [
     path('candidates/<int:pk>', views.Candidates.as_view(), name='candidates'),
     path('create_candidate_form', views.CreateCandidate.as_view(), name='create_candidate_form'),
     path('update_candidate_form/<int:pk>', views.UpdateCandidate.as_view(), name='update_candidate_form'),
+    # Positions
+    path('positions', views.Positions.as_view(), name='positions'),
+    path('positions/<int:pk>', views.Positions.as_view(), name='positions'),
+    path('create_position_form', views.CreatePosition.as_view(), name='create_position_form'),
+    path('update_position_form/<int:pk>', views.UpdatePosition.as_view(), name='update_position_form'),
 
     # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),

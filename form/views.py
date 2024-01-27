@@ -39,6 +39,7 @@ from .forms import EligibleListForm
 from .models import Candidate
 from .forms import CandidateForm
 from .models import Position
+from .forms import PositionForm
 from .models import ReferralCandidate
 from jsignature.utils import draw_signature
 
@@ -289,6 +290,59 @@ class UpdateCandidate(TemplateView):
         candidate_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Candidate")
         return redirect('/candidates')
+
+
+class Positions(TemplateView):
+    """
+    Position CRUD page
+    """
+    template_name = 'positions.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            position_form = Position.objects.get(id=pk)
+            form = PositionForm(initial=model_to_dict(position_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = PositionForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['positions'] = Position.objects.all().order_by('-created_at')
+        return context
+
+
+class CreatePosition(TemplateView):
+    template_name = 'positions.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = PositionForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Could not save Position: {form.errors}")
+            return redirect('/positions')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Position")
+        return redirect('/positions')
+
+
+class UpdatePosition(TemplateView):
+    template_name = 'positions.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        position_object = Position.objects.get(pk=pk)
+        position_object.number = request.POST['number']
+        position_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Position")
+        return redirect('/positions')
 
 
 # def get_pdf_page(request, pk=None):

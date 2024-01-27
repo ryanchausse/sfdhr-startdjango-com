@@ -4,6 +4,7 @@ from django.forms import SelectDateWidget
 import datetime
 from .models import EligibleList
 from .models import Candidate
+from .models import Position
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -47,6 +48,14 @@ class CandidateForm(forms.ModelForm):
         model = Candidate
         fields = ['id', 'first_name', 'last_name', 'email']
 
+
+class PositionForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    number = forms.TextInput(attrs={'required': True})
+
+    class Meta:
+        model = Position
+        fields = ['id', 'number']
 
 # class NormFormForm(forms.ModelForm):
 #     patient = forms.ModelChoiceField(queryset=Patient.objects.all())
