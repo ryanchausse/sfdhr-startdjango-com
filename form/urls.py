@@ -55,6 +55,11 @@ urlpatterns = [
     path('jobs/<int:pk>', views.Jobs.as_view(), name='jobs'),
     path('create_job_form', views.CreateJob.as_view(), name='create_job_form'),
     path('update_job_form/<int:pk>', views.UpdateJob.as_view(), name='update_job_form'),
+    # Application
+    path('applications', views.Applications.as_view(), name='applications'),
+    path('applications/<int:pk>', views.Applications.as_view(), name='applications'),
+    path('create_application_form', views.CreateApplication.as_view(), name='create_application_form'),
+    path('update_application_form/<int:pk>', views.UpdateApplication.as_view(), name='update_application_form'),
 
     # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),

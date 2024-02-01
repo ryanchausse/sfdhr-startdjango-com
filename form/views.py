@@ -48,6 +48,8 @@ from .models import Department
 from .forms import DepartmentForm
 from .models import Job
 from .forms import JobForm
+from .models import Application
+from .forms import ApplicationForm
 from jsignature.utils import draw_signature
 
 
@@ -569,6 +571,61 @@ class UpdateJob(TemplateView):
         job_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Job")
         return redirect('/jobs')
+
+
+class Applications(TemplateView):
+    """
+    Application CRUD page
+    """
+    template_name = 'applications.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            application_form = Application.objects.get(id=pk)
+            form = ApplicationForm(initial=model_to_dict(application_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = ApplicationForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['applications'] = Application.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateApplication(TemplateView):
+    template_name = 'applications.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = ApplicationForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Could not save Application: {form.errors}")
+            return redirect('/applications')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Application")
+        return redirect('/applications')
+
+
+class UpdateApplication(TemplateView):
+    template_name = 'applications.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        application_object = Application.objects.get(pk=pk)
+        application_object.candidate = Candidate.objects.get(pk=request.POST['candidate'])
+        application_object.position = Position.objects.get(pk=request.POST['position'])
+        application_object.job = Job.objects.get(pk=request.POST['job'])
+        application_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Application")
+        return redirect('/applications')
 
 
 # def get_pdf_page(request, pk=None):

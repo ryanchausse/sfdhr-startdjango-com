@@ -9,6 +9,7 @@ from .models import Referral
 from .models import ReferralCandidate
 from .models import Department
 from .models import Job
+from .models import Application
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -88,7 +89,6 @@ class DepartmentForm(forms.ModelForm):
     title = forms.TextInput(attrs={'required': True})
     code = forms.TextInput(attrs={'required': True})
     description = forms.TextInput()
-    notes = forms.TextInput()
 
     class Meta:
         model = Department
@@ -100,11 +100,21 @@ class JobForm(forms.ModelForm):
     title = forms.TextInput()
     description = forms.TextInput()
     department = forms.ModelChoiceField(queryset=Department.objects.all())
-    notes = forms.TextInput()
 
     class Meta:
         model = Job
         fields = ['id', 'title', 'description', 'department']
+
+
+class ApplicationForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    candidate = forms.ModelChoiceField(queryset=Candidate.objects.all())
+    position = forms.ModelChoiceField(queryset=Position.objects.all())
+    job = forms.ModelChoiceField(queryset=Job.objects.all())
+
+    class Meta:
+        model = Application
+        fields = ['id', 'candidate', 'position', 'job']
 
 
 # class NormFormForm(forms.ModelForm):
