@@ -60,6 +60,9 @@ urlpatterns = [
     path('applications/<int:pk>', views.Applications.as_view(), name='applications'),
     path('create_application_form', views.CreateApplication.as_view(), name='create_application_form'),
     path('update_application_form/<int:pk>', views.UpdateApplication.as_view(), name='update_application_form'),
+    # Project Roadmap
+    path('roadmap', views.Roadmap.as_view(), name='roadmap'),
+
 
     # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),

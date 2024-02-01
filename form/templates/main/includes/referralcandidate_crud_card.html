@@ -15,10 +15,10 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update ReferralCandidate <span style="font-size:0.7em">(or <a href='/referralcandidates'>create a new referralcandidate</a>)</span></h3>
+                    <h3>Update a Candidate Referral <span style="font-size:0.7em">(or <a href='/referralcandidates'>create a new Candidate Referral</a>)</span></h3>
                     <form id='form_to_submit' action="/update_referralcandidate_form/{{ pk }}" method="post">
                 {% else %}
-                    <h3>Create ReferralCandidate</h3>
+                    <h3>Create a Candidate Referral</h3>
                     <form id='form_to_submit' action="/create_referralcandidate_form" method="post">
                 {% endif %}
                     {% csrf_token %}
@@ -65,7 +65,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>ReferralCandidates</h3>
+            <h3>Referred Candidates</h3>
             <table id="referralcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>

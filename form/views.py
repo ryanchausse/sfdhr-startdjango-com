@@ -187,7 +187,22 @@ class HRHomePage(TemplateView):
             context['user_is_in_admins'] = False
         context['eligible_lists'] = EligibleList.objects.all().order_by('-created_at')
         context['positions'] = Position.objects.all().order_by('-created_at')
-        context['referred_candidates'] = ReferralCandidate.objects.all().order_by('-created_at')
+        context['referralcandidates'] = ReferralCandidate.objects.all().order_by('-created_at')
+        return context
+
+
+class Roadmap(TemplateView):
+    """
+    View Project Roadmap
+    """
+    template_name = 'roadmap.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        else:
+            context['user_is_in_admins'] = False
         return context
 
 

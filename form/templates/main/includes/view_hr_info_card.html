@@ -21,85 +21,12 @@
             <p>Created and maintained by <span style='color:black;'>Ryan Chausse (chausse@gmail.com)</span> in my spare time, with my own resources.</p>
             <p>Goal: to create a more fault tolerant, predictable, performant, and easy-to-use interface to implement San Francisco's civil service rules regarding hiring.</p>
             <p>Current time from git push to production deployment: <span style='color:green;'>35 seconds</span></p>
-            <h4>Main functions (TODO)</h4>
-            <ul>
-                <li>Create an Eligible List</li>
-                <li>Add and remove Candidates to and from an Eligible List</li>
-                <li>Calculate Scores for Candidates on an Eligible List</li>
-                <li>Adopt a tentative Eligible List</li>
-                <li>Create a Referral, which associates a Position to an Eligible List at a point in time (certification)</li>
-                <li>View Candidates and their statuses on a Referral (Reachable/Hired/etc.)</li>
-                <li>Create and send a Score Report or Eligible List PDF</li>
-                <li>Send Candidates on a Referral to a Job</li>
-            </ul>
-
-            <p>Note: all data can be edited in Admin section</p>
-
-            <h4>Create an Eligible List</h4>
-            <ul>
-                <li>Needs to sync with PeopleSoft</li>
-                <ul>
-                    <li>Receive webhook from PeopleSoft when an Eligible List is created</li>
-                </ul>
-            </ul>
-
-            <h4>Add and remove Candidates to and from an Eligible List</h4>
-            <ul>
-                <li>Needs to sync with SmartRecruiters</li>
-                <ul>
-                    <li>Receive webhook from SmartRecruiters when a Candidate is added to Exam job</li>
-                </ul>
-            </ul>
-
-            <h4>Calculate Scores for Candidates on an Eligible List</h4>
-            <ul>
-                <li>Needs score calculation logic</li>
-                <li>Should be triggered by a button, not a webhook from SmartRecruiters</li>
-            </ul>
-
-            <h4>Adopt a tentative Eligible List</h4>
-            <ul>
-                <li>Triggered by a button</li>
-            </ul>
-
-            <h4>Create a Referral</h4>
-            <ul>
-                <li>Associates a Position to an Eligible List at a point in time (certification)</li>
-                <li>Triggered by a button</li>
-            </ul>
-
-            <h4>View Candidates and their statuses on a Referral</h4>
-            <ul>
-                <li>Statuses to include Reachable / Alternate / Unavailable / Hired / etc.</li>
-                <li>Needs to sync with SmartRecruiters</li>
-                <ul>
-                    <li>Receive webhook from SmartRecruiters when a Candidate is hired, rejected, etc.</li>
-                </ul>
-                <li>Reachable statuses calculated in real time every time this page is viewed</li>
-            </ul>
-
-            <h4>Create and send a Score Report or Eligible List PDF</h4>
-            <ul>
-                <li>Use native Python library <span style="color:red;">reportlab</span>, not PHP library</li>
-                <li>Design for relative placement of names, scores, other information</li>
-                <li>Sends emails automatically to Candidates and EIS Team</li>
-            </ul>
-
-            <h4>Send Candidates on a Referral to a Job</h4>
-            <ul>
-                <li>Needs to sync with SmartRecruiters</li>
-                <ul>
-                    <li>Robust rate limiting of requests and responses via Singleton design pattern</li>
-                    <li>Robust error handling / pre- and post-condition checks to ensure correctness</li>
-                </ul>
-            </ul>
-
-            <p>All of this is achievable at scale in a monolithic architectural pattern with background workers spawned to handle incoming webhooks (use Celery?), or a high-availability cloud-based endpoint that receives webhooks.</p>
-            <p>However, it is likely better to ping SmartRecruiters (or whichever ATS) using their audit log API endpoint in order to process new data changes for most functions.</p>
-
+            <p><a href='/roadmap'>Project Roadmap</a></p>
         </div>
     </div>
-
+    <div class="card-body">
+        <h2>Dashboard:</h2>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <h3>Eligible Lists</h3>
@@ -136,7 +63,7 @@
                     {% if eligible_lists %}
                         {% for eligible_list in eligible_lists %}
                             <tr>
-                                <td>{{ eligible_list.code }}</td>
+                                <td><a href="/eligible_lists/{{ eligible_list.id }}">{{ eligible_list.code }}</a></td>
                                 <td>{{ eligible_list.job_class }}</td>
                                 <td>{{ eligible_list.specialty }}</td>
                                 <td>{{ eligible_list.posted }}</td>
@@ -160,7 +87,7 @@
             <table id="position_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Number</th>
+                        <th>Position Number</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -168,7 +95,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Number</th>
+                        <th>Position Number</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -178,7 +105,7 @@
                     {% if positions %}
                         {% for position in positions %}
                             <tr>
-                                <td>{{ position.number }}</td>
+                                <td><a href="/positions/{{ position.id }}">{{ position.number }}</a></td>
                                 <td>{{ position.created_at }}</td>
                                 <td>{{ position.updated_at }}</td>
                                 <td>{{ position.created_by }}</td>
@@ -193,9 +120,10 @@
     <div class="card-body">
         <div class="table-responsive">
             <h3>Referred Candidates</h3>
-            <table id="referred_candidate_table" class="table table-bordered" width="100%" cellspacing="0">
+            <table id="referralcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
+                        <th>ReferralCandidate ID</th>
                         <th>Referral</th>
                         <th>Candidate</th>
                         <th>Notes</th>
@@ -206,6 +134,7 @@
                 </thead>
                 <tfoot>
                     <tr>
+                        <th>ReferralCandidate ID</th>
                         <th>Referral</th>
                         <th>Candidate</th>
                         <th>Notes</th>
@@ -215,15 +144,16 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    {% if referred_candidates %}
-                        {% for referred_candidate in referred_candidates %}
+                    {% if referralcandidates %}
+                        {% for referralcandidate in referralcandidates %}
                             <tr>
-                                <td>{{ referred_candidate.referral }}</td>
-                                <td>{{ referred_candidate.candidate }}</td>
-                                <td>{{ referred_candidate.notes }}</td>
-                                <td>{{ referred_candidate.created_at }}</td>
-                                <td>{{ referred_candidate.updated_at }}</td>
-                                <td>{{ referred_candidate.created_by }}</td>
+                                <td><a href="/referralcandidates/{{ referralcandidate.id }}">{{ referralcandidate.id }}</a></td>
+                                <td>{{ referralcandidate.referral }}</td>
+                                <td>{{ referralcandidate.candidate }}</td>
+                                <td>{{ referralcandidate.notes }}</td>
+                                <td>{{ referralcandidate.created_at }}</td>
+                                <td>{{ referralcandidate.updated_at }}</td>
+                                <td>{{ referralcandidate.created_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

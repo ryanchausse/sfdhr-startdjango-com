@@ -1,0 +1,97 @@
+{% load static %}
+<div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div style="margin-top:1em; margin-bottom:1em; margin-right:2em;" class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if user.is_authenticated and user_is_in_admins %}
+
+    {% endif %}
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <h3>Project Roadmap</h3>
+            <h4>Main functions (TODO)</h4>
+            <ul>
+                <li>Create an Eligible List</li>
+                <li>Add and remove Candidates to and from an Eligible List</li>
+                <li>Calculate Scores for Candidates on an Eligible List</li>
+                <li>Adopt a tentative Eligible List</li>
+                <li>Create a Referral, which associates a Position to an Eligible List at a point in time (certification)</li>
+                <li>View Candidates and their statuses on a Referral (Reachable/Hired/etc.)</li>
+                <li>Create and send a Score Report or Eligible List PDF</li>
+                <li>Send Candidates on a Referral to a Job</li>
+            </ul>
+
+            <p>Note: all data can be edited in Admin section</p>
+
+            <h4>Create an Eligible List&#x1F5F8;</h4>
+            <ul>
+                <li>Needs to sync with PeopleSoft</li>
+                <ul>
+                    <li>Receive webhook from PeopleSoft when an Eligible List is created</li>
+                </ul>
+            </ul>
+
+            <h4>Add and remove Candidates to and from an Eligible List</h4>
+            <ul>
+                <li>Needs to sync with SmartRecruiters</li>
+                <ul>
+                    <li>Receive webhook from SmartRecruiters when a Candidate is added to Exam job</li>
+                </ul>
+            </ul>
+
+            <h4>Calculate Scores for Candidates on an Eligible List</h4>
+            <ul>
+                <li>Needs score calculation logic</li>
+                <li>Should be triggered by a button, not a webhook from SmartRecruiters</li>
+            </ul>
+
+            <h4>Adopt a tentative Eligible List</h4>
+            <ul>
+                <li>Triggered by a button</li>
+            </ul>
+
+            <h4>Create a Referral&#x1F5F8;</h4>
+            <ul>
+                <li>Associates a Position to an Eligible List at a point in time (certification)</li>
+                <li>Triggered by a button</li>
+            </ul>
+
+            <h4>View Candidates and their statuses on a Referral</h4>
+            <ul>
+                <li>Statuses to include Reachable / Alternate / Unavailable / Hired / etc.</li>
+                <li>Needs to sync with SmartRecruiters</li>
+                <ul>
+                    <li>Receive webhook from SmartRecruiters when a Candidate is hired, rejected, etc.</li>
+                </ul>
+                <li>Reachable statuses calculated in real time every time this page is viewed</li>
+            </ul>
+
+            <h4>Create and send a Score Report or Eligible List PDF</h4>
+            <ul>
+                <li>Use native Python library <span style="color:red;">reportlab</span>, not PHP library</li>
+                <li>Design for relative placement of names, scores, other information</li>
+                <li>Sends emails automatically to Candidates and EIS Team</li>
+            </ul>
+
+            <h4>Send Candidates on a Referral to a Job&#x1F5F8;</h4>
+            <ul>
+                <li>Needs to sync with SmartRecruiters</li>
+                <ul>
+                    <li>Robust rate limiting of requests and responses via Singleton design pattern</li>
+                    <li>Robust error handling / pre- and post-condition checks to ensure correctness</li>
+                </ul>
+            </ul>
+
+            <p>All of this is achievable at scale in a monolithic architectural pattern with background workers spawned to handle incoming webhooks (use Celery?), or a high-availability cloud-based endpoint that receives webhooks.</p>
+            <p>However, it is likely better to ping SmartRecruiters (or whichever ATS) using their audit log API endpoint in order to process new data changes for most functions.</p>
+
+        </div>
+    </div>
