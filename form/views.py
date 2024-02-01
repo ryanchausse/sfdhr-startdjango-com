@@ -44,6 +44,8 @@ from .models import Referral
 from .forms import ReferralForm
 from .models import ReferralCandidate
 from .forms import ReferralCandidateForm
+from .models import Department
+from .forms import DepartmentForm
 from jsignature.utils import draw_signature
 
 
@@ -455,6 +457,62 @@ class UpdateReferralCandidate(TemplateView):
         referralcandidate_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated ReferralCandidate")
         return redirect('/referralcandidates')
+
+
+class Departments(TemplateView):
+    """
+    Department CRUD page
+    """
+    template_name = 'departments.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            department_form = Department.objects.get(id=pk)
+            form = DepartmentForm(initial=model_to_dict(department_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = DepartmentForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['departments'] = Department.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateDepartment(TemplateView):
+    template_name = 'departments.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = DepartmentForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Could not save Department: {form.errors}")
+            return redirect('/departments')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Department")
+        return redirect('/departments')
+
+
+class UpdateDepartment(TemplateView):
+    template_name = 'departments.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        department_object = Department.objects.get(pk=pk)
+        department_object.title = request.POST['title']
+        department_object.code = request.POST['code']
+        department_object.description = request.POST['description']
+        department_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Department")
+        return redirect('/departments')
+
 
 # def get_pdf_page(request, pk=None):
 #     """

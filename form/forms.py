@@ -7,6 +7,7 @@ from .models import Candidate
 from .models import Position
 from .models import Referral
 from .models import ReferralCandidate
+from .models import Department
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -79,6 +80,18 @@ class ReferralCandidateForm(forms.ModelForm):
     class Meta:
         model = ReferralCandidate
         fields = ['id', 'referral', 'candidate', 'notes']
+
+
+class DepartmentForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    title = forms.TextInput(attrs={'required': True, 'placeholder': 'XXX'})
+    code = forms.TextInput(attrs={'required': True})
+    description = forms.TextInput()
+    notes = forms.TextInput()
+
+    class Meta:
+        model = Department
+        fields = ['id', 'title', 'code', 'description']
 
 
 # class NormFormForm(forms.ModelForm):

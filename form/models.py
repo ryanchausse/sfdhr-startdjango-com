@@ -107,9 +107,9 @@ class ReferralCandidate(models.Model):
 
 
 class Department(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True, default='')
+    title = models.CharField(max_length=255)
+    code = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True, default='')
-    code = models.CharField(max_length=255, blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),

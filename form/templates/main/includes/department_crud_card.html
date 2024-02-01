@@ -15,11 +15,11 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update ReferralCandidate <span style="font-size:0.7em">(or <a href='/referralcandidates'>create a new referralcandidate</a>)</span></h3>
-                    <form id='form_to_submit' action="/update_referralcandidate_form/{{ pk }}" method="post">
+                    <h3>Update Department <span style="font-size:0.7em">(or <a href='/departments'>create a new department</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_department_form/{{ pk }}" method="post">
                 {% else %}
-                    <h3>Create ReferralCandidate</h3>
-                    <form id='form_to_submit' action="/create_referralcandidate_form" method="post">
+                    <h3>Create Department</h3>
+                    <form id='form_to_submit' action="/create_department_form" method="post">
                 {% endif %}
                     {% csrf_token %}
 
@@ -29,24 +29,24 @@
                     {% endif %}
 
                     <div class="fieldWrapper" style="margin-left: 1em;">
-                        {{ form.referral.errors }}
-                        <label for="{{ form.referral.id_for_label }}">Referral</label>
+                        {{ form.title.errors }}
+                        <label for="{{ form.title.id_for_label }}">Title</label>
                         <br />
-                        {{ form.referral }}
+                        {{ form.title }}
                     </div>
                     <br />
                     <div class="fieldWrapper" style="margin-left: 1em;">
-                        {{ form.candidate.errors }}
-                        <label for="{{ form.candidate.id_for_label }}">Candidate</label>
+                        {{ form.code.errors }}
+                        <label for="{{ form.code.id_for_label }}">Code</label>
                         <br />
-                        {{ form.candidate }}
+                        {{ form.code }}
                     </div>
                     <br />
                     <div class="fieldWrapper" style="margin-left: 1em;">
-                        {{ form.notes.errors }}
-                        <label for="{{ form.notes.id_for_label }}">Notes</label>
+                        {{ form.description.errors }}
+                        <label for="{{ form.description.id_for_label }}">Description</label>
                         <br />
-                        {{ form.notes }}
+                        {{ form.description }}
                     </div>
                     <br />
                     <div>
@@ -65,14 +65,13 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>ReferralCandidates</h3>
-            <table id="referralcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
+            <h3>Departments</h3>
+            <table id="department_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>ReferralCandidate ID</th>
-                        <th>Referral</th>
-                        <th>Candidate</th>
-                        <th>Notes</th>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Description</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -80,26 +79,24 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>ReferralCandidate ID</th>
-                        <th>Referral</th>
-                        <th>Candidate</th>
-                        <th>Notes</th>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Description</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    {% if referralcandidates %}
-                        {% for referralcandidate in referralcandidates %}
+                    {% if departments %}
+                        {% for department in departments %}
                             <tr>
-                                <td><a href="/referralcandidates/{{ referralcandidate.id }}">{{ referralcandidate.id }}</a></td>
-                                <td>{{ referralcandidate.referral }}</td>
-                                <td>{{ referralcandidate.candidate }}</td>
-                                <td>{{ referralcandidate.notes }}</td>
-                                <td>{{ referralcandidate.created_at }}</td>
-                                <td>{{ referralcandidate.updated_at }}</td>
-                                <td>{{ referralcandidate.created_by }}</td>
+                                <td><a href="/departments/{{ department.id }}">{{ department.code }}</a></td>
+                                <td>{{ department.title }}</td>
+                                <td>{{ department.description }}</td>
+                                <td>{{ department.created_at }}</td>
+                                <td>{{ department.updated_at }}</td>
+                                <td>{{ department.created_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
