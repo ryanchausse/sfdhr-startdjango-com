@@ -12,6 +12,9 @@ $(document).ready(function() {
   $('#referral_table').DataTable({
     order: [[0, 'asc']]
   });
+  $('#referralcandidate_table').DataTable({
+    order: [[0, 'asc']]
+  });
   $('#referred_candidate_table').DataTable();
   $('.dataTables_length').addClass('bs-select');
 });

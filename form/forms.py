@@ -6,6 +6,7 @@ from .models import EligibleList
 from .models import Candidate
 from .models import Position
 from .models import Referral
+from .models import ReferralCandidate
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -67,6 +68,17 @@ class ReferralForm(forms.ModelForm):
     class Meta:
         model = Referral
         fields = ['id', 'eligible_list', 'position']
+
+
+class ReferralCandidateForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    referral = forms.ModelChoiceField(queryset=Referral.objects.all())
+    candidate = forms.ModelChoiceField(queryset=Candidate.objects.all())
+    notes = forms.TextInput()
+
+    class Meta:
+        model = ReferralCandidate
+        fields = ['id', 'referral', 'candidate', 'notes']
 
 
 # class NormFormForm(forms.ModelForm):

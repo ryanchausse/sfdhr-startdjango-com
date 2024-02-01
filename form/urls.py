@@ -40,6 +40,11 @@ urlpatterns = [
     path('referrals/<int:pk>', views.Referrals.as_view(), name='referrals'),
     path('create_referral_form', views.CreateReferral.as_view(), name='create_referral_form'),
     path('update_referral_form/<int:pk>', views.UpdateReferral.as_view(), name='update_referral_form'),
+    # ReferralCandidate (relational table)
+    path('referralcandidates', views.ReferralCandidates.as_view(), name='referralcandidates'),
+    path('referralcandidates/<int:pk>', views.ReferralCandidates.as_view(), name='referralcandidates'),
+    path('create_referralcandidate_form', views.CreateReferralCandidate.as_view(), name='create_referralcandidate_form'),
+    path('update_referralcandidate_form/<int:pk>', views.UpdateReferralCandidate.as_view(), name='update_referralcandidate_form'),
 
     # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),
