@@ -50,6 +50,11 @@ urlpatterns = [
     path('departments/<int:pk>', views.Departments.as_view(), name='departments'),
     path('create_department_form', views.CreateDepartment.as_view(), name='create_department_form'),
     path('update_department_form/<int:pk>', views.UpdateDepartment.as_view(), name='update_department_form'),
+    # Job
+    path('jobs', views.Jobs.as_view(), name='jobs'),
+    path('jobs/<int:pk>', views.Jobs.as_view(), name='jobs'),
+    path('create_job_form', views.CreateJob.as_view(), name='create_job_form'),
+    path('update_job_form/<int:pk>', views.UpdateJob.as_view(), name='update_job_form'),
 
     # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
     # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),

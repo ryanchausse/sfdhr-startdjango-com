@@ -46,6 +46,8 @@ from .models import ReferralCandidate
 from .forms import ReferralCandidateForm
 from .models import Department
 from .forms import DepartmentForm
+from .models import Job
+from .forms import JobForm
 from jsignature.utils import draw_signature
 
 
@@ -512,6 +514,61 @@ class UpdateDepartment(TemplateView):
         department_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Department")
         return redirect('/departments')
+
+
+class Jobs(TemplateView):
+    """
+    Job CRUD page
+    """
+    template_name = 'jobs.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            job_form = Job.objects.get(id=pk)
+            form = JobForm(initial=model_to_dict(job_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = JobForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['jobs'] = Job.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateJob(TemplateView):
+    template_name = 'jobs.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = JobForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Could not save Job: {form.errors}")
+            return redirect('/jobs')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Job")
+        return redirect('/jobs')
+
+
+class UpdateJob(TemplateView):
+    template_name = 'jobs.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        job_object = Job.objects.get(pk=pk)
+        job_object.title = request.POST['title']
+        job_object.description = request.POST['description']
+        job_object.department = Department.objects.get(pk=request.POST['department'])
+        job_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Job")
+        return redirect('/jobs')
 
 
 # def get_pdf_page(request, pk=None):

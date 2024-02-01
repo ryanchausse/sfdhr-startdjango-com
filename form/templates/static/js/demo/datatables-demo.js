@@ -18,6 +18,9 @@ $(document).ready(function() {
   $('#department_table').DataTable({
     order: [[0, 'asc']]
   });
+  $('#job_table').DataTable({
+    order: [[0, 'asc']]
+  });
   $('#referred_candidate_table').DataTable();
   $('.dataTables_length').addClass('bs-select');
 });
