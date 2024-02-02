@@ -238,6 +238,9 @@ class CreateEligibleList(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/eligible_lists')
         form = EligibleListForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save Eligible List: {form.errors}")
@@ -254,6 +257,9 @@ class UpdateEligibleList(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
         el_object.code = request.POST['code']
         el_object.job_class = request.POST['job_class']
@@ -293,6 +299,9 @@ class CreateCandidate(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/candidates')
         form = CandidateForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save Candidate: {form.errors}")
@@ -309,6 +318,9 @@ class UpdateCandidate(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/candidates')
         candidate_object = Candidate.objects.get(pk=pk)
         candidate_object.first_name = request.POST['first_name']
         candidate_object.last_name = request.POST['last_name']
@@ -348,6 +360,9 @@ class CreatePosition(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/positions')
         form = PositionForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save Position: {form.errors}")
@@ -364,6 +379,9 @@ class UpdatePosition(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/positions')
         position_object = Position.objects.get(pk=pk)
         position_object.number = request.POST['number']
         position_object.save()
@@ -401,6 +419,9 @@ class CreateReferral(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/referrals')
         form = ReferralForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save Referral: {form.errors}")
@@ -417,6 +438,9 @@ class UpdateReferral(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/referrals')
         referral_object = Referral.objects.get(pk=pk)
         referral_object.eligible_list = EligibleList.objects.get(pk=request.POST['eligible_list'])
         referral_object.position = Position.objects.get(pk=request.POST['position'])
@@ -455,6 +479,9 @@ class CreateDepartment(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/departments')
         form = DepartmentForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save Department: {form.errors}")
@@ -471,6 +498,9 @@ class UpdateDepartment(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/departments')
         department_object = Department.objects.get(pk=pk)
         department_object.title = request.POST['title']
         department_object.code = request.POST['code']
@@ -510,6 +540,9 @@ class CreateJob(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/jobs')
         form = JobForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save Job: {form.errors}")
@@ -526,6 +559,9 @@ class UpdateJob(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/jobs')
         job_object = Job.objects.get(pk=pk)
         job_object.title = request.POST['title']
         job_object.description = request.POST['description']
@@ -565,6 +601,9 @@ class CreateApplication(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/applications')
         form = ApplicationForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save Application: {form.errors}")
@@ -581,6 +620,9 @@ class UpdateApplication(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/applications')
         application_object = Application.objects.get(pk=pk)
         application_object.candidate = Candidate.objects.get(pk=request.POST['candidate'])
         application_object.position = Position.objects.get(pk=request.POST['position'])
@@ -621,6 +663,9 @@ class CreateEligibleListCandidate(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/eligiblelistcandidates')
         form = EligibleListCandidateForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save EligibleListCandidate: {form.errors}")
@@ -637,6 +682,9 @@ class UpdateEligibleListCandidate(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/eligiblelistcandidates')
         eligiblelistcandidate_object = EligibleListCandidate.objects.get(pk=pk)
         eligiblelistcandidate_object.eligible_list = EligibleList.objects.get(pk=request.POST['eligible_list'])
         eligiblelistcandidate_object.candidate = Candidate.objects.get(pk=request.POST['candidate'])
@@ -678,6 +726,9 @@ class CreateEligibleListCandidateReferral(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/eligiblelistcandidatereferrals')
         form = EligibleListCandidateReferralForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.ERROR, f"Could not save EligibleListCandidateReferral: {form.errors}")
@@ -694,6 +745,9 @@ class UpdateEligibleListCandidateReferral(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.ERROR, f"You are not permitted to edit data")
+            return redirect('/eligiblelistcandidatereferrals')
         eligiblelistcandidatereferral_object = EligibleListCandidateReferral.objects.get(pk=pk)
         eligiblelistcandidatereferral_object.eligible_list_candidate = EligibleListCandidate.objects.get(pk=request.POST['eligible_list_candidate'])
         eligiblelistcandidatereferral_object.referral = Referral.objects.get(pk=request.POST['referral'])
