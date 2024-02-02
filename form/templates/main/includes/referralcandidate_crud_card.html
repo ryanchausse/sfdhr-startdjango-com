@@ -1,7 +1,7 @@
 {% load static %}
 <div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6>
+        <a href="/"><h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6></a>
     </div>
     {% if messages %}
         <ul class="messages">
@@ -19,6 +19,7 @@
                     <form id='form_to_submit' action="/update_referralcandidate_form/{{ pk }}" method="post">
                 {% else %}
                     <h3>Create a Candidate Referral</h3>
+                    <h6>(Add a candidate to a referral)</h6>
                     <form id='form_to_submit' action="/create_referralcandidate_form" method="post">
                 {% endif %}
                     {% csrf_token %}
