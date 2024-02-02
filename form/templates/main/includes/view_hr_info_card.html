@@ -120,13 +120,13 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>Referred Candidates</h3>
-            <table id="referralcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
+            <h3>Eligible List Candidate Referrals</h3>
+            <table id="eligiblelistcandidatereferral_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>ReferralCandidate ID</th>
+                        <th>EligibleListCandidateReferral ID</th>
+                        <th>EligibleListCandidate</th>
                         <th>Referral</th>
-                        <th>Candidate</th>
                         <th>Notes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -135,9 +135,9 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>ReferralCandidate ID</th>
+                        <th>EligibleListCandidateReferral ID</th>
+                        <th>EligibleListCandidate</th>
                         <th>Referral</th>
-                        <th>Candidate</th>
                         <th>Notes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -145,16 +145,16 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    {% if referralcandidates %}
-                        {% for referralcandidate in referralcandidates %}
+                    {% if eligible_list_candidate_referrals %}
+                        {% for eligible_list_candidate_referral in eligible_list_candidate_referrals %}
                             <tr>
-                                <td><a href="/referralcandidates/{{ referralcandidate.id }}">{{ referralcandidate.id }}</a></td>
-                                <td>{{ referralcandidate.referral }}</td>
-                                <td>{{ referralcandidate.candidate }}</td>
-                                <td>{{ referralcandidate.notes }}</td>
-                                <td>{{ referralcandidate.created_at }}</td>
-                                <td>{{ referralcandidate.updated_at }}</td>
-                                <td>{{ referralcandidate.created_by }}</td>
+                                <td><a href="/eligiblelistcandidatereferrals/{{ eligible_list_candidate_referral.id }}">{{ eligible_list_candidate_referral.id }}</a></td>
+                                <td>{{ eligible_list_candidate_referral.eligible_list_candidate }}</td>
+                                <td>{{ eligible_list_candidate_referral.referral }}</td>
+                                <td>{{ eligible_list_candidate_referral.notes }}</td>
+                                <td>{{ eligible_list_candidate_referral.created_at }}</td>
+                                <td>{{ eligible_list_candidate_referral.updated_at }}</td>
+                                <td>{{ eligible_list_candidate_referral.created_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

@@ -23,11 +23,11 @@ $(document).ready(function() {
   });
 
 /* Relational Entities */
-  $('#referralcandidate_table').DataTable({
-    order: [[0, 'asc']]
-  });
   $('#eligiblelistcandidate_table').DataTable({
     order: [[1, 'asc'], [4, 'asc']]
+  });
+  $('#eligiblelistcandidatereferral_table').DataTable({
+    order: [[0, 'asc']]
   });
   $('.dataTables_length').addClass('bs-select');
 });

@@ -15,12 +15,11 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update a Candidate Referral <span style="font-size:0.7em">(or <a href='/referralcandidates'>create a new Candidate Referral</a>)</span></h3>
-                    <form id='form_to_submit' action="/update_referralcandidate_form/{{ pk }}" method="post">
+                    <h3>Update an Eligible List Candidate on a Referral <span style="font-size:0.7em">(or <a href='/eligiblelistcandidatereferrals'>create a new Eligible List Candidate Referral</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_eligiblelistcandidatereferral_form/{{ pk }}" method="post">
                 {% else %}
-                    <h3>Create a Candidate Referral</h3>
-                    <h6>(Add a candidate to a referral)</h6>
-                    <form id='form_to_submit' action="/create_referralcandidate_form" method="post">
+                    <h3>Add an Eligible List Candidate to a Referral</h3>
+                    <form id='form_to_submit' action="/create_eligiblelistcandidatereferral_form" method="post">
                 {% endif %}
                     {% csrf_token %}
 
@@ -30,17 +29,17 @@
                     {% endif %}
 
                     <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.eligible_list_candidate.errors }}
+                        <label for="{{ form.eligible_list_candidate.id_for_label }}">Eligible List Candidate</label>
+                        <br />
+                        {{ form.eligible_list_candidate }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
                         {{ form.referral.errors }}
                         <label for="{{ form.referral.id_for_label }}">Referral</label>
                         <br />
                         {{ form.referral }}
-                    </div>
-                    <br />
-                    <div class="fieldWrapper" style="margin-left: 1em;">
-                        {{ form.candidate.errors }}
-                        <label for="{{ form.candidate.id_for_label }}">Candidate</label>
-                        <br />
-                        {{ form.candidate }}
                     </div>
                     <br />
                     <div class="fieldWrapper" style="margin-left: 1em;">
@@ -66,13 +65,13 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>Referred Candidates</h3>
-            <table id="referralcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
+            <h3>Eligible List Candidate Referrals</h3>
+            <table id="eligiblelistcandidatereferral_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>ReferralCandidate ID</th>
+                        <th>EligibleListCandidateReferral ID</th>
+                        <th>EligibleListCandidate</th>
                         <th>Referral</th>
-                        <th>Candidate</th>
                         <th>Notes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -81,9 +80,9 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>ReferralCandidate ID</th>
+                        <th>EligibleListCandidateReferral ID</th>
+                        <th>EligibleListCandidate</th>
                         <th>Referral</th>
-                        <th>Candidate</th>
                         <th>Notes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -91,16 +90,16 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    {% if referralcandidates %}
-                        {% for referralcandidate in referralcandidates %}
+                    {% if eligiblelistcandidatereferrals %}
+                        {% for eligiblelistcandidatereferral in eligiblelistcandidatereferrals %}
                             <tr>
-                                <td><a href="/referralcandidates/{{ referralcandidate.id }}">{{ referralcandidate.id }}</a></td>
-                                <td>{{ referralcandidate.referral }}</td>
-                                <td>{{ referralcandidate.candidate }}</td>
-                                <td>{{ referralcandidate.notes }}</td>
-                                <td>{{ referralcandidate.created_at }}</td>
-                                <td>{{ referralcandidate.updated_at }}</td>
-                                <td>{{ referralcandidate.created_by }}</td>
+                                <td><a href="/eligiblelistcandidatereferrals/{{ eligiblelistcandidatereferral.id }}">{{ eligiblelistcandidatereferral.id }}</a></td>
+                                <td>{{ eligiblelistcandidatereferral.eligible_list_candidate }}</td>
+                                <td>{{ eligiblelistcandidatereferral.referral }}</td>
+                                <td>{{ eligiblelistcandidatereferral.notes }}</td>
+                                <td>{{ eligiblelistcandidatereferral.created_at }}</td>
+                                <td>{{ eligiblelistcandidatereferral.updated_at }}</td>
+                                <td>{{ eligiblelistcandidatereferral.created_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

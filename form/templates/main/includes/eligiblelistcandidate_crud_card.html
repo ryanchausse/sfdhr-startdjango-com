@@ -15,11 +15,10 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update an EligibleListCandidate <span style="font-size:0.7em">(or <a href='/eligiblelistcandidates'>create a new EligibleListCandidate</a>)</span></h3>
+                    <h3>Update a Candidate on an Eligible List <span style="font-size:0.7em">(or <a href='/eligiblelistcandidates'>Add a Candidate to an Eligible List</a>)</span></h3>
                     <form id='form_to_submit' action="/update_eligiblelistcandidate_form/{{ pk }}" method="post">
                 {% else %}
-                    <h3>Create an EligibleListCandidate</h3>
-                    <h6>(Add a candidate to an eligible list)</h6>
+                    <h3>Add a Candidate to an Eligible List</h3>
                     <form id='form_to_submit' action="/create_eligiblelistcandidate_form" method="post">
                 {% endif %}
                     {% csrf_token %}

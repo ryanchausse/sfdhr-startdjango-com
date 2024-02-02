@@ -87,25 +87,6 @@ class Referral(models.Model):
         verbose_name_plural = 'Referrals'
 
 
-class ReferralCandidate(models.Model):
-    referral = models.ForeignKey(Referral, on_delete=models.CASCADE)
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    notes = models.CharField(max_length=255, blank=True, null=True, default='')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(get_user_model(),
-                                   null=True,
-                                   blank=True,
-                                   on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return f'Referral: {self.referral} - Candidate: {self.candidate}'
-
-    class Meta:
-        verbose_name = 'ReferralCandidate'
-        verbose_name_plural = 'ReferralCandidates'
-
-
 class Department(models.Model):
     title = models.CharField(max_length=255)
     code = models.CharField(max_length=255)
@@ -165,6 +146,7 @@ class Application(models.Model):
         verbose_name_plural = 'Applications'
 
 
+# Relational Entities
 class EligibleListCandidate(models.Model):
     eligible_list = models.ForeignKey(EligibleList, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
@@ -184,6 +166,25 @@ class EligibleListCandidate(models.Model):
     class Meta:
         verbose_name = 'EligibleListCandidate'
         verbose_name_plural = 'EligibleListCandidate'
+
+
+class EligibleListCandidateReferral(models.Model):
+    eligible_list_candidate = models.ForeignKey(EligibleListCandidate, on_delete=models.CASCADE)
+    referral = models.ForeignKey(Referral, on_delete=models.CASCADE)
+    notes = models.CharField(max_length=255, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'ELCandidate: {self.eligible_list_candidate} - Referral: {self.referral}'
+
+    class Meta:
+        verbose_name = 'EligibleListCandidateReferral'
+        verbose_name_plural = 'EligibleListCandidateReferrals'
 
 
 # class Facility(models.Model):

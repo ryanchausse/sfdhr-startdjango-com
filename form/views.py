@@ -48,10 +48,10 @@ from .models import Job
 from .forms import JobForm
 from .models import Application
 from .forms import ApplicationForm
-from .models import ReferralCandidate
-from .forms import ReferralCandidateForm
 from .models import EligibleListCandidate
 from .forms import EligibleListCandidateForm
+from .models import EligibleListCandidateReferral
+from .forms import EligibleListCandidateReferralForm
 from jsignature.utils import draw_signature
 
 
@@ -189,7 +189,7 @@ class HRHomePage(TemplateView):
             context['user_is_in_admins'] = False
         context['eligible_lists'] = EligibleList.objects.all().order_by('-created_at')
         context['positions'] = Position.objects.all().order_by('-created_at')
-        context['referralcandidates'] = ReferralCandidate.objects.all().order_by('-created_at')
+        context['eligible_list_candidate_referrals'] = EligibleListCandidateReferral.objects.all().order_by('-created_at')
         return context
 
 
@@ -591,61 +591,6 @@ class UpdateApplication(TemplateView):
 
 
 # Relational Entities
-class ReferralCandidates(TemplateView):
-    """
-    ReferralCandidate (relational table) CRUD page
-    """
-    template_name = 'referralcandidates.html'
-
-    def get_context_data(self, pk=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user_is_in_admins'] = False
-        context['form_data_present'] = False
-        if self.request.user.groups.filter(name='Admins').exists():
-            context['user_is_in_admins'] = True
-        if pk:
-            referralcandidate_form = ReferralCandidate.objects.get(id=pk)
-            form = ReferralCandidateForm(initial=model_to_dict(referralcandidate_form))
-            context['form_data_present'] = True
-            context['pk'] = pk
-        else:
-            form = ReferralCandidateForm()
-        context['form'] = form
-        # Note that jQuery datatable has its own sort by function
-        context['referralcandidates'] = ReferralCandidate.objects.all().order_by('-created_at')
-        return context
-
-
-class CreateReferralCandidate(TemplateView):
-    template_name = 'referralcandidates.html'
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        form = ReferralCandidateForm(request.POST)
-        if not form.is_valid():
-            messages.add_message(request, messages.ERROR, f"Could not save ReferralCandidate: {form.errors}")
-            return redirect('/referralcandidates')
-        form_to_save = form.save(commit=False)
-        form_to_save.created_by = request.user
-        form_to_save.save()
-        messages.add_message(request, messages.SUCCESS, "Successfully saved ReferralCandidate")
-        return redirect('/referralcandidates')
-
-
-class UpdateReferralCandidate(TemplateView):
-    template_name = 'referralcandidates.html'
-
-    def post(self, request, pk=None, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        referralcandidate_object = ReferralCandidate.objects.get(pk=pk)
-        referralcandidate_object.referral = Referral.objects.get(pk=request.POST['referral'])
-        referralcandidate_object.candidate = Candidate.objects.get(pk=request.POST['candidate'])
-        referralcandidate_object.notes = request.POST['notes']
-        referralcandidate_object.save()
-        messages.add_message(request, messages.SUCCESS, "Successfully updated ReferralCandidate")
-        return redirect('/referralcandidates')
-
-
 class EligibleListCandidates(TemplateView):
     """
     EligibleListCandidate (relational table) CRUD page
@@ -701,6 +646,61 @@ class UpdateEligibleListCandidate(TemplateView):
         eligiblelistcandidate_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidate")
         return redirect('/eligiblelistcandidates')
+
+
+class EligibleListCandidateReferrals(TemplateView):
+    """
+    EligibleListCandidateReferral (relational table) CRUD page
+    """
+    template_name = 'eligiblelistcandidatereferrals.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            eligiblelistcandidatereferral_form = EligibleListCandidateReferral.objects.get(id=pk)
+            form = EligibleListCandidateReferralForm(initial=model_to_dict(eligiblelistcandidatereferral_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = EligibleListCandidateReferralForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['eligiblelistcandidatereferrals'] = EligibleListCandidateReferral.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateEligibleListCandidateReferral(TemplateView):
+    template_name = 'eligiblelistcandidatereferrals.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form = EligibleListCandidateReferralForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Could not save EligibleListCandidateReferral: {form.errors}")
+            return redirect('/eligiblelistcandidatereferrals')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved EligibleListCandidateReferral")
+        return redirect('/eligiblelistcandidatereferrals')
+
+
+class UpdateEligibleListCandidateReferral(TemplateView):
+    template_name = 'eligiblelistcandidatereferrals.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        eligiblelistcandidatereferral_object = EligibleListCandidateReferral.objects.get(pk=pk)
+        eligiblelistcandidatereferral_object.eligible_list_candidate = EligibleListCandidate.objects.get(pk=request.POST['eligible_list_candidate'])
+        eligiblelistcandidatereferral_object.referral = Referral.objects.get(pk=request.POST['referral'])
+        eligiblelistcandidatereferral_object.notes = request.POST['notes']
+        eligiblelistcandidatereferral_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidateReferral")
+        return redirect('/eligiblelistcandidatereferrals')
 
 
 # def get_pdf_page(request, pk=None):

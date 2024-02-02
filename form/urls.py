@@ -56,16 +56,16 @@ urlpatterns = [
     path('create_application_form', views.CreateApplication.as_view(), name='create_application_form'),
     path('update_application_form/<int:pk>', views.UpdateApplication.as_view(), name='update_application_form'),
 
-    # ReferralCandidate (relational table)
-    path('referralcandidates', views.ReferralCandidates.as_view(), name='referralcandidates'),
-    path('referralcandidates/<int:pk>', views.ReferralCandidates.as_view(), name='referralcandidates'),
-    path('create_referralcandidate_form', views.CreateReferralCandidate.as_view(), name='create_referralcandidate_form'),
-    path('update_referralcandidate_form/<int:pk>', views.UpdateReferralCandidate.as_view(), name='update_referralcandidate_form'),
     # EligibleListCandidate (relational table)
     path('eligiblelistcandidates', views.EligibleListCandidates.as_view(), name='eligiblelistcandidates'),
     path('eligiblelistcandidates/<int:pk>', views.EligibleListCandidates.as_view(), name='eligiblelistcandidates'),
     path('create_eligiblelistcandidate_form', views.CreateEligibleListCandidate.as_view(), name='create_eligiblelistcandidate_form'),
     path('update_eligiblelistcandidate_form/<int:pk>', views.UpdateEligibleListCandidate.as_view(), name='update_eligiblelistcandidate_form'),
+    # EligibleListCandidateReferral (relational table)
+    path('eligiblelistcandidatereferrals', views.EligibleListCandidateReferrals.as_view(), name='eligiblelistcandidatereferrals'),
+    path('eligiblelistcandidatereferrals/<int:pk>', views.EligibleListCandidateReferrals.as_view(), name='eligiblelistcandidatereferrals'),
+    path('create_eligiblelistcandidatereferral_form', views.CreateEligibleListCandidateReferral.as_view(), name='create_eligiblelistcandidatereferral_form'),
+    path('update_eligiblelistcandidatereferral_form/<int:pk>', views.UpdateEligibleListCandidateReferral.as_view(), name='update_eligiblelistcandidatereferral_form'),
 
     # Project Roadmap
     path('roadmap', views.Roadmap.as_view(), name='roadmap'),

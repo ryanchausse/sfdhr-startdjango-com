@@ -6,11 +6,11 @@ from .models import EligibleList
 from .models import Candidate
 from .models import Position
 from .models import Referral
-from .models import ReferralCandidate
 from .models import Department
 from .models import Job
 from .models import Application
 from .models import EligibleListCandidate
+from .models import EligibleListCandidateReferral
 # from .models import Patient
 # from .models import Facility
 # from .models import SubjectiveBoilerplateOption
@@ -108,17 +108,6 @@ class ApplicationForm(forms.ModelForm):
 
 
 # Relational Entities
-class ReferralCandidateForm(forms.ModelForm):
-    id = forms.HiddenInput()
-    referral = forms.ModelChoiceField(queryset=Referral.objects.all())
-    candidate = forms.ModelChoiceField(queryset=Candidate.objects.all())
-    notes = forms.TextInput()
-
-    class Meta:
-        model = ReferralCandidate
-        fields = ['id', 'referral', 'candidate', 'notes']
-
-
 class EligibleListCandidateForm(forms.ModelForm):
     id = forms.HiddenInput()
     eligible_list = forms.ModelChoiceField(queryset=EligibleList.objects.all())
@@ -130,6 +119,17 @@ class EligibleListCandidateForm(forms.ModelForm):
     class Meta:
         model = EligibleListCandidate
         fields = ['id', 'eligible_list', 'candidate', 'score', 'rank', 'notes']
+
+
+class EligibleListCandidateReferralForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    eligible_list_candidate = forms.ModelChoiceField(queryset=EligibleListCandidate.objects.all())
+    referral = forms.ModelChoiceField(queryset=Referral.objects.all())
+    notes = forms.TextInput()
+
+    class Meta:
+        model = EligibleListCandidateReferral
+        fields = ['id', 'eligible_list_candidate', 'referral', 'notes']
 
 
 # class NormFormForm(forms.ModelForm):
