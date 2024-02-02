@@ -115,7 +115,7 @@
                                 <td><a href="/eligiblelistcandidates/{{ eligiblelistcandidate.id }}">{{ eligiblelistcandidate.id }}</a></td>
                                 <td>{{ eligiblelistcandidate.eligible_list }}</td>
                                 <td>{{ eligiblelistcandidate.candidate }}</td>
-                                <td>{{ eligiblelistcandidate.score }}</td>
+                                <td>{{ eligiblelistcandidate.score | floatformat:5 }}</td>
                                 <td>{{ eligiblelistcandidate.rank }}</td>
                                 <td>{{ eligiblelistcandidate.notes }}</td>
                                 <td>{{ eligiblelistcandidate.created_at }}</td>
