@@ -12,9 +12,6 @@ $(document).ready(function() {
   $('#referral_table').DataTable({
     order: [[0, 'asc']]
   });
-  $('#referralcandidate_table').DataTable({
-    order: [[0, 'asc']]
-  });
   $('#department_table').DataTable({
     order: [[0, 'asc']]
   });
@@ -23,6 +20,14 @@ $(document).ready(function() {
   });
   $('#application_table').DataTable({
     order: [[0, 'asc']]
+  });
+
+/* Relational Entities */
+  $('#referralcandidate_table').DataTable({
+    order: [[0, 'asc']]
+  });
+  $('#eligiblelistcandidate_table').DataTable({
+    order: [[1, 'asc'], [4, 'asc']]
   });
   $('.dataTables_length').addClass('bs-select');
 });

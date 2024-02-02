@@ -1,0 +1,130 @@
+{% load static %}
+<div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+    <div class="card-header py-3">
+        <a href="/"><h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6></a>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div style="margin-top:1em; margin-bottom:1em; margin-right:2em;" class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="card-body">
+        {% if user.is_authenticated and user_is_in_admins %}
+            <div class="table-responsive">
+                {% if form_data_present %}
+                    <h3>Update an EligibleListCandidate <span style="font-size:0.7em">(or <a href='/eligiblelistcandidates'>create a new EligibleListCandidate</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_eligiblelistcandidate_form/{{ pk }}" method="post">
+                {% else %}
+                    <h3>Create an EligibleListCandidate</h3>
+                    <h6>(Add a candidate to an eligible list)</h6>
+                    <form id='form_to_submit' action="/create_eligiblelistcandidate_form" method="post">
+                {% endif %}
+                    {% csrf_token %}
+
+                    {% if form.errors or form.non_field_errors %}
+                        <p>{{ form.errors }}</p>
+                        <p>{{ form.non_field_errors }}</p>
+                    {% endif %}
+
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.eligible_list.errors }}
+                        <label for="{{ form.eligible_list.id_for_label }}">Eligible List</label>
+                        <br />
+                        {{ form.eligible_list }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.candidate.errors }}
+                        <label for="{{ form.candidate.id_for_label }}">Candidate</label>
+                        <br />
+                        {{ form.candidate }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.score.errors }}
+                        <label for="{{ form.score.id_for_label }}">Score</label>
+                        <br />
+                        {{ form.score }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.rank.errors }}
+                        <label for="{{ form.rank.id_for_label }}">Rank</label>
+                        <br />
+                        {{ form.rank }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.notes.errors }}
+                        <label for="{{ form.notes.id_for_label }}">Notes</label>
+                        <br />
+                        {{ form.notes }}
+                    </div>
+                    <br />
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="margin-left:1em;" id="button-submit">
+                            {% if form_data_present %}
+                                Update
+                            {% else %}
+                                Create
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <h3>Eligible List Candidates</h3>
+            <table id="eligiblelistcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Eligible List Candidate ID</th>
+                        <th>Eligible List</th>
+                        <th>Candidate</th>
+                        <th>Score</th>
+                        <th>Rank</th>
+                        <th>Notes</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Eligible List Candidate ID</th>
+                        <th>Eligible List</th>
+                        <th>Candidate</th>
+                        <th>Score</th>
+                        <th>Rank</th>
+                        <th>Notes</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if eligiblelistcandidates %}
+                        {% for eligiblelistcandidate in eligiblelistcandidates %}
+                            <tr>
+                                <td><a href="/eligiblelistcandidates/{{ eligiblelistcandidate.id }}">{{ eligiblelistcandidate.id }}</a></td>
+                                <td>{{ eligiblelistcandidate.eligible_list }}</td>
+                                <td>{{ eligiblelistcandidate.candidate }}</td>
+                                <td>{{ eligiblelistcandidate.score }}</td>
+                                <td>{{ eligiblelistcandidate.rank }}</td>
+                                <td>{{ eligiblelistcandidate.notes }}</td>
+                                <td>{{ eligiblelistcandidate.created_at }}</td>
+                                <td>{{ eligiblelistcandidate.updated_at }}</td>
+                                <td>{{ eligiblelistcandidate.created_by }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>

@@ -165,6 +165,27 @@ class Application(models.Model):
         verbose_name_plural = 'Applications'
 
 
+class EligibleListCandidate(models.Model):
+    eligible_list = models.ForeignKey(EligibleList, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    score = models.DecimalField(decimal_places=28, max_digits=100, blank=True, null=True, default='')
+    rank = models.IntegerField(blank=True, null=True, default='')
+    notes = models.CharField(max_length=10000, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'EL: {self.eligible_list} - Candidate: {self.candidate}'
+
+    class Meta:
+        verbose_name = 'EligibleListCandidate'
+        verbose_name_plural = 'EligibleListCandidate'
+
+
 # class Facility(models.Model):
 #     name = models.CharField(max_length=1000, null=True)
 #     created_at = models.DateTimeField(auto_now_add=True)

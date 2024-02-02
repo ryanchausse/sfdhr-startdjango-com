@@ -40,11 +40,6 @@ urlpatterns = [
     path('referrals/<int:pk>', views.Referrals.as_view(), name='referrals'),
     path('create_referral_form', views.CreateReferral.as_view(), name='create_referral_form'),
     path('update_referral_form/<int:pk>', views.UpdateReferral.as_view(), name='update_referral_form'),
-    # ReferralCandidate (relational table)
-    path('referralcandidates', views.ReferralCandidates.as_view(), name='referralcandidates'),
-    path('referralcandidates/<int:pk>', views.ReferralCandidates.as_view(), name='referralcandidates'),
-    path('create_referralcandidate_form', views.CreateReferralCandidate.as_view(), name='create_referralcandidate_form'),
-    path('update_referralcandidate_form/<int:pk>', views.UpdateReferralCandidate.as_view(), name='update_referralcandidate_form'),
     # Department
     path('departments', views.Departments.as_view(), name='departments'),
     path('departments/<int:pk>', views.Departments.as_view(), name='departments'),
@@ -60,6 +55,18 @@ urlpatterns = [
     path('applications/<int:pk>', views.Applications.as_view(), name='applications'),
     path('create_application_form', views.CreateApplication.as_view(), name='create_application_form'),
     path('update_application_form/<int:pk>', views.UpdateApplication.as_view(), name='update_application_form'),
+
+    # ReferralCandidate (relational table)
+    path('referralcandidates', views.ReferralCandidates.as_view(), name='referralcandidates'),
+    path('referralcandidates/<int:pk>', views.ReferralCandidates.as_view(), name='referralcandidates'),
+    path('create_referralcandidate_form', views.CreateReferralCandidate.as_view(), name='create_referralcandidate_form'),
+    path('update_referralcandidate_form/<int:pk>', views.UpdateReferralCandidate.as_view(), name='update_referralcandidate_form'),
+    # EligibleListCandidate (relational table)
+    path('eligiblelistcandidates', views.EligibleListCandidates.as_view(), name='eligiblelistcandidates'),
+    path('eligiblelistcandidates/<int:pk>', views.EligibleListCandidates.as_view(), name='eligiblelistcandidates'),
+    path('create_eligiblelistcandidate_form', views.CreateEligibleListCandidate.as_view(), name='create_eligiblelistcandidate_form'),
+    path('update_eligiblelistcandidate_form/<int:pk>', views.UpdateEligibleListCandidate.as_view(), name='update_eligiblelistcandidate_form'),
+
     # Project Roadmap
     path('roadmap', views.Roadmap.as_view(), name='roadmap'),
 
