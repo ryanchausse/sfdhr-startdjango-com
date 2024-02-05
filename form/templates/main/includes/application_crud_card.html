@@ -79,6 +79,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -89,6 +90,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -101,6 +103,7 @@
                                 <td>{{ application.created_at }}</td>
                                 <td>{{ application.updated_at }}</td>
                                 <td>{{ application.created_by }}</td>
+                                <td>{{ application.last_updated_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

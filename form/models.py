@@ -16,9 +16,15 @@ class Candidate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='candidate_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='candidate_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'
@@ -34,9 +40,15 @@ class Position(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='position_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='position_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.number}'
@@ -57,9 +69,15 @@ class EligibleList(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='eligible_list_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='eligible_list_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.code}'
@@ -75,9 +93,15 @@ class Referral(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='referral_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='referral_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'Pos: {self.position} - EL: {self.eligible_list}'
@@ -94,9 +118,15 @@ class Department(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='department_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='department_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.title}'
@@ -114,9 +144,15 @@ class Job(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='job_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='job_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.title}'
@@ -134,9 +170,15 @@ class Application(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='application_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='application_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.position} - {self.candidate}'
@@ -156,9 +198,15 @@ class EligibleListCandidate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='eligible_list_candidate_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='eligible_list_candidate_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'EL: {self.eligible_list} - Candidate: {self.candidate}'
@@ -175,9 +223,15 @@ class EligibleListCandidateReferral(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
+                                   related_name='eligible_list_candidate_referral_created_by',
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='eligible_list_candidate_referral_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'ELCandidate: {self.eligible_list_candidate} - Referral: {self.referral}'

@@ -113,6 +113,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -127,6 +128,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -143,6 +145,7 @@
                                 <td>{{ eligible_list.created_at }}</td>
                                 <td>{{ eligible_list.updated_at }}</td>
                                 <td>{{ eligible_list.created_by }}</td>
+                                <td>{{ eligible_list.last_updated_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

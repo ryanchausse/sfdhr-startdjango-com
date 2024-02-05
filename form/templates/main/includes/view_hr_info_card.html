@@ -41,6 +41,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -55,6 +56,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -71,6 +73,7 @@
                                 <td>{{ eligible_list.created_at }}</td>
                                 <td>{{ eligible_list.updated_at }}</td>
                                 <td>{{ eligible_list.created_by }}</td>
+                                <td>{{ eligible_list.last_updated_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
@@ -89,6 +92,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -97,6 +101,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -107,6 +112,7 @@
                                 <td>{{ position.created_at }}</td>
                                 <td>{{ position.updated_at }}</td>
                                 <td>{{ position.created_by }}</td>
+                                <td>{{ position.last_updated_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
@@ -121,24 +127,26 @@
             <table id="eligiblelistcandidatereferral_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>EligibleListCandidateReferral ID</th>
+                        <th>EL Candidate Referral ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
                         <th>Notes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>EligibleListCandidateReferral ID</th>
+                        <th>EL Candidate Referral ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
                         <th>Notes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -152,6 +160,7 @@
                                 <td>{{ eligible_list_candidate_referral.created_at }}</td>
                                 <td>{{ eligible_list_candidate_referral.updated_at }}</td>
                                 <td>{{ eligible_list_candidate_referral.created_by }}</td>
+                                <td>{{ eligible_list_candidate_referral.last_updated_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

@@ -325,6 +325,7 @@ class UpdateCandidate(TemplateView):
         candidate_object.first_name = request.POST['first_name']
         candidate_object.last_name = request.POST['last_name']
         candidate_object.email = request.POST['email']
+        candidate_object.last_updated_by = request.user
         candidate_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Candidate")
         return redirect('/candidates')
@@ -384,6 +385,7 @@ class UpdatePosition(TemplateView):
             return redirect('/positions')
         position_object = Position.objects.get(pk=pk)
         position_object.number = request.POST['number']
+        position_object.last_updated_by = request.user
         position_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Position")
         return redirect('/positions')
@@ -444,6 +446,7 @@ class UpdateReferral(TemplateView):
         referral_object = Referral.objects.get(pk=pk)
         referral_object.eligible_list = EligibleList.objects.get(pk=request.POST['eligible_list'])
         referral_object.position = Position.objects.get(pk=request.POST['position'])
+        referral_object.last_updated_by = request.user
         referral_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Referral")
         return redirect('/referrals')
@@ -505,6 +508,7 @@ class UpdateDepartment(TemplateView):
         department_object.title = request.POST['title']
         department_object.code = request.POST['code']
         department_object.description = request.POST['description']
+        department_object.last_updated_by = request.user
         department_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Department")
         return redirect('/departments')
@@ -566,6 +570,7 @@ class UpdateJob(TemplateView):
         job_object.title = request.POST['title']
         job_object.description = request.POST['description']
         job_object.department = Department.objects.get(pk=request.POST['department'])
+        job_object.last_updated_by = request.user
         job_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Job")
         return redirect('/jobs')
@@ -627,6 +632,7 @@ class UpdateApplication(TemplateView):
         application_object.candidate = Candidate.objects.get(pk=request.POST['candidate'])
         application_object.position = Position.objects.get(pk=request.POST['position'])
         application_object.job = Job.objects.get(pk=request.POST['job'])
+        application_object.last_updated_by = request.user
         application_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Application")
         return redirect('/applications')
@@ -691,6 +697,7 @@ class UpdateEligibleListCandidate(TemplateView):
         eligiblelistcandidate_object.score = request.POST['score']
         eligiblelistcandidate_object.rank = request.POST['rank']
         eligiblelistcandidate_object.notes = request.POST['notes']
+        eligiblelistcandidate_object.last_updated_by = request.user
         eligiblelistcandidate_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidate")
         return redirect('/eligiblelistcandidates')
@@ -752,6 +759,7 @@ class UpdateEligibleListCandidateReferral(TemplateView):
         eligiblelistcandidatereferral_object.eligible_list_candidate = EligibleListCandidate.objects.get(pk=request.POST['eligible_list_candidate'])
         eligiblelistcandidatereferral_object.referral = Referral.objects.get(pk=request.POST['referral'])
         eligiblelistcandidatereferral_object.notes = request.POST['notes']
+        eligiblelistcandidatereferral_object.last_updated_by = request.user
         eligiblelistcandidatereferral_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidateReferral")
         return redirect('/eligiblelistcandidatereferrals')

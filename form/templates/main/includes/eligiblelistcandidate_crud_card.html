@@ -96,6 +96,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -109,6 +110,7 @@
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
+                        <th>Last Updated By</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -124,6 +126,7 @@
                                 <td>{{ eligiblelistcandidate.created_at }}</td>
                                 <td>{{ eligiblelistcandidate.updated_at }}</td>
                                 <td>{{ eligiblelistcandidate.created_by }}</td>
+                                <td>{{ eligiblelistcandidate.last_updated_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
