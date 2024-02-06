@@ -135,6 +135,8 @@ class UpdateEligibleList(TemplateView):
         el_object.code = request.POST['code']
         el_object.job_class = request.POST['job_class']
         el_object.specialty = request.POST['specialty']
+        el_object.inspection_start = request.POST['inspection_start']
+        el_object.inspection_end = request.POST['inspection_end']
         el_object.last_updated_by = request.user
         el_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List")

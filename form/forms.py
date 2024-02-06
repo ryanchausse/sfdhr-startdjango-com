@@ -21,14 +21,14 @@ class EligibleListForm(forms.ModelForm):
     code = forms.TextInput(attrs={'required': True})
     job_class = forms.TextInput(attrs={'required': True})
     specialty = forms.TextInput()
-    posted = forms.DateField(required=False,
-                             widget=DateInput(attrs={'type': 'date'}))
+    # posted = forms.DateField(required=False,
+    #                          widget=DateInput(attrs={'type': 'date'}))
     inspection_start = forms.DateField(required=False,
                                        widget=DateInput(attrs={'type': 'date'}))
     inspection_end = forms.DateField(required=False,
                                      widget=DateInput(attrs={'type': 'date'}))
-    adopted = forms.DateField(required=False,
-                              widget=DateInput(attrs={'type': 'date'}))
+    # adopted = forms.DateField(required=False,
+    #                           widget=DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = EligibleList
