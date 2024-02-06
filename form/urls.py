@@ -20,6 +20,7 @@ from . import views
 urlpatterns = [
     path('', views.HRHomePage.as_view(), name='hr_home_page'),
     path('index.html', views.HRHomePage.as_view(), name='index'),
+
     # Eligible Lists
     path('eligible_lists', views.EligibleLists.as_view(), name='eligible_lists'),
     path('eligible_lists/<int:pk>', views.EligibleLists.as_view(), name='eligible_lists'),
@@ -69,19 +70,4 @@ urlpatterns = [
 
     # Project Roadmap
     path('roadmap', views.Roadmap.as_view(), name='roadmap'),
-
-
-    # path('<int:pk>', views.HRHomePage.as_view(), name='index'),
-    # path('get_pdf/<int:pk>', views.get_pdf_page, name='get_pdf_page'),
-    # path('form/', views.HRHomePage.as_view(), name='form'),
-    # path('submit_form', views.SubmitNormForm.as_view(), name='submit_form'),
-    # path('view_psych_forms', views.ViewNormFormsPage.as_view(), name='view_psych_forms'),
-    # path('email_bal/<int:pk>', views.email_bal, name='email_bal'),
-    # path('api/v1/subjective_boilerplate_option', views.get_subjective_boilerplate_option_text, name='subjective_boilerplate_option'),
-    # path('api/v1/subjective_option', views.get_subjective_option_text, name='subjective_option'),
-    # path('api/v1/discussion_treatment_option', views.get_discussion_treatment_option_text, name='discussion_treatment_option'),
-    # path('api/v1/icd_10_codes', views.get_icd_10_code_text, name='icd_10_code_text'),
-    # path('api/v1/filtered_icd_10_codes', views.get_filtered_icd_10_code_text, name='filtered_icd_10_code_text'),
-    # path('api/v1/previous_patient_forms', views.find_previous_patient_forms, name='previous_patient_forms'),
-    # path('api/v1/add_patient', views.add_patient, name='add_patient'),
 ]
