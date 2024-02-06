@@ -26,6 +26,8 @@ urlpatterns = [
     path('eligible_lists/<int:pk>', views.EligibleLists.as_view(), name='eligible_lists'),
     path('create_eligible_list_form', views.CreateEligibleList.as_view(), name='create_eligible_list_form'),
     path('update_eligible_list_form/<int:pk>', views.UpdateEligibleList.as_view(), name='update_eligible_list_form'),
+    path('post_eligible_list', views.PostEligibleList.as_view(), name='post_eligible_list'),
+    path('adopt_eligible_list', views.AdoptEligibleList.as_view(), name='adopt_eligible_list'),
     # Candidates
     path('candidates', views.Candidates.as_view(), name='candidates'),
     path('candidates/<int:pk>', views.Candidates.as_view(), name='candidates'),

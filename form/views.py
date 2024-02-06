@@ -135,9 +135,46 @@ class UpdateEligibleList(TemplateView):
         el_object.code = request.POST['code']
         el_object.job_class = request.POST['job_class']
         el_object.specialty = request.POST['specialty']
+        el_object.last_updated_by = request.user
         el_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List")
         return redirect('/eligible_lists')
+
+
+class PostEligibleList(TemplateView):
+    template_name = 'eligible_lists.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/eligible_lists')
+        el_id = request.POST['el_id']
+        el_object = EligibleList.objects.get(pk=el_id)
+        el_object.posted = datetime.datetime.now()
+        # TODO: Create EL PDF, then send email to EIS (or post on SFDHR website directly)
+        el_object.last_updated_by = request.user
+        el_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully posted Eligible List")
+        return redirect(f'/eligible_lists')
+
+
+class AdoptEligibleList(TemplateView):
+    template_name = 'eligible_lists.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/eligible_lists')
+        el_id = request.POST['el_id']
+        el_object = EligibleList.objects.get(pk=el_id)
+        el_object.adopted = datetime.datetime.now()
+        # TODO: Create EL PDF, then send email to EIS (or post on SFDHR website directly)
+        el_object.last_updated_by = request.user
+        el_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully adopted Eligible List")
+        return redirect(f'/eligible_lists')
 
 
 class Candidates(TemplateView):
