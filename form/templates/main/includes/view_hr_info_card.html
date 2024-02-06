@@ -66,10 +66,30 @@
                                 <td><a href="/eligible_lists/{{ eligible_list.id }}">{{ eligible_list.code }}</a></td>
                                 <td>{{ eligible_list.job_class }}</td>
                                 <td>{{ eligible_list.specialty }}</td>
-                                <td>{{ eligible_list.posted }}</td>
+                                {% if eligible_list.posted %}
+                                    <td>{{ eligible_list.posted }}</td>
+                                {% else %}
+                                    <td>
+                                        <form id='post_el_form' action="/post_eligible_list" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="el_id" value="{{ eligible_list.id }}">
+                                            <button type="submit" class="btn btn-primary"" id="button-submit">Post</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
                                 <td>{{ eligible_list.inspection_start }}</td>
                                 <td>{{ eligible_list.inspection_end }}</td>
-                                <td>{{ eligible_list.adopted }}</td>
+                                {% if eligible_list.adopted %}
+                                    <td>{{ eligible_list.adopted }}</td>
+                                {% else %}
+                                    <td>
+                                        <form id='adopt_el_form' action="/adopt_eligible_list" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="el_id" value="{{ eligible_list.id }}">
+                                            <button type="submit" class="btn btn-primary"" id="button-submit">Adopt</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
                                 <td>{{ eligible_list.created_at }}</td>
                                 <td>{{ eligible_list.updated_at }}</td>
                                 <td>{{ eligible_list.created_by }}</td>
