@@ -11285,10 +11285,12 @@ canvas {
   -ms-touch-action: none;
 }
 
+/* Custom changes */
+
 tr.odd {
-  background-color: #EEEEEE !important;
+  background-color: #e6faff !important;
 }
 
 tr.even {
-  background-color: #FFFFFF !important;
+  background-color: #ccf5ff !important;
 }
