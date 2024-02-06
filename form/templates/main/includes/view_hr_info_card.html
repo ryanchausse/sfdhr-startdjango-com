@@ -131,6 +131,7 @@
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
                         <th>Notes</th>
+                        <th>Active</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -143,6 +144,7 @@
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
                         <th>Notes</th>
+                        <th>Active</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -157,6 +159,23 @@
                                 <td>{{ eligible_list_candidate_referral.eligible_list_candidate }}</td>
                                 <td>{{ eligible_list_candidate_referral.referral }}</td>
                                 <td>{{ eligible_list_candidate_referral.notes }}</td>
+                                {% if eligible_list_candidate_referral.active %}
+                                    <td>
+                                        <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidatereferral" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="elcandidatereferral_id" value="{{ eligible_list_candidate_referral.id }}">
+                                            <button type="submit" class="btn btn-success"" id="button-submit">Active</button>
+                                        </form>
+                                    </td>
+                                {% else %}
+                                <td>
+                                    <form id='mark_active_el_form' action="/toggle_active_status_eligiblelistcandidatereferral" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="elcandidatereferral_id" value="{{ eligible_list_candidate_referral.id }}">
+                                        <button type="submit" class="btn btn-danger"" id="button-submit">Inactive</button>
+                                    </form>
+                                </td>
+                                {% endif %}
                                 <td>{{ eligible_list_candidate_referral.created_at }}</td>
                                 <td>{{ eligible_list_candidate_referral.updated_at }}</td>
                                 <td>{{ eligible_list_candidate_referral.created_by }}</td>

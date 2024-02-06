@@ -613,6 +613,26 @@ class UpdateEligibleListCandidate(TemplateView):
         return redirect('/eligiblelistcandidates')
 
 
+class ToggleActiveStatusEligibleListCandidate(TemplateView):
+    template_name = 'eligiblelistcandidates.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/eligiblelistcandidates')
+        elcandidate_id = request.POST['elcandidate_id']
+        eligiblelistcandidate_object = EligibleListCandidate.objects.get(pk=elcandidate_id)
+        if eligiblelistcandidate_object.active == True:
+            eligiblelistcandidate_object.active = False
+        else:
+            eligiblelistcandidate_object.active = True
+        eligiblelistcandidate_object.last_updated_by = request.user
+        eligiblelistcandidate_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully toggled Active status of Eligible List Candidate")
+        return redirect(f'/eligiblelistcandidates')
+
+
 class EligibleListCandidateReferrals(TemplateView):
     """
     EligibleListCandidateReferral (relational table) CRUD page
@@ -673,6 +693,26 @@ class UpdateEligibleListCandidateReferral(TemplateView):
         eligiblelistcandidatereferral_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidateReferral")
         return redirect('/eligiblelistcandidatereferrals')
+
+
+class ToggleActiveStatusEligibleListCandidateReferral(TemplateView):
+    template_name = 'eligiblelistcandidatereferrals.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/eligiblelistcandidatereferrals')
+        elcandidatereferral_id = request.POST['elcandidatereferral_id']
+        eligiblelistcandidatereferral_object = EligibleListCandidateReferral.objects.get(pk=elcandidatereferral_id)
+        if eligiblelistcandidatereferral_object.active == True:
+            eligiblelistcandidatereferral_object.active = False
+        else:
+            eligiblelistcandidatereferral_object.active = True
+        eligiblelistcandidatereferral_object.last_updated_by = request.user
+        eligiblelistcandidatereferral_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully toggled Active status of Eligible List Candidate Referral")
+        return redirect(f'/eligiblelistcandidatereferrals')
 
 
 def handler404(request, exception, template_name="404.html"):

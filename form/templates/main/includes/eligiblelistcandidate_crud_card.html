@@ -93,6 +93,7 @@
                         <th>Score</th>
                         <th>Rank</th>
                         <th>Notes</th>
+                        <th>Active</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -107,6 +108,7 @@
                         <th>Score</th>
                         <th>Rank</th>
                         <th>Notes</th>
+                        <th>Active</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -123,6 +125,23 @@
                                 <td>{{ eligiblelistcandidate.score | floatformat:5 }}</td>
                                 <td>{{ eligiblelistcandidate.rank }}</td>
                                 <td>{{ eligiblelistcandidate.notes }}</td>
+                                {% if eligiblelistcandidate.active %}
+                                    <td>
+                                        <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="elcandidate_id" value="{{ eligiblelistcandidate.id }}">
+                                            <button type="submit" class="btn btn-success"" id="button-submit">Active</button>
+                                        </form>
+                                    </td>
+                                {% else %}
+                                <td>
+                                    <form id='mark_active_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="elcandidate_id" value="{{ eligiblelistcandidate.id }}">
+                                        <button type="submit" class="btn btn-danger"" id="button-submit">Inactive</button>
+                                    </form>
+                                </td>
+                                {% endif %}
                                 <td>{{ eligiblelistcandidate.created_at }}</td>
                                 <td>{{ eligiblelistcandidate.updated_at }}</td>
                                 <td>{{ eligiblelistcandidate.created_by }}</td>

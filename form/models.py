@@ -195,6 +195,7 @@ class EligibleListCandidate(models.Model):
     score = models.DecimalField(decimal_places=28, max_digits=100, blank=True, null=True, default='')
     rank = models.IntegerField(blank=True, null=True, default='')
     notes = models.CharField(max_length=10000, blank=True, null=True, default='')
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
@@ -220,6 +221,7 @@ class EligibleListCandidateReferral(models.Model):
     eligible_list_candidate = models.ForeignKey(EligibleListCandidate, on_delete=models.CASCADE)
     referral = models.ForeignKey(Referral, on_delete=models.CASCADE)
     notes = models.CharField(max_length=255, blank=True, null=True, default='')
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
