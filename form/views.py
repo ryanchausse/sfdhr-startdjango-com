@@ -696,11 +696,11 @@ class UpdateEligibleListCandidateReferral(TemplateView):
             eligiblelistcandidatereferral_object.candidate_referral_status = CandidateReferralStatus.objects.get(pk=request.POST['candidate_referral_status'])
         else:
             eligiblelistcandidatereferral_object.candidate_referral_status = None
-        eligiblelistcandidatereferral_object.notes = request.POST['notes']
-        if request.POST['active'] == "on":
+        if request.POST['active'] and request.POST['active'] == 'on':
             eligiblelistcandidatereferral_object.active = True
         else:
-            eligiblelistcandidatereferral_object.active = False
+            eligiblelistcandidatereferral_object.active = True
+        eligiblelistcandidatereferral_object.notes = request.POST['notes']
         eligiblelistcandidatereferral_object.last_updated_by = request.user
         eligiblelistcandidatereferral_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidateReferral")

@@ -49,12 +49,20 @@
                         {{ form.candidate_referral_status }}
                     </div>
                     <br />
+                    {% if form_data_present %}
                     <div class="fieldWrapper" style="margin-left: 1em;">
                         {{ form.active.errors }}
                         <label for="{{ form.active.id_for_label }}">Active</label>
                         <br />
                         {{ form.active }}
                     </div>
+                    {% else %}
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        <label for="id_active">Active</label>
+                        <br>
+                        <input type="checkbox" name="active" style="width: 20px; height: 20px" id="id_active" checked="true">
+                    </div>
+                    {% endif %}
                     <br />
                     <div class="fieldWrapper" style="margin-left: 1em;">
                         {{ form.notes.errors }}
