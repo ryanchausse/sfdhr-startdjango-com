@@ -16,6 +16,7 @@ admin.site.register(Referral)
 admin.site.register(Job)
 admin.site.register(Application)
 admin.site.register(Department)
+
 # Relational Entities
 admin.site.register(EligibleListCandidate)
 admin.site.register(EligibleListCandidateReferral)

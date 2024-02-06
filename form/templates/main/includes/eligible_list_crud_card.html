@@ -49,36 +49,34 @@
                         {{ form.specialty }}
                     </div>
                     <br />
-                    <!--
-                        <div class="fieldWrapper" style="margin-left: 1em;">
-                            {{ form.posted.errors }}
-                            <label for="{{ form.posted.id_for_label }}">Posted</label>
-                            <br />
-                            {{ form.posted }}
-                        </div>
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.posted.errors }}
+                        <label for="{{ form.posted.id_for_label }}">Posted</label>
                         <br />
-                        <div class="fieldWrapper" style="margin-left: 1em;">
-                            {{ form.inspection_start.errors }}
-                            <label for="{{ form.inspection_start.id_for_label }}">Inspection Start</label>
-                            <br />
-                            {{ form.inspection_start }}
-                        </div>
+                        {{ form.posted }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.inspection_start.errors }}
+                        <label for="{{ form.inspection_start.id_for_label }}">Inspection Start</label>
                         <br />
-                        <div class="fieldWrapper" style="margin-left: 1em;">
-                            {{ form.inspection_end.errors }}
-                            <label for="{{ form.inspection_end.id_for_label }}">Inspection End</label>
-                            <br />
-                            {{ form.inspection_end }}
-                        </div>
+                        {{ form.inspection_start }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.inspection_end.errors }}
+                        <label for="{{ form.inspection_end.id_for_label }}">Inspection End</label>
                         <br />
-                        <div class="fieldWrapper" style="margin-left: 1em;">
-                            {{ form.adopted.errors }}
-                            <label for="{{ form.adopted.id_for_label }}">Adopted</label>
-                            <br />
-                            {{ form.adopted }}
-                        </div>
+                        {{ form.inspection_end }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.adopted.errors }}
+                        <label for="{{ form.adopted.id_for_label }}">Adopted</label>
                         <br />
-                    -->
+                        {{ form.adopted }}
+                    </div>
+                    <br />
                     <div>
                         <button type="submit" class="btn btn-primary" style="margin-left:1em;" id="button-submit">
                             {% if form_data_present %}

@@ -1,5 +1,7 @@
 from django import forms
 from django.forms import SelectDateWidget
+from django.forms import DateInput
+from django.forms import DateTimeInput
 import datetime
 from .models import EligibleList
 from .models import Candidate
@@ -20,17 +22,13 @@ class EligibleListForm(forms.ModelForm):
     job_class = forms.TextInput(attrs={'required': True})
     specialty = forms.TextInput()
     posted = forms.DateField(required=False,
-                             initial=datetime.date.today(),
-                             widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+                             widget=DateInput(attrs={'type': 'date'}))
     inspection_start = forms.DateField(required=False,
-                                       initial=datetime.date.today(),
-                                       widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+                                       widget=DateInput(attrs={'type': 'date'}))
     inspection_end = forms.DateField(required=False,
-                                     initial=datetime.date.today(),
-                                     widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+                                     widget=DateInput(attrs={'type': 'date'}))
     adopted = forms.DateField(required=False,
-                              initial=datetime.date.today(),
-                              widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}))
+                              widget=DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = EligibleList
