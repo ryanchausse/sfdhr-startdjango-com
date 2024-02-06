@@ -11284,3 +11284,11 @@ canvas {
   touch-action: none;
   -ms-touch-action: none;
 }
+
+tr.odd {
+  background-color: #EEEEEE !important;
+}
+
+tr.even {
+  background-color: #FFFFFF !important;
+}

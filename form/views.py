@@ -342,6 +342,8 @@ class CreateReferral(TemplateView):
         form_to_save.created_by = request.user
         form_to_save.save()
         messages.add_message(request, messages.SUCCESS, "Successfully saved Referral")
+        # TODO: After the Referral is created, all Eligible List Candidates
+        # with status Active should have ELCandidateReferral records created
         return redirect('/referrals')
 
 
