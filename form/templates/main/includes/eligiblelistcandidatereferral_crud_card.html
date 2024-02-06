@@ -15,10 +15,10 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update an Eligible List Candidate on a Referral <span style="font-size:0.7em">(or <a href='/eligiblelistcandidatereferrals'>create a new Eligible List Candidate Referral</a>)</span></h3>
+                    <h3>Update a Candidate on a Referral <span style="font-size:0.7em">(or <a href='/eligiblelistcandidatereferrals'>create a new Eligible List Candidate Referral</a>)</span></h3>
                     <form id='form_to_submit' action="/update_eligiblelistcandidatereferral_form/{{ pk }}" method="post">
                 {% else %}
-                    <h3>Add an Eligible List Candidate to a Referral</h3>
+                    <h3>Add a Candidate to a Referral</h3>
                     <form id='form_to_submit' action="/create_eligiblelistcandidatereferral_form" method="post">
                 {% endif %}
                     {% csrf_token %}
@@ -69,11 +69,11 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>Eligible List Candidate Referrals</h3>
+            <h3>Referral Candidates</h3>
             <table id="eligiblelistcandidatereferral_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>EligibleListCandidateReferral ID</th>
+                        <th>Referral Candidate ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
                         <th>Notes</th>
@@ -86,7 +86,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>EligibleListCandidateReferral ID</th>
+                        <th>Referral Candidate ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
                         <th>Notes</th>
