@@ -69,7 +69,14 @@ urlpatterns = [
     path('eligiblelistcandidatereferrals', views.EligibleListCandidateReferrals.as_view(), name='eligiblelistcandidatereferrals'),
     path('eligiblelistcandidatereferrals/<int:pk>', views.EligibleListCandidateReferrals.as_view(), name='eligiblelistcandidatereferrals'),
     path('create_eligiblelistcandidatereferral_form', views.CreateEligibleListCandidateReferral.as_view(), name='create_eligiblelistcandidatereferral_form'),
+    path('update_eligiblelistcandidatereferral_form/<int:pk>', views.UpdateEligibleListCandidateReferral.as_view(), name='update_eligiblelistcandidate_form'),
     path('toggle_active_status_eligiblelistcandidatereferral', views.ToggleActiveStatusEligibleListCandidateReferral.as_view(), name='toggle_active_status_eligiblelistcandidatereferral'),
+
+    # CandidateReferralStatus (reference table)
+    path('candidatereferralstatuses', views.CandidateReferralStatuses.as_view(), name='candidatereferralstatuses'),
+    path('candidatereferralstatuses/<int:pk>', views.CandidateReferralStatuses.as_view(), name='candidatereferralstatuses'),
+    path('create_candidatereferralstatus_form', views.CreateCandidateReferralStatus.as_view(), name='create_candidatereferralstatus_form'),
+    path('update_candidatereferralstatus_form/<int:pk>', views.UpdateCandidateReferralStatus.as_view(), name='update_candidatereferralstatus_form'),
 
     # Project Roadmap
     path('roadmap', views.Roadmap.as_view(), name='roadmap'),

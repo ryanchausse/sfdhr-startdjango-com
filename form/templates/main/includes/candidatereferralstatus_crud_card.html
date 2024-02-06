@@ -1,0 +1,103 @@
+{% load static %}
+<div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+    <div class="card-header py-3">
+        <a href="/"><h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6></a>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div style="margin-top:1em; margin-bottom:1em; margin-right:2em;" class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="card-body">
+        {% if user.is_authenticated and user_is_in_admins %}
+            <div class="table-responsive">
+                {% if form_data_present %}
+                    <h3>Update Candidate Referral Status <span style="font-size:0.7em">(or <a href='/jobs'>create a new Status</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_candidatereferralstatus_form/{{ pk }}" method="post">
+                {% else %}
+                    <h3>Create Candidate Referral Status</h3>
+                    <form id='form_to_submit' action="/create_candidatereferralstatus_form" method="post">
+                {% endif %}
+                    {% csrf_token %}
+
+                    {% if form.errors or form.non_field_errors %}
+                        <p>{{ form.errors }}</p>
+                        <p>{{ form.non_field_errors }}</p>
+                    {% endif %}
+
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.status.errors }}
+                        <label for="{{ form.status.id_for_label }}">Status</label>
+                        <br />
+                        {{ form.status }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.description.errors }}
+                        <label for="{{ form.description.id_for_label }}">Description</label>
+                        <br />
+                        {{ form.description }}
+                    </div>
+                    <br />
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="margin-left:1em;" id="button-submit">
+                            {% if form_data_present %}
+                                Update
+                            {% else %}
+                                Create
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <h6 style="color:#3333cc">Please log in to create or update data</h6>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <h3>Jobs</h3>
+            <table id="candidatereferralstatus_table" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                        <th>Last Updated By</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                        <th>Last Updated By</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if candidatereferralstatuses %}
+                        {% for candidatereferralstatus in candidatereferralstatuses %}
+                            <tr>
+                                <td><a href="/candidatereferralstatuses/{{ candidatereferralstatus.id }}">{{ candidatereferralstatus.status }}</a></td>
+                                <td>{{ candidatereferralstatus.description }}</td>
+                                <td>{{ candidatereferralstatus.created_at }}</td>
+                                <td>{{ candidatereferralstatus.updated_at }}</td>
+                                <td>{{ candidatereferralstatus.created_by }}</td>
+                                <td>{{ candidatereferralstatus.last_updated_by }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>

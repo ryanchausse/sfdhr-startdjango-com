@@ -12,6 +12,7 @@ from .models import Job
 from .models import Application
 from .models import EligibleListCandidate
 from .models import EligibleListCandidateReferral
+from .models import CandidateReferralStatus
 from jsignature.forms import JSignatureField
 from jsignature.widgets import JSignatureWidget
 
@@ -116,9 +117,22 @@ class EligibleListCandidateReferralForm(forms.ModelForm):
     id = forms.HiddenInput()
     eligible_list_candidate = forms.ModelChoiceField(queryset=EligibleListCandidate.objects.all())
     referral = forms.ModelChoiceField(queryset=Referral.objects.all())
+    candidate_referral_status = forms.ModelChoiceField(queryset=CandidateReferralStatus.objects.all(), required=False)
+    active = forms.BooleanField(initial=True, required=False)
     notes = forms.TextInput()
 
     class Meta:
         model = EligibleListCandidateReferral
-        fields = ['id', 'eligible_list_candidate', 'referral', 'notes']
+        fields = ['id', 'eligible_list_candidate', 'referral', 'candidate_referral_status', 'active', 'notes']
+
+
+# Reference tables
+class CandidateReferralStatusForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    status = forms.TextInput()
+    description = forms.TextInput()
+
+    class Meta:
+        model = CandidateReferralStatus
+        fields = ['id', 'status', 'description']
 

@@ -8,6 +8,32 @@ from django.db.models import Q
 from jsignature.fields import JSignatureField
 
 
+# Reference tables
+class CandidateReferralStatus(models.Model):
+    status = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='candidate_referral_status_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='candidate_referral_status_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.status}'
+
+    class Meta:
+        verbose_name = 'CandidateReferralStatus'
+        verbose_name_plural = 'CandidateReferralStatuses'
+
+
+# Entity tables
 class Candidate(models.Model):
     sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     first_name = models.CharField(max_length=255)
@@ -220,8 +246,9 @@ class EligibleListCandidate(models.Model):
 class EligibleListCandidateReferral(models.Model):
     eligible_list_candidate = models.ForeignKey(EligibleListCandidate, on_delete=models.CASCADE)
     referral = models.ForeignKey(Referral, on_delete=models.CASCADE)
-    notes = models.CharField(max_length=255, blank=True, null=True, default='')
+    candidate_referral_status = models.ForeignKey(CandidateReferralStatus, on_delete=models.CASCADE, null=True, blank=True)
     active = models.BooleanField(default=True)
+    notes = models.CharField(max_length=255, blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),

@@ -29,5 +29,11 @@ $(document).ready(function() {
   $('#eligiblelistcandidatereferral_table').DataTable({
     order: [[0, 'asc']]
   });
+
+/* Reference tables */
+$('#candidatereferralstatus_table').DataTable({
+  order: [[0, 'asc']]
+});
+
   $('.dataTables_length').addClass('bs-select');
 });
