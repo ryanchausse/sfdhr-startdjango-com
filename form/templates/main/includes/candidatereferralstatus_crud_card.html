@@ -15,10 +15,10 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update Candidate Referral Status <span style="font-size:0.7em">(or <a href='/jobs'>create a new Status</a>)</span></h3>
+                    <h3>Update Candidate Referral Status Definition<span style="font-size:0.7em">(or <a href='/candidatereferralstatuses'>create a new Status Definition</a>)</span></h3>
                     <form id='form_to_submit' action="/update_candidatereferralstatus_form/{{ pk }}" method="post">
                 {% else %}
-                    <h3>Create Candidate Referral Status</h3>
+                    <h3>Create Candidate Referral Status Definition</h3>
                     <form id='form_to_submit' action="/create_candidatereferralstatus_form" method="post">
                 {% endif %}
                     {% csrf_token %}
@@ -62,7 +62,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>Jobs</h3>
+            <h3>Candidate Referral Status Definitions</h3>
             <table id="candidatereferralstatus_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
