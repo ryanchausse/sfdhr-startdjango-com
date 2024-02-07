@@ -15,11 +15,11 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update Referral <span style="font-size:0.7em">(or <a href='/referrals'>create a new referral</a>)</span></h3>
-                    <form id='form_to_submit' action="/update_referral_form/{{ pk }}" method="post">
+                    <h3>Update Referral Status Definition <span style="font-size:0.7em">(or <a href='/referralstatuses'>create a new Referral Status Definition</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_referralstatus_form/{{ pk }}" method="post">
                 {% else %}
-                    <h3>Create Referral</h3>
-                    <form id='form_to_submit' action="/create_referral_form" method="post">
+                    <h3>Create Referral Status Definition</h3>
+                    <form id='form_to_submit' action="/create_referralstatus_form" method="post">
                 {% endif %}
                     {% csrf_token %}
 
@@ -29,24 +29,17 @@
                     {% endif %}
 
                     <div class="fieldWrapper" style="margin-left: 1em;">
-                        {{ form.eligible_list.errors }}
-                        <label for="{{ form.eligible_list.id_for_label }}">Eligible List</label>
-                        <br />
-                        {{ form.eligible_list }}
-                    </div>
-                    <br />
-                    <div class="fieldWrapper" style="margin-left: 1em;">
-                        {{ form.position.errors }}
-                        <label for="{{ form.position.id_for_label }}">Position</label>
-                        <br />
-                        {{ form.position }}
-                    </div>
-                    <br />
-                    <div class="fieldWrapper" style="margin-left: 1em;">
                         {{ form.status.errors }}
                         <label for="{{ form.status.id_for_label }}">Status</label>
                         <br />
                         {{ form.status }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.description.errors }}
+                        <label for="{{ form.description.id_for_label }}">Description</label>
+                        <br />
+                        {{ form.description }}
                     </div>
                     <br />
                     <div>
@@ -69,14 +62,12 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <h3>Referrals</h3>
-            <table id="referral_table" class="table table-bordered" width="100%" cellspacing="0">
+            <h3>Referral Status Definitions</h3>
+            <table id="referralstatus_table" class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Referral ID</th>
-                        <th>Eligible List</th>
-                        <th>Position</th>
-                        <td>Status</td>
+                        <th>Status</th>
+                        <th>Description</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -85,10 +76,8 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Referral ID</th>
-                        <th>Eligible List</th>
-                        <th>Position</th>
-                        <td>Status</td>
+                        <th>Status</th>
+                        <th>Description</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -96,17 +85,15 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    {% if referrals %}
-                        {% for referral in referrals %}
+                    {% if referralstatuses %}
+                        {% for referralstatus in referralstatuses %}
                             <tr>
-                                <td><a href="/referrals/{{ referral.id }}">{{ referral.id }}</a></td>
-                                <td>{{ referral.eligible_list }}</td>
-                                <td>{{ referral.position }}</td>
-                                <td>{{ referral.status }}</td>
-                                <td>{{ referral.created_at }}</td>
-                                <td>{{ referral.updated_at }}</td>
-                                <td>{{ referral.created_by }}</td>
-                                <td>{{ referral.last_updated_by }}</td>
+                                <td><a href="/referralstatuses/{{ referralstatus.id }}">{{ referralstatus.status }}</a></td>
+                                <td>{{ referralstatus.description }}</td>
+                                <td>{{ referralstatus.created_at }}</td>
+                                <td>{{ referralstatus.updated_at }}</td>
+                                <td>{{ referralstatus.created_by }}</td>
+                                <td>{{ referralstatus.last_updated_by }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

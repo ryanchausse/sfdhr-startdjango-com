@@ -43,6 +43,8 @@ from .models import EligibleListCandidate
 from .forms import EligibleListCandidateForm
 from .models import EligibleListCandidateReferral
 from .forms import EligibleListCandidateReferralForm
+from .models import ReferralStatus
+from .forms import ReferralStatusForm
 from .models import CandidateReferralStatus
 from .forms import CandidateReferralStatusForm
 from jsignature.utils import draw_signature
@@ -360,6 +362,10 @@ class UpdateReferral(TemplateView):
         referral_object = Referral.objects.get(pk=pk)
         referral_object.eligible_list = EligibleList.objects.get(pk=request.POST['eligible_list'])
         referral_object.position = Position.objects.get(pk=request.POST['position'])
+        if request.POST['status']:
+            referral_object.status = ReferralStatus.objects.get(pk=request.POST['status'])
+        else:
+            referral_object.status = None
         referral_object.last_updated_by = request.user
         referral_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Referral")
@@ -699,7 +705,7 @@ class UpdateEligibleListCandidateReferral(TemplateView):
         if request.POST['active'] and request.POST['active'] == 'on':
             eligiblelistcandidatereferral_object.active = True
         else:
-            eligiblelistcandidatereferral_object.active = True
+            eligiblelistcandidatereferral_object.active = False
         eligiblelistcandidatereferral_object.notes = request.POST['notes']
         eligiblelistcandidatereferral_object.last_updated_by = request.user
         eligiblelistcandidatereferral_object.save()
@@ -786,6 +792,67 @@ class UpdateCandidateReferralStatus(TemplateView):
         candidatereferralstatus_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Candidate Referral Status")
         return redirect('/candidatereferralstatuses')
+
+
+class ReferralStatuses(TemplateView):
+    """
+    ReferralStatus CRUD page
+    """
+    template_name = 'referralstatuses.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            referralstatus_form = ReferralStatus.objects.get(id=pk)
+            form = ReferralStatusForm(initial=model_to_dict(referralstatus_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = ReferralStatusForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['referralstatuses'] = ReferralStatus.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateReferralStatus(TemplateView):
+    template_name = 'referralstatuses.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/referralstatuses')
+        form = ReferralStatusForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Referral Status: {form.errors}")
+            return redirect('/referralstatuses')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Referral Status")
+        return redirect('/referralstatuses')
+
+
+class UpdateReferralStatus(TemplateView):
+    template_name = 'referralstatuses.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/referralstatuses')
+        referralstatus_object = ReferralStatus.objects.get(pk=pk)
+        referralstatus_object.status = request.POST['status']
+        referralstatus_object.description = request.POST['description']
+        referralstatus_object.last_updated_by = request.user
+        referralstatus_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Referral Status")
+        return redirect('/referralstatuses')
 
 
 def handler404(request, exception, template_name="404.html"):

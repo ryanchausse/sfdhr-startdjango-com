@@ -31,6 +31,9 @@ $(document).ready(function() {
   });
 
 /* Reference tables */
+$('#referralstatus_table').DataTable({
+  order: [[0, 'asc']]
+});
 $('#candidatereferralstatus_table').DataTable({
   order: [[0, 'asc']]
 });

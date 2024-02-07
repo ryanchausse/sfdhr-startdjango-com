@@ -9,6 +9,30 @@ from jsignature.fields import JSignatureField
 
 
 # Reference tables
+class ReferralStatus(models.Model):
+    status = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='referral_status_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='referral_status_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.status}'
+
+    class Meta:
+        verbose_name = 'ReferralStatus'
+        verbose_name_plural = 'ReferralStatuses'
+
+
 class CandidateReferralStatus(models.Model):
     status = models.CharField(max_length=255)
     description = models.CharField(max_length=5000, blank=True, null=True, default='')
@@ -116,6 +140,7 @@ class EligibleList(models.Model):
 class Referral(models.Model):
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     eligible_list = models.ForeignKey(EligibleList, on_delete=models.CASCADE)
+    status = models.ForeignKey(ReferralStatus, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),

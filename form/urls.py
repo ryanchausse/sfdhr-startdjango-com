@@ -72,6 +72,11 @@ urlpatterns = [
     path('update_eligiblelistcandidatereferral_form/<int:pk>', views.UpdateEligibleListCandidateReferral.as_view(), name='update_eligiblelistcandidate_form'),
     path('toggle_active_status_eligiblelistcandidatereferral', views.ToggleActiveStatusEligibleListCandidateReferral.as_view(), name='toggle_active_status_eligiblelistcandidatereferral'),
 
+    # ReferralStatus (reference table)
+    path('referralstatuses', views.ReferralStatuses.as_view(), name='referralstatuses'),
+    path('referralstatuses/<int:pk>', views.ReferralStatuses.as_view(), name='referralstatuses'),
+    path('create_referralstatus_form', views.CreateReferralStatus.as_view(), name='create_referralstatus_form'),
+    path('update_referralstatus_form/<int:pk>', views.UpdateReferralStatus.as_view(), name='update_referralstatus_form'),
     # CandidateReferralStatus (reference table)
     path('candidatereferralstatuses', views.CandidateReferralStatuses.as_view(), name='candidatereferralstatuses'),
     path('candidatereferralstatuses/<int:pk>', views.CandidateReferralStatuses.as_view(), name='candidatereferralstatuses'),

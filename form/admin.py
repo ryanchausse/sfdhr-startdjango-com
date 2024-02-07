@@ -8,6 +8,7 @@ from .models import Application
 from .models import Department
 from .models import EligibleListCandidate
 from .models import EligibleListCandidateReferral
+from .models import ReferralStatus
 from .models import CandidateReferralStatus
 
 admin.site.register(Candidate)
@@ -23,4 +24,5 @@ admin.site.register(EligibleListCandidate)
 admin.site.register(EligibleListCandidateReferral)
 
 # Reference Tables
+admin.site.register(ReferralStatus)
 admin.site.register(CandidateReferralStatus)
