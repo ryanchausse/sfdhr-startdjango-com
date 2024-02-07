@@ -702,7 +702,7 @@ class UpdateEligibleListCandidateReferral(TemplateView):
             eligiblelistcandidatereferral_object.status = CandidateReferralStatus.objects.get(pk=request.POST['status'])
         else:
             eligiblelistcandidatereferral_object.status = None
-        if request.POST['active'] and request.POST['active'] == 'on':
+        if 'active' in request.POST and request.POST['active'] == 'on':
             eligiblelistcandidatereferral_object.active = True
         else:
             eligiblelistcandidatereferral_object.active = False
