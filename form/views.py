@@ -47,6 +47,7 @@ from .models import ReferralStatus
 from .forms import ReferralStatusForm
 from .models import CandidateReferralStatus
 from .forms import CandidateReferralStatusForm
+from .utilities.ReferralUtilities import ReferralUtilities
 from jsignature.utils import draw_signature
 
 
@@ -346,8 +347,9 @@ class CreateReferral(TemplateView):
         form_to_save.created_by = request.user
         form_to_save.save()
         messages.add_message(request, messages.SUCCESS, "Successfully saved Referral")
-        # TODO: After the Referral is created, all Eligible List Candidates
-        # with status Active should have ELCandidateReferral records created
+        # Calling save() on the form makes it a model instance
+        if not ReferralUtilities(referral=form_to_save).refer_el_candidates():
+            messages.add_message(request, messages.WARNING, "There was a problem referring candidates")
         return redirect('/referrals')
 
 
@@ -594,12 +596,12 @@ class CreateEligibleListCandidate(TemplateView):
             return redirect('/eligiblelistcandidates')
         form = EligibleListCandidateForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save EligibleListCandidate: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Candidate: {form.errors}")
             return redirect('/eligiblelistcandidates')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
         form_to_save.save()
-        messages.add_message(request, messages.SUCCESS, "Successfully saved EligibleListCandidate")
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Eligible List Candidate")
         return redirect('/eligiblelistcandidates')
 
 
@@ -619,7 +621,7 @@ class UpdateEligibleListCandidate(TemplateView):
         eligiblelistcandidate_object.notes = request.POST['notes']
         eligiblelistcandidate_object.last_updated_by = request.user
         eligiblelistcandidate_object.save()
-        messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidate")
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List Candidate")
         return redirect('/eligiblelistcandidates')
 
 

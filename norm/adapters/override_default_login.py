@@ -9,9 +9,11 @@ class NormSocialAccountAdapter(DefaultSocialAccountAdapter):
         email_address = user_email(sociallogin.user)
         email_domain = email_address.split("@")[1]
         if email_domain != 'gmail.com':
-            return HttpResponse('Please log in with a Google account. You \
-                                may have to log out of your current Gmail account. \
-                                Try again at <a href="./">MeritBridge Replacement App</a>')
-        elif email_address not in ['chausse@gmail.com',]:
-            return HttpResponse('You are not authorized to log in. \
-                                Try again at <a href="./">MeritBridge Replacement App</a>')
+            return HttpResponse(f'Please log in with a Google account. You '
+                                f'may have to log out of your current Gmail '
+                                f'account. Try again at '
+                                f'<a href="./">MeritBridge Replacement App</a>')
+        # if email_address not in ['chausse@gmail.com',]:
+        #     return HttpResponse(f'You are not authorized to log in.'
+        #                         f'Try again at '
+        #                         f'<a href="./">MeritBridge Replacement App</a>')

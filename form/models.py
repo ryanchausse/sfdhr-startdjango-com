@@ -163,8 +163,8 @@ class Referral(models.Model):
 
 
 class Department(models.Model):
-    title = models.CharField(max_length=255)
-    code = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
+    code = models.CharField(max_length=255, unique=True)
     description = models.CharField(max_length=255, blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -237,6 +237,7 @@ class Application(models.Model):
     class Meta:
         verbose_name = 'Application'
         verbose_name_plural = 'Applications'
+        unique_together = ('sr_uuid', 'candidate')
 
 
 # Relational Entities
@@ -266,6 +267,7 @@ class EligibleListCandidate(models.Model):
     class Meta:
         verbose_name = 'EligibleListCandidate'
         verbose_name_plural = 'EligibleListCandidate'
+        unique_together = ('eligible_list', 'candidate')
 
 
 class EligibleListCandidateReferral(models.Model):
@@ -293,3 +295,4 @@ class EligibleListCandidateReferral(models.Model):
     class Meta:
         verbose_name = 'EligibleListCandidateReferral'
         verbose_name_plural = 'EligibleListCandidateReferrals'
+        unique_together = ('eligible_list_candidate', 'referral')
