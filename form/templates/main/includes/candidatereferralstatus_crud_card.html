@@ -15,7 +15,7 @@
         {% if user.is_authenticated and user_is_in_admins %}
             <div class="table-responsive">
                 {% if form_data_present %}
-                    <h3>Update Candidate Referral Status Definition<span style="font-size:0.7em">(or <a href='/candidatereferralstatuses'>create a new Status Definition</a>)</span></h3>
+                    <h3>Update Candidate Referral Status Definition <span style="font-size:0.7em">(or <a href='/candidatereferralstatuses'>create a new Status Definition</a>)</span></h3>
                     <form id='form_to_submit' action="/update_candidatereferralstatus_form/{{ pk }}" method="post">
                 {% else %}
                     <h3>Create Candidate Referral Status Definition</h3>
