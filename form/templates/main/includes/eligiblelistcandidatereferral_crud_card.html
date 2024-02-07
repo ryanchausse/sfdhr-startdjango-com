@@ -43,10 +43,10 @@
                     </div>
                     <br />
                     <div class="fieldWrapper" style="margin-left: 1em;">
-                        {{ form.candidate_referral_status.errors }}
-                        <label for="{{ form.candidate_referral_status.id_for_label }}">Candidate Referral Status</label>
+                        {{ form.status.errors }}
+                        <label for="{{ form.status.id_for_label }}">Status</label>
                         <br />
-                        {{ form.candidate_referral_status }}
+                        {{ form.status }}
                     </div>
                     <br />
                     {% if form_data_present %}
@@ -98,7 +98,7 @@
                         <th>Referral Candidate ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
-                        <th>Candidate Referral Status</th>
+                        <th>Status</th>
                         <th>Notes</th>
                         <th>Active</th>
                         <th>Created At</th>
@@ -112,7 +112,7 @@
                         <th>Referral Candidate ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
-                        <th>Candidate Referral Status</th>
+                        <th>Status</th>
                         <th>Notes</th>
                         <th>Active</th>
                         <th>Created At</th>
@@ -128,7 +128,7 @@
                                 <td><a href="/eligiblelistcandidatereferrals/{{ eligiblelistcandidatereferral.id }}">{{ eligiblelistcandidatereferral.id }}</a></td>
                                 <td>{{ eligiblelistcandidatereferral.eligible_list_candidate }}</td>
                                 <td>{{ eligiblelistcandidatereferral.referral }}</td>
-                                <td>{{ eligiblelistcandidatereferral.candidate_referral_status }}</td>
+                                <td>{{ eligiblelistcandidatereferral.status }}</td>
                                 <td>{{ eligiblelistcandidatereferral.notes }}</td>
                                 {% if eligiblelistcandidatereferral.active %}
                                     <td>

@@ -119,13 +119,13 @@ class EligibleListCandidateReferralForm(forms.ModelForm):
     id = forms.HiddenInput()
     eligible_list_candidate = forms.ModelChoiceField(queryset=EligibleListCandidate.objects.all())
     referral = forms.ModelChoiceField(queryset=Referral.objects.all())
-    candidate_referral_status = forms.ModelChoiceField(queryset=CandidateReferralStatus.objects.all(), required=False)
+    status = forms.ModelChoiceField(queryset=CandidateReferralStatus.objects.all(), required=False)
     active = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'style': "width: 20px; height: 20px"}))
     notes = forms.TextInput()
 
     class Meta:
         model = EligibleListCandidateReferral
-        fields = ['id', 'eligible_list_candidate', 'referral', 'candidate_referral_status', 'active', 'notes']
+        fields = ['id', 'eligible_list_candidate', 'referral', 'status', 'active', 'notes']
 
 
 # Reference tables

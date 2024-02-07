@@ -678,12 +678,12 @@ class CreateEligibleListCandidateReferral(TemplateView):
             return redirect('/eligiblelistcandidatereferrals')
         form = EligibleListCandidateReferralForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save EligibleListCandidateReferral: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Candidate Referral: {form.errors}")
             return redirect('/eligiblelistcandidatereferrals')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
         form_to_save.save()
-        messages.add_message(request, messages.SUCCESS, "Successfully saved EligibleListCandidateReferral")
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Eligible List Candidate Referral")
         return redirect('/eligiblelistcandidatereferrals')
 
 
@@ -698,10 +698,10 @@ class UpdateEligibleListCandidateReferral(TemplateView):
         eligiblelistcandidatereferral_object = EligibleListCandidateReferral.objects.get(pk=pk)
         eligiblelistcandidatereferral_object.eligible_list_candidate = EligibleListCandidate.objects.get(pk=request.POST['eligible_list_candidate'])
         eligiblelistcandidatereferral_object.referral = Referral.objects.get(pk=request.POST['referral'])
-        if request.POST['candidate_referral_status']:
-            eligiblelistcandidatereferral_object.candidate_referral_status = CandidateReferralStatus.objects.get(pk=request.POST['candidate_referral_status'])
+        if request.POST['status']:
+            eligiblelistcandidatereferral_object.status = CandidateReferralStatus.objects.get(pk=request.POST['status'])
         else:
-            eligiblelistcandidatereferral_object.candidate_referral_status = None
+            eligiblelistcandidatereferral_object.status = None
         if request.POST['active'] and request.POST['active'] == 'on':
             eligiblelistcandidatereferral_object.active = True
         else:
@@ -709,7 +709,7 @@ class UpdateEligibleListCandidateReferral(TemplateView):
         eligiblelistcandidatereferral_object.notes = request.POST['notes']
         eligiblelistcandidatereferral_object.last_updated_by = request.user
         eligiblelistcandidatereferral_object.save()
-        messages.add_message(request, messages.SUCCESS, "Successfully updated EligibleListCandidateReferral")
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List Candidate Referral")
         return redirect('/eligiblelistcandidatereferrals')
 
 

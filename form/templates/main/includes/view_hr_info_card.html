@@ -150,7 +150,7 @@
                         <th>Referral Candidate ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
-                        <th>Candidate Referral Status</th>
+                        <th>Status</th>
                         <th>Notes</th>
                         <th>Active</th>
                         <th>Created At</th>
@@ -164,7 +164,7 @@
                         <th>Referral Candidate ID</th>
                         <th>Eligible List Candidate</th>
                         <th>Referral</th>
-                        <th>Candidate Referral Status</th>
+                        <th>Status</th>
                         <th>Notes</th>
                         <th>Active</th>
                         <th>Created At</th>
@@ -180,7 +180,7 @@
                                 <td><a href="/eligiblelistcandidatereferrals/{{ eligible_list_candidate_referral.id }}">{{ eligible_list_candidate_referral.id }}</a></td>
                                 <td>{{ eligible_list_candidate_referral.eligible_list_candidate }}</td>
                                 <td>{{ eligible_list_candidate_referral.referral }}</td>
-                                <td>{{ eligible_list_candidate_referral.candidate_referral_status }}</td>
+                                <td>{{ eligible_list_candidate_referral.status }}</td>
                                 {% if eligible_list_candidate_referral.active %}
                                     <td>
                                         <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidatereferral" method="post">
