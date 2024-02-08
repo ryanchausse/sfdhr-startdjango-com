@@ -12,6 +12,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import RequestContext
 from django.core import serializers
+from django.core.mail import EmailMessage
 from django.forms.models import model_to_dict
 from django.db.models import Q
 import logging
@@ -48,6 +49,7 @@ from .forms import ReferralStatusForm
 from .models import CandidateReferralStatus
 from .forms import CandidateReferralStatusForm
 from .utilities.ReferralUtilities import ReferralUtilities
+from .utilities.EligibleListUtilities import EligibleListUtilities
 from jsignature.utils import draw_signature
 
 
@@ -181,6 +183,77 @@ class AdoptEligibleList(TemplateView):
         el_object.last_updated_by = request.user
         el_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully adopted Eligible List")
+        return redirect(f'/eligible_lists')
+
+
+class EligibleListPDF(TemplateView):
+    template_name = 'eligible_lists.html'
+
+    def get(self, request, pk, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
+            return redirect('/eligible_lists')
+        el_object = EligibleList.objects.get(pk=pk)
+        # Create EL PDF, save, then send email to EIS (or post on SFDHR website directly)
+        el_pdf = EligibleListUtilities(eligible_list=el_object).construct_el_pdf_and_save_to_file()
+        # Email Eligible List to EIS Team
+        if request.user.groups.filter(name='Admins').exists():
+            email = EmailMessage(
+                f'New Eligible List: {el_object.code}',
+                f'Hello EIS Team!\n\n'
+                f'There is a new Eligible List to post on the SFDHR website.\n\n'
+                f'Please see the attached file.',
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_TO,],
+            )
+            email.attach_file(os.path.abspath(os.path.dirname(__file__)) + f"/pdfs/eligible_lists/eligible_list_{el_object.code}.pdf")
+            email.send(fail_silently=False)
+            messages.add_message(request, messages.SUCCESS, f"Successfully emailed EIS Team with EL {el_object.code}.")
+            # Optionally, record that the email has been sent by adding a bool
+            # field named "emailed" to EligibleList model, set to true and save
+            # the el_object
+
+            # Return file from patient_files as pdf response
+            return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
+                                     f'/pdfs/eligible_lists/eligible_list_{el_object.code}.pdf', 'rb'),
+                                     content_type='application/pdf')
+
+        return redirect(f'/eligible_lists')
+
+class ScoreReportPDF(TemplateView):
+    template_name = 'eligible_lists.html'
+
+    def get(self, request, pk, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
+            return redirect('/eligible_lists')
+        el_object = EligibleList.objects.get(pk=pk)
+        # Create SR PDF, save, then send email to EIS (or post on SFDHR website directly)
+        el_pdf = EligibleListUtilities(eligible_list=el_object).construct_sr_pdf_and_save_to_file()
+        # Email Eligible List to EIS Team
+        if request.user.groups.filter(name='Admins').exists():
+            email = EmailMessage(
+                f'New Score Report: {el_object.code}',
+                f'Hello EIS Team!\n\n'
+                f'There is a new Score Report to post on the SFDHR website.\n\n'
+                f'Please see the attached file.',
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_TO,],
+            )
+            email.attach_file(os.path.abspath(os.path.dirname(__file__)) + f"/pdfs/score_reports/score_report_{el_object.code}.pdf")
+            email.send(fail_silently=False)
+            messages.add_message(request, messages.SUCCESS, f"Successfully emailed EIS Team with Score Report for EL {el_object.code}.")
+            # Optionally, record that the email has been sent by adding a bool
+            # field named "emailed" to EligibleList model, set to true and save
+            # the el_object
+
+            # Return file from patient_files as pdf response
+            return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
+                                        f'/pdfs/score_reports/score_report_{el_object.code}.pdf', 'rb'),
+                                        content_type='application/pdf')
+
         return redirect(f'/eligible_lists')
 
 

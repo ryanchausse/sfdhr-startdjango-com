@@ -108,6 +108,8 @@
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
                         <th>Adopted</th>
+                        <th>Score Report</th>
+                        <th>Eligible List</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -123,6 +125,8 @@
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
                         <th>Adopted</th>
+                        <th>Score Report</th>
+                        <th>Eligible List</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -160,6 +164,12 @@
                                         </form>
                                     </td>
                                 {% endif %}
+                                <td>
+                                    <a href='/score_report_pdf/{{ eligible_list.id }}' target="_blank">Score Report PDF</a>
+                                </td>
+                                <td>
+                                    <a href='/eligible_list_pdf/{{ eligible_list.id }}' target="_blank">Eligible List PDF</a>
+                                </td>
                                 <td>{{ eligible_list.created_at }}</td>
                                 <td>{{ eligible_list.updated_at }}</td>
                                 <td>{{ eligible_list.created_by }}</td>
