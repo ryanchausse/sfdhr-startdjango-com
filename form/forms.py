@@ -61,7 +61,7 @@ class ReferralForm(forms.ModelForm):
     id = forms.HiddenInput()
     eligible_list = forms.ModelChoiceField(queryset=EligibleList.objects.all())
     position = forms.ModelChoiceField(queryset=Position.objects.all())
-    status = forms.ModelChoiceField(queryset=ReferralStatus.objects.all(), required=False)
+    status = forms.ModelChoiceField(queryset=ReferralStatus.objects.all())
 
     class Meta:
         model = Referral
