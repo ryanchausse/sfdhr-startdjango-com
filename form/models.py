@@ -160,6 +160,7 @@ class Referral(models.Model):
     class Meta:
         verbose_name = 'Referral'
         verbose_name_plural = 'Referrals'
+        unique_together = ('position', 'eligible_list', 'status')
 
 
 class Department(models.Model):
