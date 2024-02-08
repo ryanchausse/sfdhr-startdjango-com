@@ -123,3 +123,5 @@ form/templates/static/admin
 form/patient_files/*
 form/templates/forms/sample_form_template.pdf
 form/migrations/*
+form/pdfs/eligible_lists/*
+form/pdfs/score_reports/*
