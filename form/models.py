@@ -140,7 +140,7 @@ class EligibleList(models.Model):
 class Referral(models.Model):
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     eligible_list = models.ForeignKey(EligibleList, on_delete=models.CASCADE)
-    status = models.ForeignKey(ReferralStatus, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.ForeignKey(ReferralStatus, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(get_user_model(),
