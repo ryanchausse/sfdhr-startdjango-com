@@ -195,8 +195,17 @@ class EligibleListPDF(TemplateView):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
+        eligible_list_candidates = EligibleListCandidate.objects.filter(
+            eligible_list = el_object,
+            active = True
+        )
+        if not eligible_list_candidates:
+            messages.add_message(request, messages.WARNING, f"No candidates on Eligible List {el_object}")
+            return redirect('/eligible_lists')
         # Create EL PDF, save, then send email to EIS (or post on SFDHR website directly)
-        el_pdf = EligibleListUtilities(eligible_list=el_object).construct_el_pdf_and_save_to_file()
+        pdf_constructed = EligibleListUtilities(
+            eligible_list=el_object,
+            eligible_list_candidates=eligible_list_candidates).construct_el_pdf_and_save_to_file()
         # Email Eligible List to EIS Team
         if request.user.groups.filter(name='Admins').exists():
             email = EmailMessage(
@@ -214,11 +223,10 @@ class EligibleListPDF(TemplateView):
             # field named "emailed" to EligibleList model, set to true and save
             # the el_object
 
-            # Return file from patient_files as pdf response
+            # Return file from /pdfs as pdf response
             return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
-                                     f'/pdfs/eligible_lists/eligible_list_{el_object.code}.pdf', 'rb'),
-                                     content_type='application/pdf')
-
+                                f'/pdfs/eligible_lists/eligible_list_{el_object.code}.pdf', 'rb'),
+                                content_type='application/pdf')
         return redirect(f'/eligible_lists')
 
 class ScoreReportPDF(TemplateView):
@@ -230,9 +238,18 @@ class ScoreReportPDF(TemplateView):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
+        eligible_list_candidates = EligibleListCandidate.objects.filter(
+            eligible_list = el_object,
+            active = True
+        )
+        if not eligible_list_candidates:
+            messages.add_message(request, messages.WARNING, f"No candidates on Eligible List {el_object}")
+            return redirect('/eligible_lists')
         # Create SR PDF, save, then send email to EIS (or post on SFDHR website directly)
-        el_pdf = EligibleListUtilities(eligible_list=el_object).construct_sr_pdf_and_save_to_file()
-        # Email Eligible List to EIS Team
+        pdf_constructed = EligibleListUtilities(
+            eligible_list=el_object,
+            eligible_list_candidates=eligible_list_candidates).construct_sr_pdf_and_save_to_file()
+        # Email Score Report to EIS Team
         if request.user.groups.filter(name='Admins').exists():
             email = EmailMessage(
                 f'New Score Report: {el_object.code}',
@@ -249,11 +266,10 @@ class ScoreReportPDF(TemplateView):
             # field named "emailed" to EligibleList model, set to true and save
             # the el_object
 
-            # Return file from patient_files as pdf response
+            # Return file from /pdfs as pdf response
             return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
-                                        f'/pdfs/score_reports/score_report_{el_object.code}.pdf', 'rb'),
-                                        content_type='application/pdf')
-
+                                f'/pdfs/score_reports/score_report_{el_object.code}.pdf', 'rb'),
+                                content_type='application/pdf')
         return redirect(f'/eligible_lists')
 
 
