@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n*e&=06f4!s@@9$g1(9zn&a&(795!-s5n6u#r1*+^pvitnyxf+'
+SECRET_KEY = 'django-insecure-n*e&kahudwhaklwduawdwadwawd6u#r1*+^pvitnyxf+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.microsoft',
     'form',
     'jsignature'
 ]
@@ -91,7 +92,7 @@ DATABASES = {
 
         'USER': 'startingdjango',
 
-        'PASSWORD': 'oijoij390daDDpoko9200!@*',
+        'PASSWORD': 'jakljdnkajdnaluwdnakidwuahuwd',
 
         'HOST': '127.0.0.1',
 
@@ -181,8 +182,8 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '3k2n34knknjk2u3h4u2ih4i2u3h42iu.apps.googleusercontent.com',
-            'secret': 'ijajwod-DJIOE9993kkdodj0jj',
+            'client_id': 'ajhidoauhowdlaihuwdalihuwduiwhidugad.apps.googleusercontent.com',
+            'secret': 'ilahduildahdwulaihdwualidwuh,
             'key': ''
         },
         'SCOPE': [
@@ -192,15 +193,26 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
+    },
+    "microsoft": {
+        "APPS": [
+            {
+                "client_id": "aldialjdiwjlaijwdliajlwdijaldjiawd",
+                "secret": "ahjdaiodwhjoiajdoaijwdoaihowdahioai",
+                "settings": {
+                    "tenant": "common",
+                }
+            }
+        ]
     }
 }
 
 # Social Auth via django-allauth
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = True
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = 'none'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = False
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400  # 1 day in seconds
@@ -214,8 +226,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'chausse@gmail.com'
-# Need new global full-permission app password here if using GMail SMTP
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = 'lkjd aljw awio orrp'
 EMAIL_USE_SSL = True
 
 EMAIL_TO = 'chausse@gmail.com'
