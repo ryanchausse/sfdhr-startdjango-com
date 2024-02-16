@@ -3,7 +3,7 @@
     {% if user.is_authenticated %}
         <form style="float:right; padding-left: 1em;" action="/accounts/logout/" method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-google btn-sm">
+            <button type="submit" class="btn btn-sm" style="background-color:#ff0066; color:white">
                 Log out, {{ user.first_name }}
             </button>
         </form>
@@ -12,6 +12,12 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-google btn-sm">
                 <i class="fab fa-google fa-fw"></i> Log In
+            </button>
+        </form>
+        <form style="float:right; padding-left: 1em;" action="/accounts/microsoft/login/" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-microsoft btn-sm" style="background-color: blue; color: white">
+                <i class="fab fa-microsoft fa-fw"></i> Log In
             </button>
         </form>
     {% endif %}
