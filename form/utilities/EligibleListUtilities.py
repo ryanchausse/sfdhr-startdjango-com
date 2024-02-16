@@ -64,13 +64,31 @@ class EligibleListUtilities:
         story.append(FrameBreak)
 
         # Eligible List Details
+        if not self.eligible_list.posted:
+            posted = ''
+        else:
+            posted = datetime.strftime(self.eligible_list.posted, '%Y-%m-%d')
+        if not self.eligible_list.inspection_start:
+            inspection_start = ''
+        else:
+            inspection_start = datetime.strftime(self.eligible_list.inspection_end, '%Y-%m-%d')
+        if not self.eligible_list.inspection_end:
+            inspection_end = ''
+        else:
+            inspection_end = datetime.strftime(self.eligible_list.inspection_end, '%Y-%m-%d')
+        if not self.eligible_list.adopted:
+            adopted = ''
+        else:
+            adopted = datetime.strftime(self.eligible_list.adopted, '%Y-%m-%d')
+
         data = [['Eligible List Code:', self.eligible_list.code],
                 ['Job Class:', self.eligible_list.job_class],
                 ['Job Specialty:', self.eligible_list.specialty],
-                ['Posted:', datetime.strftime(self.eligible_list.posted, '%Y-%m-%d')],
-                ['Inspection Start:', datetime.strftime(self.eligible_list.inspection_start, '%Y-%m-%d')],
-                ['Inspection End:', datetime.strftime(self.eligible_list.inspection_end, '%Y-%m-%d')],
-                ['Adopted:', datetime.strftime(self.eligible_list.adopted, '%Y-%m-%d')]
+                ['Posted:', posted],
+                ['Inspection Start:', inspection_start],
+                ['Inspection End:', inspection_end],
+                ['Adopted:', adopted],
+                ['Number of eligibles on list:', len(self.eligible_list_candidates)]
         ]
         grid = [
             ('ALIGN', (0, 0), (0, 6), 'RIGHT'),
@@ -151,13 +169,30 @@ class EligibleListUtilities:
         story.append(FrameBreak)
 
         # Eligible List Details
+        if not self.eligible_list.posted:
+            posted = ''
+        else:
+            posted = datetime.strftime(self.eligible_list.posted, '%Y-%m-%d')
+        if not self.eligible_list.inspection_start:
+            inspection_start = ''
+        else:
+            inspection_start = datetime.strftime(self.eligible_list.inspection_end, '%Y-%m-%d')
+        if not self.eligible_list.inspection_end:
+            inspection_end = ''
+        else:
+            inspection_end = datetime.strftime(self.eligible_list.inspection_end, '%Y-%m-%d')
+        if not self.eligible_list.adopted:
+            adopted = ''
+        else:
+            adopted = datetime.strftime(self.eligible_list.adopted, '%Y-%m-%d')
+
         data = [['Eligible List Code:', self.eligible_list.code],
                 ['Job Class:', self.eligible_list.job_class],
                 ['Job Specialty:', self.eligible_list.specialty],
-                ['Posted:', datetime.strftime(self.eligible_list.posted, '%Y-%m-%d')],
-                ['Inspection Start:', datetime.strftime(self.eligible_list.inspection_start, '%Y-%m-%d')],
-                ['Inspection End:', datetime.strftime(self.eligible_list.inspection_end, '%Y-%m-%d')],
-                ['Adopted:', datetime.strftime(self.eligible_list.adopted, '%Y-%m-%d')],
+                ['Posted:', posted],
+                ['Inspection Start:', inspection_start],
+                ['Inspection End:', inspection_end],
+                ['Adopted:', adopted],
                 ['Number of eligibles on list:', len(self.eligible_list_candidates)]
         ]
         grid = [
