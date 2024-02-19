@@ -74,7 +74,7 @@ class LongRunningTaskType(models.Model):
                                         on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'{self.status}'
+        return f'{self.type}'
 
     class Meta:
         verbose_name = 'LongRunningTaskType'
