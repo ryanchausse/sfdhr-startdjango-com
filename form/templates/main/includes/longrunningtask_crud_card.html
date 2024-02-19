@@ -1,0 +1,226 @@
+{% load static %}
+<div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+    <div class="card-header py-3">
+        <a href="/"><h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6></a>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div style="margin-top:1em; margin-bottom:1em; margin-right:2em;" class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="card-body">
+        {% if user.is_authenticated and user_is_in_admins %}
+            <div class="table-responsive">
+                {% if form_data_present %}
+                    <h3>Update Long Running Task <span style="font-size:0.7em">(or <a href='/longrunningtasks'>create a new Long Running Task</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_longrunningtask_form/{{ pk }}" method="post">
+                {% else %}
+                    <h3>Create Long Running Task</h3>
+                    <form id='form_to_submit' action="/create_longrunningtask_form" method="post">
+                {% endif %}
+                    {% csrf_token %}
+
+                    {% if form.errors or form.non_field_errors %}
+                        <p>{{ form.errors }}</p>
+                        <p>{{ form.non_field_errors }}</p>
+                    {% endif %}
+
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.type.errors }}
+                        <label for="{{ form.type.id_for_label }}">Type</label>
+                        <br />
+                        {{ form.type }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.status.errors }}
+                        <label for="{{ form.status.id_for_label }}">Status</label>
+                        <br />
+                        {{ form.status }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.description.errors }}
+                        <label for="{{ form.description.id_for_label }}">Description</label>
+                        <br />
+                        {{ form.description }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.referral_statuses.errors }}
+                        <label for="{{ form.referral_statuses.id_for_label }}">Referral Statuses</label>
+                        <br />
+                        {{ form.referral_statuses }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.candidate_referral_statuses.errors }}
+                        <label for="{{ form.candidate_referral_statuses.id_for_label }}">Candidate Referral Statuses</label>
+                        <br />
+                        {{ form.candidate_referral_statuses }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.candidates.errors }}
+                        <label for="{{ form.candidates.id_for_label }}">Candidates</label>
+                        <br />
+                        {{ form.candidates }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.positions.errors }}
+                        <label for="{{ form.positions.id_for_label }}">Positions</label>
+                        <br />
+                        {{ form.positions }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.eligible_lists.errors }}
+                        <label for="{{ form.eligible_lists.id_for_label }}">Eligible Lists</label>
+                        <br />
+                        {{ form.eligible_lists }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.referrals.errors }}
+                        <label for="{{ form.referrals.id_for_label }}">Referrals</label>
+                        <br />
+                        {{ form.referrals }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.departments.errors }}
+                        <label for="{{ form.departments.id_for_label }}">Departments</label>
+                        <br />
+                        {{ form.departments }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.jobs.errors }}
+                        <label for="{{ form.jobs.id_for_label }}">Jobs</label>
+                        <br />
+                        {{ form.jobs }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.applications.errors }}
+                        <label for="{{ form.applications.id_for_label }}">Applications</label>
+                        <br />
+                        {{ form.applications }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.eligible_list_candidates.errors }}
+                        <label for="{{ form.eligible_list_candidates.id_for_label }}">Eligible List Candidates</label>
+                        <br />
+                        {{ form.eligible_list_candidates }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.eligible_list_candidate_referrals.errors }}
+                        <label for="{{ form.eligible_list_candidate_referrals.id_for_label }}">Eligible List Candidate Referrals</label>
+                        <br />
+                        {{ form.eligible_list_candidate_referrals }}
+                    </div>
+                    <br />
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="margin-left:1em;" id="button-submit">
+                            {% if form_data_present %}
+                                Update
+                            {% else %}
+                                Create
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <h6 style="color:#3333cc">Please log in to create or update data</h6>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <h3>Long Running Task Queue</h3>
+            <table id="longrunningtask_table" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Referral Statuses</th>
+                        <th>Candidate Referral Statuses</th>
+                        <th>Candidates</th>
+                        <th>Positions</th>
+                        <th>Eligible Lists</th>
+                        <th>Referrals</th>
+                        <th>Departments</th>
+                        <th>Jobs</th>
+                        <th>Applications</th>
+                        <th>Eligible List Candidates</th>
+                        <th>Eligible List Candidate Referrals</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                        <th>Last Updated By</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Referral Statuses</th>
+                        <th>Candidate Referral Statuses</th>
+                        <th>Candidates</th>
+                        <th>Positions</th>
+                        <th>Eligible Lists</th>
+                        <th>Referrals</th>
+                        <th>Departments</th>
+                        <th>Jobs</th>
+                        <th>Applications</th>
+                        <th>Eligible List Candidates</th>
+                        <th>Eligible List Candidate Referrals</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                        <th>Last Updated By</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if longrunningtasks %}
+                        {% for longrunningtask in longrunningtasks %}
+                            <tr>
+                                <td><a href="/longrunningtasks/{{ longrunningtask.id }}">{{ longrunningtask.id }}</a></td>
+                                <td>{{ longrunningtask.type }}</td>
+                                <td>{{ longrunningtask.status }}</td>
+                                <td>{{ longrunningtask.description }}</td>
+                                <td>{{ longrunningtask.referral_statuses }}</td>
+                                <td>{{ longrunningtask.candidate_referral_statuses }}</td>
+                                <td>{{ longrunningtask.candidates }}</td>
+                                <td>{{ longrunningtask.positions }}</td>
+                                <td>{{ longrunningtask.eligible_lists }}</td>
+                                <td>{{ longrunningtask.referrals }}</td>
+                                <td>{{ longrunningtask.departments }}</td>
+                                <td>{{ longrunningtask.jobs }}</td>
+                                <td>{{ longrunningtask.applications }}</td>
+                                <td>{{ longrunningtask.eligible_list_candidates }}</td>
+                                <td>{{ longrunningtask.eligible_list_candidate_referrals }}</td>
+                                <td>{{ longrunningtask.created_at }}</td>
+                                <td>{{ longrunningtask.updated_at }}</td>
+                                <td>{{ longrunningtask.created_by }}</td>
+                                <td>{{ longrunningtask.last_updated_by }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>

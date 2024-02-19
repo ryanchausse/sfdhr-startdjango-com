@@ -21,6 +21,9 @@ $(document).ready(function() {
   $('#application_table').DataTable({
     order: [[0, 'asc']]
   });
+  $('#longrunningtask_table').DataTable({
+    order: [[0, 'asc']]
+  });
 
 /* Relational Entities */
   $('#eligiblelistcandidate_table').DataTable({
@@ -35,6 +38,12 @@ $('#referralstatus_table').DataTable({
   order: [[0, 'asc']]
 });
 $('#candidatereferralstatus_table').DataTable({
+  order: [[0, 'asc']]
+});
+$('#longrunningtasktype_table').DataTable({
+  order: [[0, 'asc']]
+});
+$('#longrunningtaskstatus_table').DataTable({
   order: [[0, 'asc']]
 });
 

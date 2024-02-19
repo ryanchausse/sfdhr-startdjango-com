@@ -10,10 +10,13 @@ from .models import Referral
 from .models import Department
 from .models import Job
 from .models import Application
+from .models import LongRunningTask
 from .models import EligibleListCandidate
 from .models import EligibleListCandidateReferral
 from .models import ReferralStatus
 from .models import CandidateReferralStatus
+from .models import LongRunningTaskType
+from .models import LongRunningTaskStatus
 from jsignature.forms import JSignatureField
 from jsignature.widgets import JSignatureWidget
 
@@ -101,6 +104,32 @@ class ApplicationForm(forms.ModelForm):
         fields = ['id', 'candidate', 'position', 'job']
 
 
+class LongRunningTaskForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    type = forms.ModelChoiceField(queryset=LongRunningTaskType.objects.all())
+    status = forms.ModelChoiceField(queryset=LongRunningTaskStatus.objects.all())
+    description = forms.TextInput()
+    referral_statuses = forms.ModelMultipleChoiceField(queryset=ReferralStatus.objects.all())
+    candidate_referral_statuses = forms.ModelMultipleChoiceField(queryset=CandidateReferralStatus.objects.all())
+    candidates = forms.ModelMultipleChoiceField(queryset=Candidate.objects.all())
+    positions = forms.ModelMultipleChoiceField(queryset=Position.objects.all())
+    eligible_lists = forms.ModelMultipleChoiceField(queryset=EligibleList.objects.all())
+    referrals = forms.ModelMultipleChoiceField(queryset=Referral.objects.all())
+    departments = forms.ModelMultipleChoiceField(queryset=Department.objects.all())
+    jobs = forms.ModelMultipleChoiceField(queryset=Job.objects.all())
+    applications = forms.ModelMultipleChoiceField(queryset=Application.objects.all())
+    eligible_list_candidates = forms.ModelMultipleChoiceField(queryset=EligibleListCandidate.objects.all())
+    eligible_list_candidate_referrals = forms.ModelMultipleChoiceField(queryset=EligibleListCandidateReferral.objects.all())
+
+    class Meta:
+        model = LongRunningTask
+        fields = ['id', 'type', 'status', 'description', 'referral_statuses',
+                  'candidate_referral_statuses', 'candidates', 'positions',
+                  'eligible_lists', 'referrals', 'departments', 'jobs',
+                  'applications', 'eligible_list_candidates',
+                  'eligible_list_candidate_referrals']
+
+
 # Relational Entities
 class EligibleListCandidateForm(forms.ModelForm):
     id = forms.HiddenInput()
@@ -148,3 +177,22 @@ class CandidateReferralStatusForm(forms.ModelForm):
         model = CandidateReferralStatus
         fields = ['id', 'status', 'description']
 
+
+class LongRunningTaskTypeForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    type = forms.TextInput()
+    description = forms.TextInput()
+
+    class Meta:
+        model = LongRunningTaskType
+        fields = ['id', 'type', 'description']
+
+
+class LongRunningTaskStatusForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    status = forms.TextInput()
+    description = forms.TextInput()
+
+    class Meta:
+        model = LongRunningTaskStatus
+        fields = ['id', 'status', 'description']

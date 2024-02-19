@@ -48,6 +48,12 @@ from .models import ReferralStatus
 from .forms import ReferralStatusForm
 from .models import CandidateReferralStatus
 from .forms import CandidateReferralStatusForm
+from .models import LongRunningTask
+from .forms import LongRunningTaskForm
+from .models import LongRunningTaskType
+from .forms import LongRunningTaskTypeForm
+from .models import LongRunningTaskStatus
+from .forms import LongRunningTaskStatusForm
 from .utilities.ReferralUtilities import ReferralUtilities
 from .utilities.EligibleListUtilities import EligibleListUtilities
 from jsignature.utils import draw_signature
@@ -647,6 +653,203 @@ class UpdateApplication(TemplateView):
         application_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Application")
         return redirect('/applications')
+
+
+class LongRunningTasks(TemplateView):
+    """
+    LongRunningTask CRUD page
+    """
+    template_name = 'longrunningtasks.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            longrunningtask_form = LongRunningTask.objects.get(id=pk)
+            form = LongRunningTaskForm(initial=model_to_dict(longrunningtask_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = LongRunningTaskForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['longrunningtasks'] = LongRunningTask.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateLongRunningTask(TemplateView):
+    template_name = 'longrunningtasks.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/longrunningtasks')
+        form = LongRunningTaskForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task: {form.errors}")
+            return redirect('/longrunningtasks')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Long Running Task")
+        return redirect('/longrunningtasks')
+
+
+class UpdateLongRunningTask(TemplateView):
+    template_name = 'longrunningtasks.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/longrunningtasks')
+        longrunningtask_object = LongRunningTask.objects.get(pk=pk)
+        longrunningtask_object.type = LongRunningTaskType.objects.get(pk=request.POST['type'])
+        longrunningtask_object.status = LongRunningTaskStatus.objects.get(pk=request.POST['status'])
+        longrunningtask_object.description = request.POST['description']
+        # From here, maybe we can just grab the raw queryset object instead of doing a redundant lookup?
+        longrunningtask_object.referral_statuses = ReferralStatus.objects.filter(id__in=request.POST['referral_statuses'])
+        longrunningtask_object.candidate_referral_statuses = CandidateReferralStatus.objects.filter(id__in=request.POST['candidate_referral_statuses'])
+        longrunningtask_object.candidates = Candidate.objects.filter(id__in=request.POST['candidates'])
+        longrunningtask_object.positions = Position.objects.filter(id__in=request.POST['positions'])
+        longrunningtask_object.eligible_lists = EligibleList.objects.filter(id__in=request.POST['eligible_lists'])
+        longrunningtask_object.referrals = Referral.objects.filter(id__in=request.POST['referrals'])
+        longrunningtask_object.departments = Department.objects.filter(id__in=request.POST['departments'])
+        longrunningtask_object.jobs = Job.objects.filter(id__in=request.POST['jobs'])
+        longrunningtask_object.applications = Application.objects.filter(id__in=request.POST['applications'])
+        longrunningtask_object.eligible_list_candidates = EligibleListCandidate.objects.filter(id__in=request.POST['eligible_list_candidates'])
+        longrunningtask_object.eligible_list_candidate_referrals = EligibleListCandidateReferral.objects.filter(id__in=request.POST['eligible_list_candidate_referrals'])
+        longrunningtask_object.last_updated_by = request.user
+        longrunningtask_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Long Running Task")
+        return redirect('/longrunningtasks')
+
+
+class LongRunningTaskTypes(TemplateView):
+    """
+    LongRunningTaskType CRUD page
+    """
+    template_name = 'longrunningtasktypes.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            longrunningtasktype_form = LongRunningTaskType.objects.get(id=pk)
+            form = LongRunningTaskTypeForm(initial=model_to_dict(longrunningtasktype_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = LongRunningTaskTypeForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['longrunningtasktypes'] = LongRunningTaskType.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateLongRunningTaskType(TemplateView):
+    template_name = 'longrunningtasktypes.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/longrunningtasktypes')
+        form = LongRunningTaskTypeForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task Type: {form.errors}")
+            return redirect('/longrunningtasktypes')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Long Running Task Type")
+        return redirect('/longrunningtasktypes')
+
+
+class UpdateLongRunningTaskType(TemplateView):
+    template_name = 'longrunningtasktypes.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/longrunningtasktypes')
+        longrunningtasktype_object = LongRunningTaskType.objects.get(pk=pk)
+        longrunningtasktype_object.type = request.POST['type']
+        longrunningtasktype_object.description = request.POST['description']
+        longrunningtasktype_object.last_updated_by = request.user
+        longrunningtasktype_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Long Running Task Type")
+        return redirect('/longrunningtasktypes')
+
+
+class LongRunningTaskStatuses(TemplateView):
+    """
+    LongRunningTaskStatus CRUD page
+    """
+    template_name = 'longrunningtaskstatuses.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if pk:
+            longrunningtaskstatus_form = LongRunningTaskStatus.objects.get(id=pk)
+            form = LongRunningTaskStatusForm(initial=model_to_dict(longrunningtaskstatus_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = LongRunningTaskStatusForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['longrunningtaskstatuses'] = LongRunningTaskStatus.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateLongRunningTaskStatus(TemplateView):
+    template_name = 'longrunningtaskstatuses.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/longrunningtaskstatuses')
+        form = LongRunningTaskStatusForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task Status: {form.errors}")
+            return redirect('/longrunningtaskstatuses')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Long Running Task Status")
+        return redirect('/longrunningtaskstatuses')
+
+
+class UpdateLongRunningTaskStatus(TemplateView):
+    template_name = 'longrunningtaskstatuses.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not self.request.user.groups.filter(name='Admins').exists():
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/longrunningtaskstatuses')
+        longrunningtaskstatus_object = LongRunningTaskStatus.objects.get(pk=pk)
+        longrunningtaskstatus_object.status = request.POST['status']
+        longrunningtaskstatus_object.description = request.POST['description']
+        longrunningtaskstatus_object.last_updated_by = request.user
+        longrunningtaskstatus_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Long Running Task Status")
+        return redirect('/longrunningtaskstatuses')
+
 
 
 # Relational Entities

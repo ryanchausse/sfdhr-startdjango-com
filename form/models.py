@@ -57,6 +57,54 @@ class CandidateReferralStatus(models.Model):
         verbose_name_plural = 'CandidateReferralStatuses'
 
 
+class LongRunningTaskType(models.Model):
+    type = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='long_running_task_type_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='long_running_task_type_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.status}'
+
+    class Meta:
+        verbose_name = 'LongRunningTaskType'
+        verbose_name_plural = 'LongRunningTaskTypes'
+
+
+class LongRunningTaskStatus(models.Model):
+    status = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='long_running_task_status_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='long_running_task_status_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.status}'
+
+    class Meta:
+        verbose_name = 'LongRunningTaskStatus'
+        verbose_name_plural = 'LongRunningTaskStatuses'
+
+
 # Entity tables
 class Candidate(models.Model):
     sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -297,3 +345,45 @@ class EligibleListCandidateReferral(models.Model):
         verbose_name = 'EligibleListCandidateReferral'
         verbose_name_plural = 'EligibleListCandidateReferrals'
         unique_together = ('eligible_list_candidate', 'referral')
+
+
+# Abstract entities
+class LongRunningTask(models.Model):
+    # For delegating tasks in a pseudo-async fashion, using the
+    # DB as a message queue, and a worker to poll for items in the queue
+    # to processing them in sequential, stack, FIFO order
+    type = models.ForeignKey(LongRunningTaskType, on_delete=models.CASCADE)
+    status = models.ForeignKey(LongRunningTaskStatus, on_delete=models.CASCADE)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    # Entities by FK relation, for use if necessary. This is a God model,
+    # which is also a serious antipattern
+    referral_statuses = models.ManyToManyField(ReferralStatus, blank=True)
+    candidate_referral_statuses = models.ManyToManyField(CandidateReferralStatus, blank=True)
+    candidates = models.ManyToManyField(Candidate, blank=True)
+    positions = models.ManyToManyField(Position, blank=True)
+    eligible_lists = models.ManyToManyField(EligibleList, blank=True)
+    referrals = models.ManyToManyField(Referral, blank=True)
+    departments = models.ManyToManyField(Department, blank=True)
+    jobs = models.ManyToManyField(Job, blank=True)
+    applications = models.ManyToManyField(Application, blank=True)
+    eligible_list_candidates = models.ManyToManyField(EligibleListCandidate, blank=True)
+    eligible_list_candidate_referrals = models.ManyToManyField(EligibleListCandidateReferral, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='long_running_task_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='long_running_task_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'Task: {self.type} - {self.description}'
+
+    class Meta:
+        verbose_name = 'LongRunningTask'
+        verbose_name_plural = 'LongRunningTasks'

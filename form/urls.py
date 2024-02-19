@@ -45,21 +45,26 @@ urlpatterns = [
     path('referrals/<int:pk>', views.Referrals.as_view(), name='referrals'),
     path('create_referral_form', views.CreateReferral.as_view(), name='create_referral_form'),
     path('update_referral_form/<int:pk>', views.UpdateReferral.as_view(), name='update_referral_form'),
-    # Department
+    # Departments
     path('departments', views.Departments.as_view(), name='departments'),
     path('departments/<int:pk>', views.Departments.as_view(), name='departments'),
     path('create_department_form', views.CreateDepartment.as_view(), name='create_department_form'),
     path('update_department_form/<int:pk>', views.UpdateDepartment.as_view(), name='update_department_form'),
-    # Job
+    # Jobs
     path('jobs', views.Jobs.as_view(), name='jobs'),
     path('jobs/<int:pk>', views.Jobs.as_view(), name='jobs'),
     path('create_job_form', views.CreateJob.as_view(), name='create_job_form'),
     path('update_job_form/<int:pk>', views.UpdateJob.as_view(), name='update_job_form'),
-    # Application
+    # Applications
     path('applications', views.Applications.as_view(), name='applications'),
     path('applications/<int:pk>', views.Applications.as_view(), name='applications'),
     path('create_application_form', views.CreateApplication.as_view(), name='create_application_form'),
     path('update_application_form/<int:pk>', views.UpdateApplication.as_view(), name='update_application_form'),
+    # Long Running Tasks
+    path('longrunningtasks', views.LongRunningTasks.as_view(), name='longrunningtasks'),
+    path('longrunningtasks/<int:pk>', views.LongRunningTasks.as_view(), name='longrunningtasks'),
+    path('create_longrunningtask_form', views.CreateLongRunningTask.as_view(), name='create_longrunningtask_form'),
+    path('update_longrunningtask_form/<int:pk>', views.UpdateLongRunningTask.as_view(), name='update_longrunningtask_form'),
 
     # EligibleListCandidate (relational table)
     path('eligiblelistcandidates', views.EligibleListCandidates.as_view(), name='eligiblelistcandidates'),
@@ -84,6 +89,16 @@ urlpatterns = [
     path('candidatereferralstatuses/<int:pk>', views.CandidateReferralStatuses.as_view(), name='candidatereferralstatuses'),
     path('create_candidatereferralstatus_form', views.CreateCandidateReferralStatus.as_view(), name='create_candidatereferralstatus_form'),
     path('update_candidatereferralstatus_form/<int:pk>', views.UpdateCandidateReferralStatus.as_view(), name='update_candidatereferralstatus_form'),
+    # LongRunningTaskType (reference table)
+    path('longrunningtasktypes', views.LongRunningTaskTypes.as_view(), name='longrunningtasktypes'),
+    path('longrunningtasktypes/<int:pk>', views.LongRunningTaskTypes.as_view(), name='longrunningtasktypes'),
+    path('create_longrunningtasktype_form', views.CreateLongRunningTaskType.as_view(), name='create_longrunningtasktype_form'),
+    path('update_longrunningtasktype_form/<int:pk>', views.UpdateLongRunningTaskType.as_view(), name='update_longrunningtasktype_form'),
+    # LongRunningTaskStatus (reference table)
+    path('longrunningtaskstatuses', views.LongRunningTaskStatuses.as_view(), name='longrunningtaskstatuses'),
+    path('longrunningtaskstatuses/<int:pk>', views.LongRunningTaskStatuses.as_view(), name='longrunningtaskstatuses'),
+    path('create_longrunningtaskstatus_form', views.CreateLongRunningTaskStatus.as_view(), name='create_longrunningtaskstatus_form'),
+    path('update_longrunningtaskstatus_form/<int:pk>', views.UpdateLongRunningTaskStatus.as_view(), name='update_longrunningtaskstatus_form'),
 
     # Project Roadmap
     path('roadmap', views.Roadmap.as_view(), name='roadmap'),
