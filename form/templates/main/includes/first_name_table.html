@@ -30,9 +30,11 @@
         <h6><a href="/eligiblelistcandidates">Eligible List Candidates</a></h6>
         <h6><a href="/eligiblelistcandidatereferrals">Referral Candidates</a></h6>
         <hr />
-        <p>Data in Progress</p>
-        <h6><a href="/longrunningtasks">Long Running Tasks</a></h6>
-        <hr />
+        {% if user_is_in_admins %}
+            <p>Data in Progress</p>
+            <h6><a href="/longrunningtasks">Long Running Tasks</a></h6>
+            <hr />
+        {% endif %}
         <p>Definition Data</p>
         <h6><a href="/referralstatuses">Referral Statuses</a></h6>
         <h6><a href="/candidatereferralstatuses">Candidate Referral Statuses</a></h6>
