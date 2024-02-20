@@ -57,6 +57,7 @@ from .forms import LongRunningTaskStatusForm
 from .utilities.ReferralUtilities import ReferralUtilities
 from .utilities.EligibleListUtilities import EligibleListUtilities
 from jsignature.utils import draw_signature
+from .tasks import *
 
 
 class HRHomePage(TemplateView):
@@ -214,17 +215,8 @@ class EligibleListPDF(TemplateView):
             eligible_list_candidates=eligible_list_candidates).construct_el_pdf_and_save_to_file()
         # Email Eligible List to EIS Team
         if request.user.groups.filter(name='Admins').exists():
-            email = EmailMessage(
-                f'New Eligible List: {el_object.code}',
-                f'Hello EIS Team!\n\n'
-                f'There is a new Eligible List to post on the SFDHR website.\n\n'
-                f'Please see the attached file.',
-                settings.EMAIL_HOST_USER,
-                [settings.EMAIL_TO,],
-            )
-            email.attach_file(os.path.abspath(os.path.dirname(__file__)) + f"/pdfs/eligible_lists/eligible_list_{el_object.code}.pdf")
-            email.send(fail_silently=False)
-            messages.add_message(request, messages.SUCCESS, f"Successfully emailed EIS Team with EL {el_object.code}.")
+            async_task = email_score_report_or_el.delay(el_id=el_object.id, report_type='eligible_list')
+            messages.add_message(request, messages.SUCCESS, f"Email queued to be sent to EIS Team for Eligible List {el_object.code}.")
             # Optionally, record that the email has been sent by adding a bool
             # field named "emailed" to EligibleList model, set to true and save
             # the el_object
@@ -234,6 +226,7 @@ class EligibleListPDF(TemplateView):
                                 f'/pdfs/eligible_lists/eligible_list_{el_object.code}.pdf', 'rb'),
                                 content_type='application/pdf')
         return redirect(f'/eligible_lists')
+
 
 class ScoreReportPDF(TemplateView):
     template_name = 'eligible_lists.html'
@@ -257,17 +250,8 @@ class ScoreReportPDF(TemplateView):
             eligible_list_candidates=eligible_list_candidates).construct_sr_pdf_and_save_to_file()
         # Email Score Report to EIS Team
         if request.user.groups.filter(name='Admins').exists():
-            email = EmailMessage(
-                f'New Score Report: {el_object.code}',
-                f'Hello EIS Team!\n\n'
-                f'There is a new Score Report to post on the SFDHR website.\n\n'
-                f'Please see the attached file.',
-                settings.EMAIL_HOST_USER,
-                [settings.EMAIL_TO,],
-            )
-            email.attach_file(os.path.abspath(os.path.dirname(__file__)) + f"/pdfs/score_reports/score_report_{el_object.code}.pdf")
-            email.send(fail_silently=False)
-            messages.add_message(request, messages.SUCCESS, f"Successfully emailed EIS Team with Score Report for EL {el_object.code}.")
+            async_task = email_score_report_or_el.delay(el_id=el_object.id, report_type='score_report')
+            messages.add_message(request, messages.SUCCESS, f"Email queued to be sent to EIS Team with Score Report for EL {el_object.code}.")
             # Optionally, record that the email has been sent by adding a bool
             # field named "emailed" to EligibleList model, set to true and save
             # the el_object

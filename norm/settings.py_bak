@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.microsoft',
     'form',
-    'jsignature'
+    'jsignature',
+    'django_celery_results'
 ]
 
 MIDDLEWARE = [
@@ -235,3 +236,10 @@ JSIGNATURE_WIDTH = 700
 JSIGNATURE_HEIGHT = 300
 JSIGNATURE_JQUERY = 'admin'
 JSIGNATURE_BACKGROUND_COLOR = '#d4dfff'
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "America/Los_Angeles"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
