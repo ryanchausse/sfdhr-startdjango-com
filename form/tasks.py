@@ -4,7 +4,23 @@ from celery import shared_task
 from django.core.mail import EmailMessage
 from .models import EligibleList
 from django.conf import settings
-import os, time
+import os, time, datetime
+from form.utilities.APIConnectionUtilities import APIConnectionManager
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
+
+@shared_task(name='add_tokens_to_buckets')
+def add_tokens_to_buckets():
+    # To run every second (see celery.py) - implements Token Bucket algorithm
+    # This may tax RabbitMQ/Celery and be better replaced by a while True loop
+    api_mgr = APIConnectionManager()
+    if api_mgr.sr_current_requests_per_second_tokens < api_mgr.sr_max_requests_per_second:
+        api_mgr.sr_current_requests_per_second_tokens += 1
+        logger.info(f'{datetime.datetime.now()} - added one token to bucket for SR')
+    if api_mgr.aws_current_requests_per_second_tokens < api_mgr.aws_max_requests_per_second:
+        api_mgr.aws_current_requests_per_second_tokens += 1
+        logger.info(f'{datetime.datetime.now()} - added one token to bucket for AWS')
 
 @shared_task
 def email_score_report_or_el(el_id, report_type='score_report'):
