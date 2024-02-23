@@ -1,7 +1,10 @@
 import os, datetime
 
 from celery import Celery
-from celery.schedules import crontab
+from form.utilities.APIConnectionUtilities import APIConnectionManager
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'norm.settings')
@@ -17,12 +20,27 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
 
-app.conf.beat_schedule = {
-    'add_tokens_to_buckets': {
-        'task': 'add_tokens_to_buckets',
-        'schedule': crontab(minute='*/1'),
-    },
-}
+@app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    app.conf.beat_schedule = {
+        'add_tokens_to_buckets': {
+            'task': 'add_tokens_to_buckets',
+            'schedule': 1.0,
+        },
+    }
+
+@app.task(name='add_tokens_to_buckets')
+def add_tokens_to_buckets():
+    # To run every second - implements Token Bucket algorithm
+    # This may tax RabbitMQ/Celery and be better replaced by a while True loop
+    api_mgr = APIConnectionManager()
+    if api_mgr.sr_current_requests_per_second_tokens < api_mgr.sr_max_requests_per_second:
+        api_mgr.sr_current_requests_per_second_tokens += 1
+        logger.info(f'{datetime.datetime.now()} - added one token to bucket for SR')
+    if api_mgr.aws_current_requests_per_second_tokens < api_mgr.aws_max_requests_per_second:
+        api_mgr.aws_current_requests_per_second_tokens += 1
+        logger.info(f'{datetime.datetime.now()} - added one token to bucket for AWS')
+    return True
 
 @app.task(bind=True, ignore_result=True)
 def debug_task(self):
