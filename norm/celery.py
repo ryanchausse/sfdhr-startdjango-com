@@ -20,7 +20,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'add_tokens_to_buckets': {
         'task': 'add_tokens_to_buckets',
-        'schedule': crontab(second='*/1'),
+        'schedule': crontab(minute='*/1'),
     },
 }
 
