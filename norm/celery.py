@@ -33,7 +33,8 @@ def add_tokens_to_buckets():
         api_mgr.sr_current_requests_per_second_tokens += 1
     if api_mgr.aws_current_requests_per_second_tokens < api_mgr.aws_max_requests_per_second:
         api_mgr.aws_current_requests_per_second_tokens += 1
-    print(f'{datetime.datetime.now()} - added one token to bucket for SR and AWS')
+    print(f'{datetime.datetime.now()} - added one token to bucket '
+          'if necessary for SR and AWS')
 
 @app.task(bind=True, ignore_result=True)
 def debug_task(self):
