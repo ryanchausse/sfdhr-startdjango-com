@@ -95,9 +95,9 @@ class Roadmap(TemplateView):
         print('Current SR RPS tokens')
         context['before_tokens'] = APIConnectionManager.sr_current_requests_per_second_tokens
         print('Subtracting three')
-        print(APIConnectionManager.sr_consume_one_request_token())
-        print(APIConnectionManager.sr_consume_one_request_token())
-        print(APIConnectionManager.sr_consume_one_request_token())
+        APIConnectionManager.sr_current_requests_per_second_tokens -= 1
+        APIConnectionManager.sr_current_requests_per_second_tokens -= 1
+        APIConnectionManager.sr_current_requests_per_second_tokens -= 1
         context['after_3_subtractions'] = APIConnectionManager.sr_current_requests_per_second_tokens
         time.sleep(1)
         context['after_2_subtractions'] = APIConnectionManager.sr_current_requests_per_second_tokens
