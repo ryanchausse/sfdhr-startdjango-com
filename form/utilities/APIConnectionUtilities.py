@@ -8,6 +8,11 @@
 class APIConnectionManager:
     _instance = None
 
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls, *args, **kwargs)
+        return cls._instance
+
     # For SmartRecruiters, published rate limits are:
     # 10 requests/s for each endpoint, generally
     # 8 concurrent requests, except for /candidates (only 1)
@@ -27,11 +32,6 @@ class APIConnectionManager:
     # AWS token bucket variables
     aws_current_concurrent_tokens = aws_max_concurrent_requests
     aws_current_requests_per_second_tokens = aws_max_requests_per_second
-
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super().__new__(cls, *args, **kwargs)
-        return cls._instance
 
     # SmartRecruiters
     def sr_consume_one_request_token(cls):
@@ -76,6 +76,12 @@ class APIConnectionManager:
             # Bucket is full, so we don't have to do anything
             return True
 
+    def sr_add_token_per_second(cls):
+        if cls.sr_current_requests_per_second_tokens < cls.sr_max_requests_per_second:
+            cls.sr_current_requests_per_second_tokens += 1
+            return True
+
+
     # AWS
     def aws_consume_one_request_token(cls):
         # Remove a token from the bucket.
@@ -96,4 +102,9 @@ class APIConnectionManager:
             return True
         else:
             # Bucket is full, so we don't have to do anything
+            return True
+
+    def aws_add_token_per_second(cls):
+        if cls.aws_current_requests_per_second_tokens < cls.aws_max_requests_per_second:
+            cls.aws_current_requests_per_second_tokens += 1
             return True

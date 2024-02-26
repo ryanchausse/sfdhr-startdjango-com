@@ -14,13 +14,11 @@ def add_tokens_to_buckets():
     # This may tax RabbitMQ/Celery and be better replaced by a while True loop
     api_mgr = APIConnectionManager()
     logger = get_task_logger(name='add_token_logger')
-    if api_mgr.sr_current_requests_per_second_tokens < api_mgr.sr_max_requests_per_second:
-        api_mgr.sr_current_requests_per_second_tokens += 1
-        logger.info(f'{datetime.datetime.now()} - added one token to bucket for SR')
-    if api_mgr.aws_current_requests_per_second_tokens < api_mgr.aws_max_requests_per_second:
-        api_mgr.aws_current_requests_per_second_tokens += 1
-        logger.info(f'{datetime.datetime.now()} - added one token to bucket for AWS')
-    return (f'Current SR request per second tokens: {api_mgr.sr_current_requests_per_second_tokens}.\n'
+    api_mgr.sr_add_token_per_second()
+    logger.info(f'{datetime.datetime.now()} - added one token to bucket for SR')
+    api_mgr.aws_add_token_per_second()
+    logger.info(f'{datetime.datetime.now()} - added one token to bucket for AWS')
+    return (f'Current SR request per second tokens: {api_mgr.sr_current_requests_per_second_tokens}. '
             f'Current AWS request per second tokens: {api_mgr.aws_current_requests_per_second_tokens}.')
 
 @shared_task
