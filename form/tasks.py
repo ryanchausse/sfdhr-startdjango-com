@@ -13,7 +13,7 @@ def add_tokens_to_buckets():
     # To run every second - implements Token Bucket algorithm
     # This may tax RabbitMQ/Celery and be better replaced by a while True loop
     api_mgr = APIConnectionManager()
-    logger = get_task_logger()
+    logger = get_task_logger(name='add_token_logger')
     if api_mgr.sr_current_requests_per_second_tokens < api_mgr.sr_max_requests_per_second:
         api_mgr.sr_current_requests_per_second_tokens += 1
         logger.info(f'{datetime.datetime.now()} - added one token to bucket for SR')
