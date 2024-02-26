@@ -83,6 +83,9 @@ class APIConnectionManager:
             self.sr_current_requests_per_second_tokens += 1
             return True
 
+    def sr_get_current_requests_per_second_token(self):
+        return self.sr_current_requests_per_second_tokens
+
 
     # AWS
     def aws_consume_one_request_token(self):
@@ -110,3 +113,6 @@ class APIConnectionManager:
         if self.aws_current_requests_per_second_tokens < self.aws_max_requests_per_second:
             self.aws_current_requests_per_second_tokens += 1
             return True
+
+    def aws_get_current_requests_per_second_token(self):
+        return self.aws_current_requests_per_second_tokens
