@@ -20,7 +20,8 @@ def add_tokens_to_buckets():
     if api_mgr.aws_current_requests_per_second_tokens < api_mgr.aws_max_requests_per_second:
         api_mgr.aws_current_requests_per_second_tokens += 1
         logger.info(f'{datetime.datetime.now()} - added one token to bucket for AWS')
-    return True
+    return (f'Current SR request per second tokens: {api_mgr.sr_current_requests_per_second_tokens}.\n'
+            f'Current AWS request per second tokens: {api_mgr.aws_current_requests_per_second_tokens}.')
 
 @shared_task
 def email_score_report_or_el(el_id, report_type='score_report'):
