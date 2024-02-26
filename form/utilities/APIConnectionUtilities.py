@@ -7,6 +7,10 @@
 
 class APIConnectionManager:
     _instance = None
+    global sr_max_requests_per_second
+    global sr_current_requests_per_second_tokens
+    global aws_max_requests_per_second
+    global aws_current_requests_per_second_tokens
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -20,6 +24,7 @@ class APIConnectionManager:
     sr_max_concurrent_requests = 8
     sr_max_concurrent_requests_candidates = 1
     sr_max_requests_per_second = 10
+
     # SR token bucket variables
     sr_current_concurrent_tokens = sr_max_concurrent_requests
     sr_current_concurrent_candidate_tokens = sr_max_concurrent_requests_candidates
