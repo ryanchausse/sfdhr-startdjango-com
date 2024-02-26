@@ -7,109 +7,106 @@
 
 class APIConnectionManager:
     _instance = None
-    global sr_max_requests_per_second
-    global sr_current_requests_per_second_tokens
-    global aws_max_requests_per_second
-    global aws_current_requests_per_second_tokens
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
             cls._instance = super().__new__(cls, *args, **kwargs)
         return cls._instance
 
-    # For SmartRecruiters, published rate limits are:
-    # 10 requests/s for each endpoint, generally
-    # 8 concurrent requests, except for /candidates (only 1)
-    # Rates can vary unpredictably through the day, especially at peak times
-    sr_max_concurrent_requests = 8
-    sr_max_concurrent_requests_candidates = 1
-    sr_max_requests_per_second = 10
+    def __init__(self):
+        # For SmartRecruiters, published rate limits are:
+        # 10 requests/s for each endpoint, generally
+        # 8 concurrent requests, except for /candidates (only 1)
+        # Rates can vary unpredictably through the day, especially at peak times
+        self.sr_max_concurrent_requests = 8
+        self.sr_max_concurrent_requests_candidates = 1
+        self.sr_max_requests_per_second = 10
 
-    # SR token bucket variables
-    sr_current_concurrent_tokens = sr_max_concurrent_requests
-    sr_current_concurrent_candidate_tokens = sr_max_concurrent_requests_candidates
-    sr_current_requests_per_second_tokens = sr_max_requests_per_second
+        # SR token bucket variables
+        self.sr_current_concurrent_tokens = self.sr_max_concurrent_requests
+        self.sr_current_concurrent_candidate_tokens = self.sr_max_concurrent_requests_candidates
+        self.sr_current_requests_per_second_tokens = self.sr_max_requests_per_second
 
-    # For AWS, rate limiting depends on a lot of factors.
-    # Arbitrary numbers chosen here.
-    aws_max_concurrent_requests = 10
-    aws_max_requests_per_second = 100
-    # AWS token bucket variables
-    aws_current_concurrent_tokens = aws_max_concurrent_requests
-    aws_current_requests_per_second_tokens = aws_max_requests_per_second
+        # For AWS, rate limiting depends on a lot of factors.
+        # Arbitrary numbers chosen here.
+        self.aws_max_concurrent_requests = 10
+        self.aws_max_requests_per_second = 100
+        # AWS token bucket variables
+        self.aws_current_concurrent_tokens = self.aws_max_concurrent_requests
+        self.aws_current_requests_per_second_tokens = self.aws_max_requests_per_second
 
     # SmartRecruiters
-    def sr_consume_one_request_token(cls):
+    def sr_consume_one_request_token(self):
         # Not for /candidates endpoint. Remove a token from the bucket.
-        if (cls.sr_current_concurrent_tokens > 0 and
-            cls.sr_current_requests_per_second_tokens > 0):
-            cls.sr_current_concurrent_tokens -= 1
-            cls.sr_current_requests_per_second_tokens -= 1
+        if (self.sr_current_concurrent_tokens > 0 and
+            self.sr_current_requests_per_second_tokens > 0):
+            self.sr_current_concurrent_tokens -= 1
+            self.sr_current_requests_per_second_tokens -= 1
             return True
         else:
             # Bucket empty, can't process request right now
             return False
-    
-    def sr_consume_one_request_token_candidate_endpoint(cls):
+
+    def sr_consume_one_request_token_candidate_endpoint(self):
         # Do we also need to remove a "normal" concurrency token?
         # Unclear from SmartRecruiters docs.
-        if (cls.sr_current_concurrent_candidate_tokens > 0 and
-            cls.sr_current_requests_per_second_tokens > 0):
-            cls.sr_current_concurrent_candidate_tokens -= 1
-            cls.sr_current_requests_per_second_tokens -= 1
+        if (self.sr_current_concurrent_candidate_tokens > 0 and
+            self.sr_current_requests_per_second_tokens > 0):
+            self.sr_current_concurrent_candidate_tokens -= 1
+            self.sr_current_requests_per_second_tokens -= 1
             return True
         else:
             # Bucket empty, can't process request right now
             return False
-    
-    def sr_finished_with_request_token(cls):
+
+    def sr_finished_with_request_token(self):
         # Not for /candidates endpoint. Use when request is complete to
         # update number of available concurrent tokens
-        if (cls.sr_current_concurrent_tokens < cls.sr_max_concurrent_requests):
-            cls.sr_current_concurrent_tokens += 1
-            return True
-        else:
-            # Bucket is full, so we don't have to do anything
-            return True
-    
-    def sr_finished_with_request_token_candidate_endpoint(cls):
-        # For /candidates endpoint.
-        if (cls.sr_current_concurrent_candidate_tokens < cls.sr_max_concurrent_requests_candidates):
-            cls.sr_current_concurrent_candidate_tokens += 1
+        if (self.sr_current_concurrent_tokens < self.sr_max_concurrent_requests):
+            self.sr_current_concurrent_tokens += 1
             return True
         else:
             # Bucket is full, so we don't have to do anything
             return True
 
-    def sr_add_token_per_second(cls):
-        if cls.sr_current_requests_per_second_tokens < cls.sr_max_requests_per_second:
-            cls.sr_current_requests_per_second_tokens += 1
+    def sr_finished_with_request_token_candidate_endpoint(self):
+        # For /candidates endpoint.
+        if (self.sr_current_concurrent_candidate_tokens < self.sr_max_concurrent_requests_candidates):
+            self.sr_current_concurrent_candidate_tokens += 1
+            return True
+        else:
+            # Bucket is full, so we don't have to do anything
+            return True
+
+    def sr_add_token_for_requests_per_second(self):
+        if self.sr_current_requests_per_second_tokens < self.sr_max_requests_per_second:
+            self.sr_current_requests_per_second_tokens += 1
             return True
 
 
     # AWS
-    def aws_consume_one_request_token(cls):
+    def aws_consume_one_request_token(self):
         # Remove a token from the bucket.
-        if (cls.aws_current_concurrent_tokens > 0 and
-            cls.aws_current_requests_per_second_tokens > 0):
-            cls.aws_current_concurrent_tokens -= 1
-            cls.aws_current_requests_per_second_tokens -= 1
+        if (self.aws_current_concurrent_tokens > 0 and
+            self.aws_current_requests_per_second_tokens > 0):
+            self.aws_current_concurrent_tokens -= 1
+            self.aws_current_requests_per_second_tokens -= 1
             return True
         else:
             # Bucket empty, can't process request right now
             return False
-    
-    def aws_finished_with_request_token(cls):
+
+    def aws_finished_with_request_token(self):
         # Use when request is complete to update number of available
         # concurrent tokens
-        if (cls.aws_current_concurrent_tokens < cls.sr_max_concurrent_requests):
-            cls.aws_current_concurrent_tokens += 1
+        if (self.aws_current_concurrent_tokens < self.sr_max_concurrent_requests):
+            self.aws_current_concurrent_tokens += 1
             return True
         else:
             # Bucket is full, so we don't have to do anything
             return True
 
-    def aws_add_token_per_second(cls):
-        if cls.aws_current_requests_per_second_tokens < cls.aws_max_requests_per_second:
-            cls.aws_current_requests_per_second_tokens += 1
+    def aws_add_token_for_requests_per_second(self):
+        if self.aws_current_requests_per_second_tokens < self.aws_max_requests_per_second:
+            self.aws_current_requests_per_second_tokens += 1
             return True

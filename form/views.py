@@ -93,18 +93,19 @@ class Roadmap(TemplateView):
         else:
             context['user_is_in_admins'] = False
         print('Current SR RPS tokens')
-        context['before_tokens'] = APIConnectionManager.sr_current_requests_per_second_tokens
+        api_conn_mgr = APIConnectionManager()
+        context['before_tokens'] = api_conn_mgr.sr_current_requests_per_second_tokens
         print('Subtracting three')
-        APIConnectionManager.sr_current_requests_per_second_tokens -= 1
-        APIConnectionManager.sr_current_requests_per_second_tokens -= 1
-        APIConnectionManager.sr_current_requests_per_second_tokens -= 1
-        context['after_3_subtractions'] = APIConnectionManager.sr_current_requests_per_second_tokens
+        api_conn_mgr.sr_consume_one_request_token()
+        api_conn_mgr.sr_consume_one_request_token()
+        api_conn_mgr.sr_consume_one_request_token()
+        context['after_3_subtractions'] = api_conn_mgr.sr_current_requests_per_second_tokens
         time.sleep(1)
-        context['after_2_subtractions'] = APIConnectionManager.sr_current_requests_per_second_tokens
+        context['after_2_subtractions'] = api_conn_mgr.sr_current_requests_per_second_tokens
         time.sleep(1)
-        context['after_1_subtractions'] = APIConnectionManager.sr_current_requests_per_second_tokens
+        context['after_1_subtractions'] = api_conn_mgr.sr_current_requests_per_second_tokens
         time.sleep(1)
-        context['current_tokens'] = APIConnectionManager.sr_current_requests_per_second_tokens
+        context['current_tokens'] = api_conn_mgr.sr_current_requests_per_second_tokens
         return context
 
 

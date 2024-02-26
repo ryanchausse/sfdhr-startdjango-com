@@ -11,16 +11,16 @@ import os, datetime
 @shared_task
 def add_tokens_to_buckets():
     # To run every second - implements Token Bucket algorithm
-    # This may tax RabbitMQ/Celery and be better replaced by a while True loop
+    # This may tax RabbitMQ/Celery/DB and be better replaced by a
+    # "while True" loop
     logger = get_task_logger(name='add_token_logger')
-    if APIConnectionManager.sr_current_requests_per_second_tokens < APIConnectionManager.sr_max_requests_per_second:
-        APIConnectionManager.sr_current_requests_per_second_tokens += 1
+    api_conn_mgr = APIConnectionManager()
+    api_conn_mgr.sr_add_token_for_requests_per_second()
     logger.info(f'{datetime.datetime.now()} - added one token to bucket for SR')
-    if APIConnectionManager.aws_current_requests_per_second_tokens < APIConnectionManager.aws_max_requests_per_second:
-        APIConnectionManager.aws_current_requests_per_second_tokens += 1
+    api_conn_mgr.aws_add_token_for_requests_per_second()
     logger.info(f'{datetime.datetime.now()} - added one token to bucket for AWS')
-    return (f'Current SR request per second tokens: {APIConnectionManager.sr_current_requests_per_second_tokens}. '
-            f'Current AWS request per second tokens: {APIConnectionManager.aws_current_requests_per_second_tokens}.')
+    return (f'Current SR request per second tokens: {api_conn_mgr.sr_current_requests_per_second_tokens}. '
+            f'Current AWS request per second tokens: {api_conn_mgr.aws_current_requests_per_second_tokens}.')
 
 @shared_task
 def email_score_report_or_el(el_id, report_type='score_report'):
