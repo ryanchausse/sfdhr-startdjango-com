@@ -21,15 +21,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 @app.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-    app.conf.beat_schedule = {
-        'add_tokens_to_buckets': {
-            'task': 'add_tokens_to_buckets',
-            'schedule': 1.0,
-        },
-    }
-
-@app.task(name='add_tokens_to_buckets')
+@app.task(bind=True, name='add_tokens_to_buckets')
 def add_tokens_to_buckets():
     # To run every second - implements Token Bucket algorithm
     # This may tax RabbitMQ/Celery and be better replaced by a while True loop
