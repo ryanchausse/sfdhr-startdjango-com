@@ -20,7 +20,6 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
 
-@app.on_after_configure.connect
 @app.task(bind=True, name='add_tokens_to_buckets')
 def add_tokens_to_buckets():
     # To run every second - implements Token Bucket algorithm
