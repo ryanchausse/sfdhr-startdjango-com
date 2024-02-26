@@ -4,7 +4,6 @@
 
 # A celerybeat scheduled task adds "requests per second" tokens every second,
 # but concurrent request tokens need to be updated by the caller.
-from celery import shared_task
 
 class APIConnectionManager:
     _instance = None
@@ -77,7 +76,6 @@ class APIConnectionManager:
             # Bucket is full, so we don't have to do anything
             return True
 
-    @shared_task
     def sr_add_token_per_second(cls):
         if cls.sr_current_requests_per_second_tokens < cls.sr_max_requests_per_second:
             cls.sr_current_requests_per_second_tokens += 1
@@ -106,7 +104,6 @@ class APIConnectionManager:
             # Bucket is full, so we don't have to do anything
             return True
 
-    @shared_task
     def aws_add_token_per_second(cls):
         if cls.aws_current_requests_per_second_tokens < cls.aws_max_requests_per_second:
             cls.aws_current_requests_per_second_tokens += 1
