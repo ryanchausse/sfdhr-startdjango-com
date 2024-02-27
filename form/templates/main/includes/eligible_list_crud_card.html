@@ -11,78 +11,80 @@
         </ul>
     {% endif %}
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <h3>Eligible List Candidates</h3>
-            <table id="eligiblelistcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Eligible List Candidate ID</th>
-                        <th>Eligible List</th>
-                        <th>Candidate</th>
-                        <th>Score</th>
-                        <th>Rank</th>
-                        <th>Notes</th>
-                        <th>Active</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Created By</th>
-                        <th>Last Updated By</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>Eligible List Candidate ID</th>
-                        <th>Eligible List</th>
-                        <th>Candidate</th>
-                        <th>Score</th>
-                        <th>Rank</th>
-                        <th>Notes</th>
-                        <th>Active</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Created By</th>
-                        <th>Last Updated By</th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    {% if eligiblelistcandidates %}
-                        {% for eligiblelistcandidate in eligiblelistcandidates %}
-                            <tr>
-                                <td><a href="/eligiblelistcandidates/{{ eligiblelistcandidate.id }}">{{ eligiblelistcandidate.id }}</a></td>
-                                <td>{{ eligiblelistcandidate.eligible_list }}</td>
-                                <td>{{ eligiblelistcandidate.candidate }}</td>
-                                <td>{{ eligiblelistcandidate.score | floatformat:5 }}</td>
-                                <td>{{ eligiblelistcandidate.rank }}</td>
-                                <td>{{ eligiblelistcandidate.notes }}</td>
-                                {% if eligiblelistcandidate.active %}
+    {% if form_data_present %}
+        <div class="card-body">
+            <div class="table-responsive">
+                <h3>Candidates on Eligible List {{ form.code.value }}</h3>
+                <table id="eligiblelistcandidate_table" class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Eligible List Candidate ID</th>
+                            <th>Eligible List</th>
+                            <th>Candidate</th>
+                            <th>Score</th>
+                            <th>Rank</th>
+                            <th>Notes</th>
+                            <th>Active</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Created By</th>
+                            <th>Last Updated By</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Eligible List Candidate ID</th>
+                            <th>Eligible List</th>
+                            <th>Candidate</th>
+                            <th>Score</th>
+                            <th>Rank</th>
+                            <th>Notes</th>
+                            <th>Active</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Created By</th>
+                            <th>Last Updated By</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% if eligiblelistcandidates %}
+                            {% for eligiblelistcandidate in eligiblelistcandidates %}
+                                <tr>
+                                    <td><a href="/eligiblelistcandidates/{{ eligiblelistcandidate.id }}">{{ eligiblelistcandidate.id }}</a></td>
+                                    <td>{{ eligiblelistcandidate.eligible_list }}</td>
+                                    <td>{{ eligiblelistcandidate.candidate }}</td>
+                                    <td>{{ eligiblelistcandidate.score | floatformat:5 }}</td>
+                                    <td>{{ eligiblelistcandidate.rank }}</td>
+                                    <td>{{ eligiblelistcandidate.notes }}</td>
+                                    {% if eligiblelistcandidate.active %}
+                                        <td>
+                                            <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="elcandidate_id" value="{{ eligiblelistcandidate.id }}">
+                                                <button type="submit" class="btn btn-success"" id="button-submit">Active</button>
+                                            </form>
+                                        </td>
+                                    {% else %}
                                     <td>
-                                        <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
+                                        <form id='mark_active_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
                                             {% csrf_token %}
                                             <input type="hidden" name="elcandidate_id" value="{{ eligiblelistcandidate.id }}">
-                                            <button type="submit" class="btn btn-success"" id="button-submit">Active</button>
+                                            <button type="submit" class="btn btn-danger"" id="button-submit">Inactive</button>
                                         </form>
                                     </td>
-                                {% else %}
-                                <td>
-                                    <form id='mark_active_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="elcandidate_id" value="{{ eligiblelistcandidate.id }}">
-                                        <button type="submit" class="btn btn-danger"" id="button-submit">Inactive</button>
-                                    </form>
-                                </td>
-                                {% endif %}
-                                <td>{{ eligiblelistcandidate.created_at }}</td>
-                                <td>{{ eligiblelistcandidate.updated_at }}</td>
-                                <td>{{ eligiblelistcandidate.created_by }}</td>
-                                <td>{{ eligiblelistcandidate.last_updated_by }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                </tbody>
-            </table>
+                                    {% endif %}
+                                    <td>{{ eligiblelistcandidate.created_at }}</td>
+                                    <td>{{ eligiblelistcandidate.updated_at }}</td>
+                                    <td>{{ eligiblelistcandidate.created_by }}</td>
+                                    <td>{{ eligiblelistcandidate.last_updated_by }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="card-body">
         {% if user.is_authenticated %}
