@@ -12,7 +12,7 @@
     {% endif %}
 
     <div class="card-body">
-        {% if user.is_authenticated and user_is_in_admins %}
+        {% if user.is_authenticated %}
             <div class="table-responsive">
                 {% if form_data_present %}
                     <h3>Update a Candidate on an Eligible List <span style="font-size:0.7em">(or <a href='/eligiblelistcandidates'>Add a Candidate to an Eligible List</a>)</span></h3>

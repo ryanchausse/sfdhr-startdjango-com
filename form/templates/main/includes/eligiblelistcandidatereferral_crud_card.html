@@ -12,7 +12,7 @@
     {% endif %}
 
     <div class="card-body">
-        {% if user.is_authenticated and user_is_in_admins %}
+        {% if user.is_authenticated %}
             <div class="table-responsive">
                 {% if form_data_present %}
                     <h3>Update a Candidate on a Referral <span style="font-size:0.7em">(or <a href='/eligiblelistcandidatereferrals'>create a new Eligible List Candidate Referral</a>)</span></h3>

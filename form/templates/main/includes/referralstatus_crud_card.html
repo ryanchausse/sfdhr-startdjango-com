@@ -12,7 +12,7 @@
     {% endif %}
 
     <div class="card-body">
-        {% if user.is_authenticated and user_is_in_admins %}
+        {% if user.is_authenticated %}
             <div class="table-responsive">
                 {% if form_data_present %}
                     <h3>Update Referral Status Definition <span style="font-size:0.7em">(or <a href='/referralstatuses'>create a new Referral Status Definition</a>)</span></h3>
