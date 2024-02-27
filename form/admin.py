@@ -13,6 +13,7 @@ from .models import CandidateReferralStatus
 from .models import LongRunningTask
 from .models import LongRunningTaskType
 from .models import LongRunningTaskStatus
+from .models import APIRateLimiter
 
 admin.site.register(Candidate)
 admin.site.register(Position)
@@ -32,3 +33,6 @@ admin.site.register(ReferralStatus)
 admin.site.register(CandidateReferralStatus)
 admin.site.register(LongRunningTaskType)
 admin.site.register(LongRunningTaskStatus)
+
+# Rate Limiting
+admin.site.register(APIRateLimiter)

@@ -6,6 +6,17 @@ from django.contrib.auth import get_user_model
 from django.core.validators import ValidationError
 from django.db.models import Q
 from jsignature.fields import JSignatureField
+from django.core.exceptions import ValidationError as ExceptionValidationError
+
+# Mixins
+class SingleInstanceMixin(object):
+    """Makes sure that no more than one instance of a given model is created."""
+
+    def clean(self):
+        model = self.__class__
+        if (model.objects.count() > 0 and self.id != model.objects.get().id):
+            raise ExceptionValidationError(f'Can only create 1 {model.__name__} instance')
+        super(SingleInstanceMixin, self).clean()
 
 
 # Reference tables
@@ -387,3 +398,20 @@ class LongRunningTask(models.Model):
     class Meta:
         verbose_name = 'LongRunningTask'
         verbose_name_plural = 'LongRunningTasks'
+
+
+class APIRateLimiter(SingleInstanceMixin, models.Model):
+    sr_current_concurrent_tokens = models.IntegerField(default=8, blank=True, null=True)
+    sr_current_concurrent_candidate_tokens = models.IntegerField(default=1, blank=True, null=True)
+    sr_current_requests_per_second_tokens = models.IntegerField(default=10, blank=True, null=True)
+    aws_current_concurrent_tokens = models.IntegerField(default=10, blank=True, null=True)
+    aws_current_requests_per_second_tokens = models.IntegerField(default=100, blank=True, null=True)
+    active = models.BooleanField(default=True)
+    notes = models.CharField(max_length=255, blank=True, null=True, default='')
+
+    def __str__(self):
+        return f'SR tokens: {self.sr_current_concurrent_tokens} AWS tokens: {self.aws_current_concurrent_tokens}'
+
+    class Meta:
+        verbose_name = 'APIRateLimiter'
+        verbose_name_plural = 'APIRateLimiters'

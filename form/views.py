@@ -92,17 +92,6 @@ class Roadmap(TemplateView):
             context['user_is_in_admins'] = True
         else:
             context['user_is_in_admins'] = False
-        api_mgr = APIConnectionManager()
-        api_mgr.sr_consume_one_request_token()
-        api_mgr.sr_consume_one_request_token()
-        api_mgr.sr_consume_one_request_token()
-        api_mgr.sr_consume_one_request_token()
-        api_mgr.sr_consume_one_request_token()
-        api_mgr.sr_consume_one_request_token()
-        api_mgr.sr_consume_one_request_token()
-        api_mgr.sr_consume_one_request_token()
-
-        context['cur_sr_tokens'] = api_mgr.sr_get_current_requests_per_second_tokens()
         return context
 
 
