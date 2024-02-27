@@ -21,7 +21,7 @@ class APIConnectionManager:
     AWS_MAX_REQUESTS_PER_SECOND = 100
 
     # SmartRecruiters
-    def sr_consume_one_request_token():
+    def sr_consume_one_request_token(self):
         # Not for /candidates endpoint. Remove a token from the bucket.
         api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_tokens > 0 and
@@ -34,7 +34,7 @@ class APIConnectionManager:
             # Bucket empty, can't process request right now
             return False
 
-    def sr_consume_one_request_token_candidate_endpoint():
+    def sr_consume_one_request_token_candidate_endpoint(self):
         # Do we also need to remove a "normal" concurrency token?
         # Unclear from SmartRecruiters docs.
         api_rate_limiter = APIRateLimiter.objects.get()
@@ -84,7 +84,7 @@ class APIConnectionManager:
 
 
     # AWS
-    def aws_consume_one_request_token():
+    def aws_consume_one_request_token(self):
         # Remove a token from the bucket.
         api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.aws_current_concurrent_tokens > 0 and
@@ -116,6 +116,6 @@ class APIConnectionManager:
             api_rate_limiter.save()
             return True
 
-    def aws_get_current_requests_per_second_tokens():
+    def aws_get_current_requests_per_second_tokens(self):
         api_rate_limiter = APIRateLimiter.objects.get()
         return api_rate_limiter.aws_current_requests_per_second_tokens
