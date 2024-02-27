@@ -61,6 +61,16 @@ from .utilities.APIConnectionUtilities import APIConnectionManager
 from jsignature.utils import draw_signature
 from .tasks import *
 
+def permitted_to_edit_data(request):
+    if request.user.groups.filter(name='DataEditors').exists():
+        print('User in DataEditors group')
+        return True
+    elif request.user.groups.filter(name='Admins').exists():
+        print('User in Admins group')
+        return True
+    else:
+        return False
+
 
 class HRHomePage(TemplateView):
     """
@@ -132,8 +142,7 @@ class CreateEligibleList(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligible_lists')
         form = EligibleListForm(request.POST)
@@ -152,8 +161,7 @@ class UpdateEligibleList(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
@@ -173,8 +181,7 @@ class PostEligibleList(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligible_lists')
         el_id = request.POST['el_id']
@@ -192,8 +199,7 @@ class AdoptEligibleList(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligible_lists')
         el_id = request.POST['el_id']
@@ -211,8 +217,7 @@ class EligibleListPDF(TemplateView):
 
     def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
@@ -245,8 +250,7 @@ class ScoreReportPDF(TemplateView):
 
     def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
@@ -307,8 +311,7 @@ class CreateCandidate(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/candidates')
         form = CandidateForm(request.POST)
@@ -327,8 +330,7 @@ class UpdateCandidate(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/candidates')
         candidate_object = Candidate.objects.get(pk=pk)
@@ -374,8 +376,7 @@ class CreatePosition(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/positions')
         form = PositionForm(request.POST)
@@ -394,8 +395,7 @@ class UpdatePosition(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/positions')
         position_object = Position.objects.get(pk=pk)
@@ -439,8 +439,7 @@ class CreateReferral(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/referrals')
         form = ReferralForm(request.POST)
@@ -462,8 +461,7 @@ class UpdateReferral(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/referrals')
         referral_object = Referral.objects.get(pk=pk)
@@ -512,8 +510,7 @@ class CreateDepartment(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/departments')
         form = DepartmentForm(request.POST)
@@ -532,8 +529,7 @@ class UpdateDepartment(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/departments')
         department_object = Department.objects.get(pk=pk)
@@ -579,8 +575,7 @@ class CreateJob(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/jobs')
         form = JobForm(request.POST)
@@ -599,8 +594,7 @@ class UpdateJob(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/jobs')
         job_object = Job.objects.get(pk=pk)
@@ -646,8 +640,7 @@ class CreateApplication(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/applications')
         form = ApplicationForm(request.POST)
@@ -666,8 +659,7 @@ class UpdateApplication(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/applications')
         application_object = Application.objects.get(pk=pk)
@@ -911,8 +903,7 @@ class CreateEligibleListCandidate(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligiblelistcandidates')
         form = EligibleListCandidateForm(request.POST)
@@ -931,8 +922,7 @@ class UpdateEligibleListCandidate(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligiblelistcandidates')
         eligiblelistcandidate_object = EligibleListCandidate.objects.get(pk=pk)
@@ -952,8 +942,7 @@ class ToggleActiveStatusEligibleListCandidate(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligiblelistcandidates')
         elcandidate_id = request.POST['elcandidate_id']
@@ -1001,8 +990,7 @@ class CreateEligibleListCandidateReferral(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligiblelistcandidatereferrals')
         form = EligibleListCandidateReferralForm(request.POST)
@@ -1021,8 +1009,7 @@ class UpdateEligibleListCandidateReferral(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligiblelistcandidatereferrals')
         eligiblelistcandidatereferral_object = EligibleListCandidateReferral.objects.get(pk=pk)
@@ -1048,8 +1035,7 @@ class ToggleActiveStatusEligibleListCandidateReferral(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/eligiblelistcandidatereferrals')
         elcandidatereferral_id = request.POST['elcandidatereferral_id']
@@ -1097,8 +1083,7 @@ class CreateCandidateReferralStatus(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/candidatereferralstatuses')
         form = CandidateReferralStatusForm(request.POST)
@@ -1117,8 +1102,7 @@ class UpdateCandidateReferralStatus(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/candidatereferralstatuses')
         candidatereferralstatus_object = CandidateReferralStatus.objects.get(pk=pk)
@@ -1163,8 +1147,7 @@ class CreateReferralStatus(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/referralstatuses')
         form = ReferralStatusForm(request.POST)
@@ -1183,8 +1166,7 @@ class UpdateReferralStatus(TemplateView):
 
     def post(self, request, pk=None, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if (not self.request.user.groups.filter(name='Admins').exists() and not
-            self.request.user.groups.filter(name='DataEditors').exists()):
+        if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/referralstatuses')
         referralstatus_object = ReferralStatus.objects.get(pk=pk)
