@@ -31,7 +31,7 @@ class APIConnectionManager:
     @staticmethod
     def sr_consume_one_request_token():
         # Not for /candidates endpoint. Remove a token from the bucket.
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_tokens > 0 and
             api_rate_limiter.sr_current_requests_per_second_tokens > 0):
             api_rate_limiter.sr_current_concurrent_tokens -= 1
@@ -46,7 +46,7 @@ class APIConnectionManager:
     def sr_consume_one_request_token_candidate_endpoint():
         # Do we also need to remove a "normal" concurrency token?
         # Unclear from SmartRecruiters docs.
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_candidate_tokens > 0 and
             api_rate_limiter.sr_current_requests_per_second_tokens > 0):
             api_rate_limiter.sr_current_concurrent_candidate_tokens -= 1
@@ -60,7 +60,7 @@ class APIConnectionManager:
     def sr_finished_with_request_token(self):
         # Not for /candidates endpoint. Use when request is complete to
         # update number of available concurrent tokens
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_tokens < self.SR_MAX_CONCURRENT_REQUESTS):
             api_rate_limiter.sr_current_concurrent_tokens += 1
             api_rate_limiter.save()
@@ -71,7 +71,7 @@ class APIConnectionManager:
 
     def sr_finished_with_request_token_candidate_endpoint(self):
         # For /candidates endpoint.
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_candidate_tokens < self.SR_MAX_CONCURRENT_REQUESTS_CANDIDATES):
             api_rate_limiter.sr_current_concurrent_candidate_tokens += 1
             api_rate_limiter.save()
@@ -81,14 +81,14 @@ class APIConnectionManager:
             return True
 
     def sr_add_token_for_requests_per_second(self):
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if api_rate_limiter.sr_current_requests_per_second_tokens < self.SR_MAX_REQUESTS_PER_SECOND:
             api_rate_limiter.sr_current_requests_per_second_tokens += 1
             api_rate_limiter.save()
             return True
 
     def sr_get_current_requests_per_second_tokens(self):
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         return api_rate_limiter.sr_current_requests_per_second_tokens
 
 
@@ -96,7 +96,7 @@ class APIConnectionManager:
     @staticmethod
     def aws_consume_one_request_token():
         # Remove a token from the bucket.
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.aws_current_concurrent_tokens > 0 and
             api_rate_limiter.aws_current_requests_per_second_tokens > 0):
             api_rate_limiter.aws_current_concurrent_tokens -= 1
@@ -110,7 +110,7 @@ class APIConnectionManager:
     def aws_finished_with_request_token(self):
         # Use when request is complete to update number of available
         # concurrent tokens
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.aws_current_concurrent_tokens < self.AWS_MAX_CONCURRENT_REQUESTS):
             api_rate_limiter.aws_current_concurrent_tokens += 1
             api_rate_limiter.save()
@@ -120,7 +120,7 @@ class APIConnectionManager:
             return True
 
     def aws_add_token_for_requests_per_second(self):
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         if api_rate_limiter.aws_current_requests_per_second_tokens < self.AWS_MAX_REQUESTS_PER_SECOND:
             api_rate_limiter.aws_current_requests_per_second_tokens += 1
             api_rate_limiter.save()
@@ -128,5 +128,5 @@ class APIConnectionManager:
 
     @staticmethod
     def aws_get_current_requests_per_second_tokens():
-        api_rate_limiter = APIRateLimiter().objects.get()
+        api_rate_limiter = APIRateLimiter.objects.get()
         return api_rate_limiter.aws_current_requests_per_second_tokens
