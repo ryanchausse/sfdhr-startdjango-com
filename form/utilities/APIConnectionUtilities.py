@@ -83,7 +83,7 @@ class APIConnectionManager:
             self.sr_current_requests_per_second_tokens += 1
             return True
 
-    def sr_get_current_requests_per_second_token(self):
+    def sr_get_current_requests_per_second_tokens(self):
         return self.sr_current_requests_per_second_tokens
 
 
@@ -114,5 +114,5 @@ class APIConnectionManager:
             self.aws_current_requests_per_second_tokens += 1
             return True
 
-    def aws_get_current_requests_per_second_token(self):
+    def aws_get_current_requests_per_second_tokens(self):
         return self.aws_current_requests_per_second_tokens
