@@ -82,6 +82,10 @@ class APIConnectionManager:
         api_rate_limiter = APIRateLimiter.objects.get()
         return api_rate_limiter.sr_current_requests_per_second_tokens
 
+    def sr_get_current_concurrency_tokens(self):
+        api_rate_limiter = APIRateLimiter.objects.get()
+        return api_rate_limiter.sr_current_concurrent_tokens
+
 
     # AWS
     def aws_consume_one_request_token(self):
@@ -119,3 +123,7 @@ class APIConnectionManager:
     def aws_get_current_requests_per_second_tokens(self):
         api_rate_limiter = APIRateLimiter.objects.get()
         return api_rate_limiter.aws_current_requests_per_second_tokens
+
+    def aws_get_current_concurrency_tokens(self):
+        api_rate_limiter = APIRateLimiter.objects.get()
+        return api_rate_limiter.aws_current_concurrent_tokens

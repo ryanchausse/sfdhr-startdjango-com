@@ -20,7 +20,9 @@ def add_tokens_to_buckets():
     api_conn_mgr.aws_add_token_for_requests_per_second()
     logger.info(f'{datetime.datetime.now()} - added one token to bucket for AWS')
     return (f'Current SR request per second tokens: {api_conn_mgr.sr_get_current_requests_per_second_tokens()}. '
-            f'Current AWS request per second tokens: {api_conn_mgr.aws_get_current_requests_per_second_tokens()}.')
+            f'Current AWS request per second tokens: {api_conn_mgr.aws_get_current_requests_per_second_tokens()}.'
+            f'Current SR concurrency tokens: {api_conn_mgr.sr_get_current_concurrency_tokens()}'
+            f'Current AWS concurrency tokens: {api_conn_mgr.aws_get_current_concurrency_tokens()}')
 
 @shared_task
 def email_score_report_or_el(el_id, report_type='score_report'):
