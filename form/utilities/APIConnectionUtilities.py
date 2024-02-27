@@ -15,14 +15,14 @@ class APIConnectionManager:
     SR_MAX_CONCURRENT_REQUESTS_CANDIDATES = 1
     SR_MAX_REQUESTS_PER_SECOND = 10
 
-    # For AWS, rate limiting depends on a lot of factors.
-    # Arbitrary numbers chosen here.
+    # For AWS, rate limiting depends on a lot of factors
+    # Arbitrary numbers chosen here
     AWS_MAX_CONCURRENT_REQUESTS = 10
     AWS_MAX_REQUESTS_PER_SECOND = 100
 
     # SmartRecruiters
     def sr_consume_one_request_token(self):
-        # Not for /candidates endpoint. Remove a token from the bucket.
+        # Not for /candidates endpoint. Remove a token from the bucket
         api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_tokens > 0 and
             api_rate_limiter.sr_current_requests_per_second_tokens > 0):
@@ -36,7 +36,7 @@ class APIConnectionManager:
 
     def sr_consume_one_request_token_candidate_endpoint(self):
         # Do we also need to remove a "normal" concurrency token?
-        # Unclear from SmartRecruiters docs.
+        # Unclear from SmartRecruiters docs
         api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_candidate_tokens > 0 and
             api_rate_limiter.sr_current_requests_per_second_tokens > 0):
@@ -58,10 +58,10 @@ class APIConnectionManager:
             return True
         else:
             # Bucket is full, so we don't have to do anything
-            return True
+            return False
 
     def sr_finished_with_request_token_candidate_endpoint(self):
-        # For /candidates endpoint.
+        # For /candidates endpoint
         api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.sr_current_concurrent_candidate_tokens < self.SR_MAX_CONCURRENT_REQUESTS_CANDIDATES):
             api_rate_limiter.sr_current_concurrent_candidate_tokens += 1
@@ -69,7 +69,7 @@ class APIConnectionManager:
             return True
         else:
             # Bucket is full, so we don't have to do anything
-            return True
+            return False
 
     def sr_add_token_for_requests_per_second(self):
         api_rate_limiter = APIRateLimiter.objects.get()
@@ -85,7 +85,7 @@ class APIConnectionManager:
 
     # AWS
     def aws_consume_one_request_token(self):
-        # Remove a token from the bucket.
+        # Remove a token from the bucket
         api_rate_limiter = APIRateLimiter.objects.get()
         if (api_rate_limiter.aws_current_concurrent_tokens > 0 and
             api_rate_limiter.aws_current_requests_per_second_tokens > 0):
@@ -107,7 +107,7 @@ class APIConnectionManager:
             return True
         else:
             # Bucket is full, so we don't have to do anything
-            return True
+            return False
 
     def aws_add_token_for_requests_per_second(self):
         api_rate_limiter = APIRateLimiter.objects.get()
