@@ -12,7 +12,7 @@ import os, datetime
 def add_tokens_to_buckets():
     # To run every second - implements Token Bucket algorithm
     # This may tax RabbitMQ/Celery/DB and be better replaced by a
-    # "while True" loop
+    # "while True" loop. Prob daemonize a python script.
     logger = get_task_logger(name='add_token_logger')
     api_conn_mgr = APIConnectionManager()
     api_conn_mgr.sr_add_token_for_requests_per_second()

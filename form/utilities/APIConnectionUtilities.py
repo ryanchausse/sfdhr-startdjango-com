@@ -1,14 +1,12 @@
 # The plan here is to implement the Token Bucket algorithm. The API
-# Connection Manager is a singleton that can add and subtract tokens
-# to rate limit outgoing API requests. Rates can differ by vendor.
+# Connection Manager can add and subtract tokens to rate limit outgoing
+# API requests. Rates can differ by vendor.
 
 # A celerybeat scheduled task adds "requests per second" tokens every second,
 # but concurrent request tokens need to be updated by the caller.
 from form.models import APIRateLimiter
 
 class APIConnectionManager:
-    _instance = None
-
     # For SmartRecruiters, published rate limits are:
     # 10 requests/s for each endpoint, generally
     # 8 concurrent requests, except for /candidates (only 1)
@@ -22,13 +20,7 @@ class APIConnectionManager:
     AWS_MAX_CONCURRENT_REQUESTS = 10
     AWS_MAX_REQUESTS_PER_SECOND = 100
 
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super().__new__(cls, *args, **kwargs)
-        return cls._instance
-
     # SmartRecruiters
-    @staticmethod
     def sr_consume_one_request_token():
         # Not for /candidates endpoint. Remove a token from the bucket.
         api_rate_limiter = APIRateLimiter.objects.get()
@@ -42,7 +34,6 @@ class APIConnectionManager:
             # Bucket empty, can't process request right now
             return False
 
-    @staticmethod
     def sr_consume_one_request_token_candidate_endpoint():
         # Do we also need to remove a "normal" concurrency token?
         # Unclear from SmartRecruiters docs.
@@ -93,7 +84,6 @@ class APIConnectionManager:
 
 
     # AWS
-    @staticmethod
     def aws_consume_one_request_token():
         # Remove a token from the bucket.
         api_rate_limiter = APIRateLimiter.objects.get()
@@ -126,7 +116,6 @@ class APIConnectionManager:
             api_rate_limiter.save()
             return True
 
-    @staticmethod
     def aws_get_current_requests_per_second_tokens():
         api_rate_limiter = APIRateLimiter.objects.get()
         return api_rate_limiter.aws_current_requests_per_second_tokens
