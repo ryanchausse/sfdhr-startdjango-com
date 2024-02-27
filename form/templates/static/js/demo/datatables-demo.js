@@ -30,7 +30,7 @@ $(document).ready(function() {
     order: [[1, 'asc'], [4, 'asc']]
   });
   $('#eligiblelistcandidatereferral_table').DataTable({
-    order: [[0, 'asc']]
+    order: [[1, 'asc'], [3, 'asc']]
   });
 
 /* Reference tables */

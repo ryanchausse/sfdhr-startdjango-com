@@ -127,6 +127,8 @@ class EligibleLists(TemplateView):
         if pk:
             eligible_list_form = EligibleList.objects.get(id=pk)
             form = EligibleListForm(initial=model_to_dict(eligible_list_form))
+            eligible_list_with_candidates = EligibleListCandidate.objects.filter(eligible_list=eligible_list_form).order_by('-rank')
+            context['eligiblelistcandidates'] = eligible_list_with_candidates
             context['form_data_present'] = True
             context['pk'] = pk
         else:
