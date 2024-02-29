@@ -1,12 +1,14 @@
 # App for Replacing MeritBridge
 
-NB: I had to freeze the pip package django-jsignature manually and patch/replace the library's jSignature.min.js with an updated version from the jSignature JavaScript library on local and startdjango.com. The PyPi django-jsignature package is not often or well maintained, and I already tried a PR for an upstream patch.
+NB: I had to freeze the pip package django-jsignature manually and patch/replace the library's jSignature.min.js with an updated version from the jSignature JavaScript library on local and startdjango.com. The PyPi django-jsignature package is not often or well maintained, and I already tried a PR for an upstream patch. [Update: my upstream contribution has been merged into the django-jsignature package, which addresses this
+issue. Should be fine to use as intended.]
 
-Created and maintained by Ryan Chausse (chausse@gmail.com)
+Created and maintained by Ryan Chausse (chausse@gmail.com) in my spare time, with my own resources. See LICENSE.md at the root
+of this repository for details.
 
 ## Main functions (TODO)
 - Create an Eligible List
-- Add and remove Candidates to and from an Eligible List
+- Add and activate/inactivate Candidates to and from an Eligible List
 - Calculate Scores for Candidates on an Eligible List
 - Adopt a tentative Eligible List
 - Create a Referral, which associates a Position to an Eligible List at a point in time (certification)
