@@ -189,7 +189,7 @@ class EligibleListRuleForm(forms.ModelForm):
     number_of_reachable_ranks = forms.IntegerField()
 
     class Meta:
-        model = ScoringModel
+        model = EligibleListRule
         fields = ['id', 'title', 'description', 'number_of_reachable_ranks']
 
 
