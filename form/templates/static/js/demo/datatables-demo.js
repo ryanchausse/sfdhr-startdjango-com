@@ -41,7 +41,7 @@ $('#scoringmodel_table').DataTable({
   order: [[0, 'asc']]
 });
 $('#eligiblelistrule_table').DataTable({
-  order: [[0, 'asc']]
+  order: [[2, 'asc']]
 });
 $('#candidatereferralstatus_table').DataTable({
   order: [[0, 'asc']]

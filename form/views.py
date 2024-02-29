@@ -1274,7 +1274,7 @@ class EligibleListRules(TemplateView):
             form = EligibleListRuleForm()
         context['form'] = form
         # Note that jQuery datatable has its own sort by function
-        context['eligiblelistrules'] = EligibleListRule.objects.all().order_by('-created_at')
+        context['eligiblelistrules'] = EligibleListRule.objects.all().order_by('-number_of_reachable_ranks')
         return context
 
 
