@@ -191,6 +191,7 @@ class EligibleListRuleForm(forms.ModelForm):
     class Meta:
         model = EligibleListRule
         fields = ['id', 'title', 'description', 'number_of_reachable_ranks']
+        ordering = ['-number_of_reachable_ranks']
 
 
 class CandidateReferralStatusForm(forms.ModelForm):
