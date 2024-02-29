@@ -25,6 +25,8 @@
                         <th>Code</th>
                         <th>Job Class</th>
                         <th>Specialty</th>
+                        <th>Eligible List Rule</th>
+                        <th>Scoring Model</th>
                         <th>Posted</th>
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
@@ -42,6 +44,8 @@
                         <th>Code</th>
                         <th>Job Class</th>
                         <th>Specialty</th>
+                        <th>Eligible List Rule</th>
+                        <th>Scoring Model</th>
                         <th>Posted</th>
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
@@ -61,6 +65,8 @@
                                 <td><a href="/eligible_lists/{{ eligible_list.id }}">{{ eligible_list.code }}</a></td>
                                 <td>{{ eligible_list.job_class }}</td>
                                 <td>{{ eligible_list.specialty }}</td>
+                                <td>{{ eligible_list.eligible_list_rule }}</td>
+                                <td>{{ eligible_list.scoring_model }}</td>
                                 {% if eligible_list.posted %}
                                     <td>{{ eligible_list.posted }}</td>
                                 {% else %}

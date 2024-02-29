@@ -14,6 +14,8 @@ from .models import LongRunningTask
 from .models import EligibleListCandidate
 from .models import EligibleListCandidateReferral
 from .models import ReferralStatus
+from .models import ScoringModel
+from .models import EligibleListRule
 from .models import CandidateReferralStatus
 from .models import LongRunningTaskType
 from .models import LongRunningTaskStatus
@@ -26,6 +28,8 @@ class EligibleListForm(forms.ModelForm):
     code = forms.TextInput(attrs={'required': True})
     job_class = forms.TextInput(attrs={'required': True})
     specialty = forms.TextInput()
+    eligible_list_rule = forms.ModelChoiceField(queryset=EligibleListRule.objects.all())
+    scoring_model = forms.ModelChoiceField(queryset=ScoringModel.objects.all())
     # posted = forms.DateField(required=False,
     #                          widget=DateInput(attrs={'type': 'date'}))
     inspection_start = forms.DateField(required=False,
@@ -166,6 +170,27 @@ class ReferralStatusForm(forms.ModelForm):
     class Meta:
         model = ReferralStatus
         fields = ['id', 'status', 'description']
+
+
+class ScoringModelForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    title = forms.TextInput()
+    description = forms.TextInput()
+
+    class Meta:
+        model = ScoringModel
+        fields = ['id', 'title', 'description']
+
+
+class EligibleListRuleForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    title = forms.TextInput()
+    description = forms.TextInput()
+    number_of_reachable_ranks = forms.IntegerField()
+
+    class Meta:
+        model = ScoringModel
+        fields = ['id', 'title', 'description', 'number_of_reachable_ranks']
 
 
 class CandidateReferralStatusForm(forms.ModelForm):

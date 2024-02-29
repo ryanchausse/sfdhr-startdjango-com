@@ -124,6 +124,20 @@
                         {{ form.specialty }}
                     </div>
                     <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.eligible_list_rule.errors }}
+                        <label for="{{ form.eligible_list_rule.id_for_label }}">Eligible List Rule</label>
+                        <br />
+                        {{ form.eligible_list_rule }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.scoring_model.errors }}
+                        <label for="{{ form.scoring_model.id_for_label }}">Scoring Model</label>
+                        <br />
+                        {{ form.scoring_model }}
+                    </div>
+                    <br />
                     <!-- <div class="fieldWrapper" style="margin-left: 1em;">
                         {{ form.posted.errors }}
                         <label for="{{ form.posted.id_for_label }}">Posted</label>
@@ -179,6 +193,8 @@
                         <th>Code</th>
                         <th>Job Class</th>
                         <th>Specialty</th>
+                        <th>Eligible List Rule</th>
+                        <th>Scoring Model</th>
                         <th>Posted</th>
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
@@ -196,6 +212,8 @@
                         <th>Code</th>
                         <th>Job Class</th>
                         <th>Specialty</th>
+                        <th>Eligible List Rule</th>
+                        <th>Scoring Model</th>
                         <th>Posted</th>
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
@@ -215,6 +233,8 @@
                                 <td><a href="/eligible_lists/{{ eligible_list.id }}">{{ eligible_list.code }}</a></td>
                                 <td>{{ eligible_list.job_class }}</td>
                                 <td>{{ eligible_list.specialty }}</td>
+                                <td>{{ eligible_list.eligible_list_rule }}</td>
+                                <td>{{ eligible_list.scoring_model }}</td>
                                 {% if eligible_list.posted %}
                                     <td>{{ eligible_list.posted }}</td>
                                 {% else %}

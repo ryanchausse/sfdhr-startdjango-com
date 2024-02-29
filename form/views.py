@@ -47,6 +47,10 @@ from .models import EligibleListCandidateReferral
 from .forms import EligibleListCandidateReferralForm
 from .models import ReferralStatus
 from .forms import ReferralStatusForm
+from .models import ScoringModel
+from .forms import ScoringModelForm
+from .models import EligibleListRule
+from .forms import EligibleListRuleForm
 from .models import CandidateReferralStatus
 from .forms import CandidateReferralStatusForm
 from .models import LongRunningTask
@@ -170,6 +174,8 @@ class UpdateEligibleList(TemplateView):
         el_object.code = request.POST['code']
         el_object.job_class = request.POST['job_class']
         el_object.specialty = request.POST['specialty']
+        el_object.eligible_list_rule = request.POST['eligible_list_rule']
+        el_object.scoring_model = request.POST['scoring_model']
         el_object.inspection_start = request.POST['inspection_start']
         el_object.inspection_end = request.POST['inspection_end']
         el_object.last_updated_by = request.user
@@ -1178,6 +1184,135 @@ class UpdateReferralStatus(TemplateView):
         referralstatus_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Referral Status")
         return redirect('/referralstatuses')
+
+
+class ScoringModels(TemplateView):
+    """
+    ScoringModel CRUD page
+    """
+    template_name = 'scoringmodels.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['user_is_in_data_editors'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if self.request.user.groups.filter(name='DataEditors').exists():
+            context['user_is_in_data_editors'] = True
+        if pk:
+            scoringmodel_form = ScoringModel.objects.get(id=pk)
+            form = ScoringModelForm(initial=model_to_dict(scoringmodel_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = ScoringModelForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['scoringmodels'] = ScoringModel.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateScoringModel(TemplateView):
+    template_name = 'scoringmodels.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scoringmodels')
+        form = ScoringModelForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Scoring Model: {form.errors}")
+            return redirect('/scoringmodels')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Scoring Model")
+        return redirect('/scoringmodels')
+
+
+class UpdateScoringModel(TemplateView):
+    template_name = 'scoringmodels.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scoringmodels')
+        scoringmodel_object = ScoringModel.objects.get(pk=pk)
+        scoringmodel_object.title = request.POST['title']
+        scoringmodel_object.description = request.POST['description']
+        scoringmodel_object.last_updated_by = request.user
+        scoringmodel_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Scoring Model")
+        return redirect('/scoringmodels')
+
+
+class EligibleListRules(TemplateView):
+    """
+    EligibleListRule CRUD page
+    """
+    template_name = 'eligiblelistrules.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['user_is_in_data_editors'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if self.request.user.groups.filter(name='DataEditors').exists():
+            context['user_is_in_data_editors'] = True
+        if pk:
+            eligiblelistrule_form = EligibleListRule.objects.get(id=pk)
+            form = EligibleListRuleForm(initial=model_to_dict(eligiblelistrule_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = EligibleListRuleForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['eligiblelistrules'] = EligibleListRule.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateEligibleListRule(TemplateView):
+    template_name = 'eligiblelistrules.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/eligiblelistrules')
+        form = EligibleListRuleForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Rule: {form.errors}")
+            return redirect('/eligiblelistrules')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Eligible List Rule")
+        return redirect('/eligiblelistrules')
+
+
+class UpdateEligibleListRule(TemplateView):
+    template_name = 'eligiblelistrules.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/eligiblelistrules')
+        eligiblelistrule_object = EligibleListRule.objects.get(pk=pk)
+        eligiblelistrule_object.title = request.POST['title']
+        eligiblelistrule_object.description = request.POST['description']
+        eligiblelistrule_object.number_of_reachable_ranks = request.POST['number_of_reachable_ranks']
+        eligiblelistrule_object.last_updated_by = request.user
+        eligiblelistrule_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List Rule")
+        return redirect('/eligiblelistrules')
 
 
 def handler404(request, exception, template_name="404.html"):

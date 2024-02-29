@@ -20,6 +20,55 @@ class SingleInstanceMixin(object):
 
 
 # Reference tables
+class ScoringModel(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='scoring_model_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='scoring_model_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.title}'
+
+    class Meta:
+        verbose_name = 'ScoringModel'
+        verbose_name_plural = 'ScoringModel'
+
+
+class EligibleListRule(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    number_of_reachable_ranks = models.IntegerField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='eligible_list_rule_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='eligible_list_rule_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.title}'
+
+    class Meta:
+        verbose_name = 'EligibleListRule'
+        verbose_name_plural = 'EligibleListRule'
+
+
 class ReferralStatus(models.Model):
     status = models.CharField(max_length=255)
     description = models.CharField(max_length=5000, blank=True, null=True, default='')
@@ -171,6 +220,8 @@ class EligibleList(models.Model):
     code = models.CharField(max_length=255, blank=True, null=True, default='', unique=True)
     job_class = models.CharField(max_length=255, blank=True, null=True, default='')
     specialty = models.CharField(max_length=255, blank=True, null=True, default='')
+    eligible_list_rule = models.ForeignKey(EligibleListRule, blank=True, null=True, on_delete=models.CASCADE)
+    scoring_model = models.ForeignKey(ScoringModel, blank=True, null=True, on_delete=models.CASCADE)
     posted = models.DateTimeField(blank=True, null=True)
     inspection_start = models.DateTimeField(blank=True, null=True)
     inspection_end = models.DateTimeField(blank=True, null=True)

@@ -84,6 +84,16 @@ urlpatterns = [
     path('referralstatuses/<int:pk>', views.ReferralStatuses.as_view(), name='referralstatuses'),
     path('create_referralstatus_form', views.CreateReferralStatus.as_view(), name='create_referralstatus_form'),
     path('update_referralstatus_form/<int:pk>', views.UpdateReferralStatus.as_view(), name='update_referralstatus_form'),
+    # ScoringModel (reference table)
+    path('scoringmodels', views.ScoringModels.as_view(), name='scoringmodels'),
+    path('scoringmodels/<int:pk>', views.ScoringModels.as_view(), name='scoringmodels'),
+    path('create_scoringmodel_form', views.CreateScoringModel.as_view(), name='create_scoringmodel_form'),
+    path('update_scoringmodel_form/<int:pk>', views.UpdateScoringModel.as_view(), name='update_scoringmodel_form'),
+    # EligibleListRule (reference table)
+    path('eligiblelistrules', views.EligibleListRules.as_view(), name='eligiblelistrules'),
+    path('eligiblelistrules/<int:pk>', views.EligibleListRules.as_view(), name='eligiblelistrules'),
+    path('create_eligiblelistrule_form', views.CreateEligibleListRule.as_view(), name='create_eligiblelistrule_form'),
+    path('update_eligiblelistrule_form/<int:pk>', views.UpdateEligibleListRule.as_view(), name='update_eligiblelistrule_form'),
     # CandidateReferralStatus (reference table)
     path('candidatereferralstatuses', views.CandidateReferralStatuses.as_view(), name='candidatereferralstatuses'),
     path('candidatereferralstatuses/<int:pk>', views.CandidateReferralStatuses.as_view(), name='candidatereferralstatuses'),
