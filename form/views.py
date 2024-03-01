@@ -1445,8 +1445,8 @@ class UpdateScoreBand(TemplateView):
         scoreband_object.title = request.POST['title']
         scoreband_object.description = request.POST['description']
         scoreband_object.rank = request.POST['rank']
-        scoreband_object.description = request.POST['upper_score_limit']
-        scoreband_object.description = request.POST['lower_score_limit']
+        scoreband_object.upper_score_limit = request.POST['upper_score_limit']
+        scoreband_object.lower_score_limit = request.POST['lower_score_limit']
         scoreband_object.last_updated_by = request.user
         scoreband_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Score Band")
