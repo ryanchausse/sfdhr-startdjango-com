@@ -283,7 +283,8 @@ class ScoreReportPDF(TemplateView):
             eligible_list_candidates=eligible_list_candidates).construct_sr_pdf_and_save_to_file()
         # Email Score Report to EIS Team
         async_task = email_score_report_or_el.delay(el_id=el_object.id, report_type='score_report')
-        messages.add_message(request, messages.SUCCESS, f"Email queued to be sent to EIS Team with Score Report for EL {el_object.code}.")
+        messages.add_message(request, messages.SUCCESS, (f'Email queued to be sent to EIS Team with Score Report for '
+                                                         f'Eligible List {el_object.code}.'))
         # Optionally, record that the email has been sent by adding a bool
         # field named "emailed" to EligibleList model, set to true and save
         # the el_object
