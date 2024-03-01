@@ -176,7 +176,7 @@ class UpdateEligibleList(TemplateView):
         el_object.code = request.POST['code']
         el_object.job_class = JobClass.objects.get(pk=request.POST['job_class'])
         el_object.specialty = request.POST['specialty']
-        el_object.eligible_list_rule = request.POST['eligible_list_rule']
+        el_object.eligible_list_rule = EligibleListRule.objects.get(pk=request.POST['eligible_list_rule'])
         el_object.scoring_model = request.POST['scoring_model']
         el_object.inspection_start = request.POST['inspection_start']
         el_object.inspection_end = request.POST['inspection_end']
