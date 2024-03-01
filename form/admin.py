@@ -15,6 +15,7 @@ from .models import LongRunningTaskType
 from .models import LongRunningTaskStatus
 from .models import APIRateLimiter
 from .models import ScoringModel
+from .models import JobClass
 from .models import EligibleListRule
 
 admin.site.register(Candidate)
@@ -34,6 +35,7 @@ admin.site.register(EligibleListCandidateReferral)
 admin.site.register(ReferralStatus)
 admin.site.register(CandidateReferralStatus)
 admin.site.register(ScoringModel)
+admin.site.register(JobClass)
 admin.site.register(EligibleListRule)
 admin.site.register(LongRunningTaskType)
 admin.site.register(LongRunningTaskStatus)

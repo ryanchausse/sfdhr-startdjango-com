@@ -49,6 +49,8 @@ from .models import ReferralStatus
 from .forms import ReferralStatusForm
 from .models import ScoringModel
 from .forms import ScoringModelForm
+from .models import JobClass
+from .forms import JobClassForm
 from .models import EligibleListRule
 from .forms import EligibleListRuleForm
 from .models import CandidateReferralStatus
@@ -1248,6 +1250,71 @@ class UpdateScoringModel(TemplateView):
         scoringmodel_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Scoring Model")
         return redirect('/scoringmodels')
+
+
+class JobClasses(TemplateView):
+    """
+    JobClass CRUD page
+    """
+    template_name = 'jobclasses.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['user_is_in_data_editors'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if self.request.user.groups.filter(name='DataEditors').exists():
+            context['user_is_in_data_editors'] = True
+        if pk:
+            jobclass_form = JobClass.objects.get(id=pk)
+            form = JobClassForm(initial=model_to_dict(jobclass_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = JobClassForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['jobclasses'] = JobClass.objects.all().order_by('-code')
+        return context
+
+
+class CreateJobClass(TemplateView):
+    template_name = 'jobclasses.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/jobclasses')
+        form = JobClassForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Job Class: {form.errors}")
+            return redirect('/jobclasses')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Job Class")
+        return redirect('/jobclasses')
+
+
+class UpdateJobClass(TemplateView):
+    template_name = 'jobclasses.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/jobclasses')
+        jobclass_object = JobClass.objects.get(pk=pk)
+        jobclass_object.title = request.POST['title']
+        jobclass_object.description = request.POST['description']
+        jobclass_object.code = request.POST['code']
+        jobclass_object.last_updated_by = request.user
+        jobclass_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Job Class")
+        return redirect('/jobclasses')
 
 
 class EligibleListRules(TemplateView):

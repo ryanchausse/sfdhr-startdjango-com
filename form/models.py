@@ -41,7 +41,7 @@ class ScoringModel(models.Model):
 
     class Meta:
         verbose_name = 'ScoringModel'
-        verbose_name_plural = 'ScoringModel'
+        verbose_name_plural = 'ScoringModels'
 
 
 class EligibleListRule(models.Model):
@@ -66,7 +66,32 @@ class EligibleListRule(models.Model):
 
     class Meta:
         verbose_name = 'EligibleListRule'
-        verbose_name_plural = 'EligibleListRule'
+        verbose_name_plural = 'EligibleListRules'
+
+
+class JobClass(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    code = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='job_class_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='job_class_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.code} - {self.title}'
+
+    class Meta:
+        verbose_name = 'JobClass'
+        verbose_name_plural = 'JobClasses'
 
 
 class ReferralStatus(models.Model):
@@ -302,6 +327,8 @@ class Job(models.Model):
     sr_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=255, blank=True, null=True, default='')
     description = models.CharField(max_length=255, blank=True, null=True, default='')
+    # "job_" necessary because class is a reserved word
+    job_class = models.ForeignKey(JobClass, blank=True, null=True, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, blank=True, null=True, default=None, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

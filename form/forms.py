@@ -15,6 +15,7 @@ from .models import EligibleListCandidate
 from .models import EligibleListCandidateReferral
 from .models import ReferralStatus
 from .models import ScoringModel
+from .models import JobClass
 from .models import EligibleListRule
 from .models import CandidateReferralStatus
 from .models import LongRunningTaskType
@@ -91,10 +92,11 @@ class JobForm(forms.ModelForm):
     title = forms.TextInput()
     description = forms.TextInput()
     department = forms.ModelChoiceField(queryset=Department.objects.all())
+    job_class = forms.ModelChoiceField(queryset=JobClass.objects.all())
 
     class Meta:
         model = Job
-        fields = ['id', 'title', 'description', 'department']
+        fields = ['id', 'title', 'description', 'department', 'job_class']
 
 
 class ApplicationForm(forms.ModelForm):
@@ -180,6 +182,17 @@ class ScoringModelForm(forms.ModelForm):
     class Meta:
         model = ScoringModel
         fields = ['id', 'title', 'description']
+
+
+class JobClassForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    title = forms.TextInput()
+    description = forms.TextInput()
+    code = forms.TextInput()
+
+    class Meta:
+        model = JobClass
+        fields = ['id', 'title', 'description', 'code']
 
 
 class EligibleListRuleForm(forms.ModelForm):

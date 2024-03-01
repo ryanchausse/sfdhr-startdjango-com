@@ -89,6 +89,11 @@ urlpatterns = [
     path('scoringmodels/<int:pk>', views.ScoringModels.as_view(), name='scoringmodels'),
     path('create_scoringmodel_form', views.CreateScoringModel.as_view(), name='create_scoringmodel_form'),
     path('update_scoringmodel_form/<int:pk>', views.UpdateScoringModel.as_view(), name='update_scoringmodel_form'),
+    # JobClass (reference table)
+    path('jobclasses', views.JobClasses.as_view(), name='jobclasses'),
+    path('jobclasses/<int:pk>', views.JobClasses.as_view(), name='jobclasses'),
+    path('create_jobclass_form', views.CreateJobClass.as_view(), name='create_jobclass_form'),
+    path('update_jobclass_form/<int:pk>', views.UpdateJobClass.as_view(), name='update_jobclass_form'),
     # EligibleListRule (reference table)
     path('eligiblelistrules', views.EligibleListRules.as_view(), name='eligiblelistrules'),
     path('eligiblelistrules/<int:pk>', views.EligibleListRules.as_view(), name='eligiblelistrules'),

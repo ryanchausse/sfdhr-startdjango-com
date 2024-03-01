@@ -40,6 +40,9 @@ $('#referralstatus_table').DataTable({
 $('#scoringmodel_table').DataTable({
   order: [[0, 'asc']]
 });
+$('#jobclass_table').DataTable({
+  order: [[2, 'asc']]
+});
 $('#eligiblelistrule_table').DataTable({
   order: [[2, 'asc']]
 });
