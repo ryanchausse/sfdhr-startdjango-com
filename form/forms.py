@@ -33,17 +33,17 @@ class EligibleListForm(forms.ModelForm):
     scoring_model = forms.ModelChoiceField(queryset=ScoringModel.objects.all())
     # posted = forms.DateField(required=False,
     #                          widget=DateInput(attrs={'type': 'date'}))
-    inspection_start = forms.DateField(required=False,
-                                       widget=DateInput(attrs={'type': 'date'}))
-    inspection_end = forms.DateField(required=False,
-                                     widget=DateInput(attrs={'type': 'date'}))
+    inspection_start = forms.DateTimeField(required=False,
+                                           widget=DateTimeInput(attrs={'type': 'date'}))
+    inspection_end = forms.DateTimeField(required=False,
+                                         widget=DateTimeInput(attrs={'type': 'date'}))
     # adopted = forms.DateField(required=False,
     #                           widget=DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = EligibleList
-        fields = ['id', 'code', 'job_class', 'specialty', 'posted', 'inspection_start', 'inspection_end', 'adopted',
-                  'eligible_list_rule', 'scoring_model']
+        fields = ['id', 'code', 'job_class', 'specialty', 'inspection_start',
+                  'inspection_end', 'eligible_list_rule', 'scoring_model']
 
 
 class CandidateForm(forms.ModelForm):
