@@ -174,7 +174,7 @@ class UpdateEligibleList(TemplateView):
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
         el_object.code = request.POST['code']
-        el_object.job_class = request.POST['job_class']
+        el_object.job_class = JobClass.objects.get(pk=request.POST['job_class'])
         el_object.specialty = request.POST['specialty']
         el_object.eligible_list_rule = request.POST['eligible_list_rule']
         el_object.scoring_model = request.POST['scoring_model']
@@ -611,6 +611,7 @@ class UpdateJob(TemplateView):
         job_object.title = request.POST['title']
         job_object.description = request.POST['description']
         job_object.department = Department.objects.get(pk=request.POST['department'])
+        job_object.job_class = JobClass.objects.get(pk=request.POST['job_class'])
         job_object.last_updated_by = request.user
         job_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Job")

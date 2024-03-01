@@ -27,7 +27,7 @@ from jsignature.widgets import JSignatureWidget
 class EligibleListForm(forms.ModelForm):
     id = forms.HiddenInput()
     code = forms.TextInput(attrs={'required': True})
-    job_class = forms.TextInput(attrs={'required': True})
+    job_class = forms.ModelChoiceField(queryset=JobClass.objects.all())
     specialty = forms.TextInput()
     eligible_list_rule = forms.ModelChoiceField(queryset=EligibleListRule.objects.all())
     scoring_model = forms.ModelChoiceField(queryset=ScoringModel.objects.all())
@@ -42,7 +42,8 @@ class EligibleListForm(forms.ModelForm):
 
     class Meta:
         model = EligibleList
-        fields = ['id', 'code', 'job_class', 'specialty', 'posted', 'inspection_start', 'inspection_end', 'adopted']
+        fields = ['id', 'code', 'job_class', 'specialty', 'posted', 'inspection_start', 'inspection_end', 'adopted',
+                  'eligible_list_rule', 'scoring_model']
 
 
 class CandidateForm(forms.ModelForm):

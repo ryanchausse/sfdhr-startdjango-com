@@ -243,7 +243,7 @@ class Position(models.Model):
 
 class EligibleList(models.Model):
     code = models.CharField(max_length=255, blank=True, null=True, default='', unique=True)
-    job_class = models.CharField(max_length=255, blank=True, null=True, default='')
+    job_class = models.ForeignKey(JobClass, blank=True, null=True, on_delete=models.CASCADE)
     specialty = models.CharField(max_length=255, blank=True, null=True, default='')
     eligible_list_rule = models.ForeignKey(EligibleListRule, blank=True, null=True, on_delete=models.CASCADE)
     scoring_model = models.ForeignKey(ScoringModel, blank=True, null=True, on_delete=models.CASCADE)
