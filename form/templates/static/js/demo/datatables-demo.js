@@ -32,29 +32,38 @@ $(document).ready(function() {
   $('#eligiblelistcandidatereferral_table').DataTable({
     order: [[1, 'asc'], [3, 'asc']]
   });
+  $('#scorebandingmodelscoreband_table').DataTable({
+    order: [[0, 'asc']]
+  });
 
 /* Reference tables */
-$('#referralstatus_table').DataTable({
-  order: [[0, 'asc']]
-});
-$('#scoringmodel_table').DataTable({
-  order: [[0, 'asc']]
-});
-$('#jobclass_table').DataTable({
-  order: [[2, 'asc']]
-});
-$('#eligiblelistrule_table').DataTable({
-  order: [[2, 'asc']]
-});
-$('#candidatereferralstatus_table').DataTable({
-  order: [[0, 'asc']]
-});
-$('#longrunningtasktype_table').DataTable({
-  order: [[0, 'asc']]
-});
-$('#longrunningtaskstatus_table').DataTable({
-  order: [[0, 'asc']]
-});
+  $('#referralstatus_table').DataTable({
+    order: [[0, 'asc']]
+  });
+  $('#scoringmodel_table').DataTable({
+    order: [[0, 'asc']]
+  });
+  $('#scorebandingmodel_table').DataTable({
+    order: [[0, 'asc']]
+  });
+  $('#scoreband_table').DataTable({
+    order: [[0, 'asc']]
+  });
+  $('#jobclass_table').DataTable({
+    order: [[2, 'asc']]
+  });
+  $('#eligiblelistrule_table').DataTable({
+    order: [[2, 'asc']]
+  });
+  $('#candidatereferralstatus_table').DataTable({
+    order: [[0, 'asc']]
+  });
+  $('#longrunningtasktype_table').DataTable({
+    order: [[0, 'asc']]
+  });
+  $('#longrunningtaskstatus_table').DataTable({
+    order: [[0, 'asc']]
+  });
 
   $('.dataTables_length').addClass('bs-select');
 });

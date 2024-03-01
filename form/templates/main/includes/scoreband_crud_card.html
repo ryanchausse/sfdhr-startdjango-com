@@ -1,0 +1,133 @@
+{% load static %}
+<div class="card shadow mb-4" xmlns="http://www.w3.org/1999/html">
+    <div class="card-header py-3">
+        <a href="/"><h6 class="m-0 font-weight-bold text-primary" style="float:left; padding-right: 9em;">MeritBridge Replacement App</h6></a>
+    </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div style="margin-top:1em; margin-bottom:1em; margin-right:2em;" class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="card-body">
+        {% if user.is_authenticated %}
+            <div class="table-responsive">
+                {% if form_data_present %}
+                    <h3>Update Score Band <span style="font-size:0.7em">(or <a href='/scorebands'>create a new Score Band</a>)</span></h3>
+                    <form id='form_to_submit' action="/update_scoreband_form/{{ pk }}" method="post">
+                {% else %}
+                    <h3>Create Score Band</h3>
+                    <form id='form_to_submit' action="/create_scoreband_form" method="post">
+                {% endif %}
+                    {% csrf_token %}
+
+                    {% if form.errors or form.non_field_errors %}
+                        <p>{{ form.errors }}</p>
+                        <p>{{ form.non_field_errors }}</p>
+                    {% endif %}
+
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.title.errors }}
+                        <label for="{{ form.title.id_for_label }}">Title</label>
+                        <br />
+                        {{ form.title }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.description.errors }}
+                        <label for="{{ form.description.id_for_label }}">Description</label>
+                        <br />
+                        {{ form.description }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.rank.errors }}
+                        <label for="{{ form.rank.id_for_label }}">Rank</label>
+                        <br />
+                        {{ form.rank }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.upper_score_limit.errors }}
+                        <label for="{{ form.upper_score_limit.id_for_label }}">Upper Score Limit</label>
+                        <br />
+                        {{ form.upper_score_limit }}
+                    </div>
+                    <br />
+                    <div class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.lower_score_limit.errors }}
+                        <label for="{{ form.lower_score_limit.id_for_label }}">Lower Score Limit</label>
+                        <br />
+                        {{ form.lower_score_limit }}
+                    </div>
+                    <br />
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="margin-left:1em;" id="button-submit">
+                            {% if form_data_present %}
+                                Update
+                            {% else %}
+                                Create
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <h6 style="color:#3333cc">Please log in to create or update data</h6>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <h3>Score Bands</h3>
+            <table id="scoreband_table" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Rank</th>
+                        <th>Upper Score Limit</th>
+                        <th>Lower Score Limit</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                        <th>Last Updated By</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Rank</th>
+                        <th>Upper Score Limit</th>
+                        <th>Lower Score Limit</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Created By</th>
+                        <th>Last Updated By</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if scorebands %}
+                        {% for scoreband in scorebands %}
+                            <tr>
+                                <td><a href="/scorebands/{{ scoreband.id }}">{{ scoreband.title }}</a></td>
+                                <td>{{ scoreband.description }}</td>
+                                <td>{{ scoreband.rank }}</td>
+                                <td>{{ scoreband.upper_score_limit }}</td>
+                                <td>{{ scoreband.lower_score_limit }}</td>
+                                <td>{{ scoreband.created_at }}</td>
+                                <td>{{ scoreband.updated_at }}</td>
+                                <td>{{ scoreband.created_by }}</td>
+                                <td>{{ scoreband.last_updated_by }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>

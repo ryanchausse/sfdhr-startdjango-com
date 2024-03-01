@@ -44,6 +44,57 @@ class ScoringModel(models.Model):
         verbose_name_plural = 'ScoringModels'
 
 
+class ScoreBandingModel(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='score_banding_model_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='score_banding_model_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.title}'
+
+    class Meta:
+        verbose_name = 'ScoreBandingModel'
+        verbose_name_plural = 'ScoreBandingModels'
+
+
+class ScoreBand(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=5000, blank=True, null=True, default='')
+    rank = models.IntegerField()
+    upper_score_limit = models.FloatField()
+    lower_score_limit = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='score_band_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='score_band_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.title} - {self.rank} - {self.upper_score_limit} - {self.lower_score_limit}'
+
+    class Meta:
+        verbose_name = 'ScoreBand'
+        verbose_name_plural = 'ScoreBand'
+
+
 class EligibleListRule(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=5000, blank=True, null=True, default='')
@@ -434,6 +485,31 @@ class EligibleListCandidateReferral(models.Model):
         verbose_name = 'EligibleListCandidateReferral'
         verbose_name_plural = 'EligibleListCandidateReferrals'
         unique_together = ('eligible_list_candidate', 'referral')
+
+
+class ScoreBandingModelScoreBand(models.Model):
+    score_banding_model = models.ForeignKey(ScoreBandingModel, on_delete=models.CASCADE)
+    score_band = models.ForeignKey(ScoreBand, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(get_user_model(),
+                                   related_name='score_banding_score_band_created_by',
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+    last_updated_by = models.ForeignKey(get_user_model(),
+                                        related_name='score_banding_score_band_last_updated_by',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.score_banding_model} - {self.score_band}'
+
+    class Meta:
+        verbose_name = 'ScoreBandingModelScoreBand'
+        verbose_name_plural = 'ScoreBandingModelScoreBands'
+        unique_together = ('score_banding_model', 'score_band')
 
 
 # Abstract entities

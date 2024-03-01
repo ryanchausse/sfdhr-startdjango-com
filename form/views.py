@@ -55,6 +55,12 @@ from .models import EligibleListRule
 from .forms import EligibleListRuleForm
 from .models import CandidateReferralStatus
 from .forms import CandidateReferralStatusForm
+from .models import ScoreBandingModel
+from .forms import ScoreBandingModelForm
+from .models import ScoreBand
+from .forms import ScoreBandForm
+from .models import ScoreBandingModelScoreBand
+from .forms import ScoreBandingModelScoreBandForm
 from .models import LongRunningTask
 from .forms import LongRunningTaskForm
 from .models import LongRunningTaskType
@@ -63,7 +69,6 @@ from .models import LongRunningTaskStatus
 from .forms import LongRunningTaskStatusForm
 from .utilities.ReferralUtilities import ReferralUtilities
 from .utilities.EligibleListUtilities import EligibleListUtilities
-from .utilities.APIConnectionUtilities import APIConnectionManager
 from jsignature.utils import draw_signature
 from .tasks import *
 
@@ -1017,6 +1022,70 @@ class CreateEligibleListCandidateReferral(TemplateView):
         return redirect('/eligiblelistcandidatereferrals')
 
 
+class ScoreBandingModelScoreBands(TemplateView):
+    """
+    ScoreBandingModelScoreBand (relational table) CRUD page
+    """
+    template_name = 'scorebandingmodelscorebands.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['user_is_in_data_editors'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if self.request.user.groups.filter(name='DataEditors').exists():
+            context['user_is_in_data_editors'] = True
+        if pk:
+            scorebandingmodelscoreband_form = ScoreBandingModelScoreBand.objects.get(id=pk)
+            form = ScoreBandingModelScoreBandForm(initial=model_to_dict(scorebandingmodelscoreband_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = ScoreBandingModelScoreBandForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['scorebandingmodelscorebands'] = ScoreBandingModelScoreBand.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateScoreBandingModelScoreBand(TemplateView):
+    template_name = 'scorebandingmodelscorebands.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scorebandingmodelscorebands')
+        form = EligibleListCandidateReferralForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Score Banding Model Score Band: {form.errors}")
+            return redirect('/scorebandingmodelscorebands')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Score Banding Model Score Band")
+        return redirect('/scorebandingmodelscorebands')
+
+
+class UpdateScoreBandingModelScoreBand(TemplateView):
+    template_name = 'scorebandingmodelscorebands.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scorebandingmodelscorebands')
+        scorebandingmodelscoreband_object = ScoreBandingModelScoreBand.objects.get(pk=pk)
+        scorebandingmodelscoreband_object.score_banding_model = ScoreBandingModel.objects.get(pk=request.POST['score_banding_model'])
+        scorebandingmodelscoreband_object.score_band = ScoreBand.objects.get(pk=request.POST['score_band'])
+        scorebandingmodelscoreband_object.last_updated_by = request.user
+        scorebandingmodelscoreband_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Score Banding Model Score Band")
+        return redirect('/scorebandingmodelscorebands')
+
+
 class UpdateEligibleListCandidateReferral(TemplateView):
     template_name = 'eligiblelistcandidatereferrals.html'
 
@@ -1253,6 +1322,137 @@ class UpdateScoringModel(TemplateView):
         scoringmodel_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Scoring Model")
         return redirect('/scoringmodels')
+
+
+class ScoreBandingModels(TemplateView):
+    """
+    ScoreBandingModel CRUD page
+    """
+    template_name = 'scorebandingmodels.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['user_is_in_data_editors'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if self.request.user.groups.filter(name='DataEditors').exists():
+            context['user_is_in_data_editors'] = True
+        if pk:
+            scorebandingmodel_form = ScoreBandingModel.objects.get(id=pk)
+            form = ScoreBandingModelForm(initial=model_to_dict(scorebandingmodel_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = ScoreBandingModelForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['scorebandingmodels'] = ScoreBandingModel.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateScoreBandingModel(TemplateView):
+    template_name = 'scorebandingmodels.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scorebandingmodels')
+        form = ScoreBandingModelForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Score Banding Model: {form.errors}")
+            return redirect('/scorebandingmodels')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Score Banding Model")
+        return redirect('/scorebandingmodels')
+
+
+class UpdateScoreBandingModel(TemplateView):
+    template_name = 'scorebandingmodels.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scorebandingmodels')
+        scorebandingmodel_object = ScoreBandingModel.objects.get(pk=pk)
+        scorebandingmodel_object.title = request.POST['title']
+        scorebandingmodel_object.description = request.POST['description']
+        scorebandingmodel_object.last_updated_by = request.user
+        scorebandingmodel_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Score Banding Model")
+        return redirect('/scorebandingmodels')
+
+
+class ScoreBands(TemplateView):
+    """
+    ScoreBand CRUD page
+    """
+    template_name = 'scorebands.html'
+
+    def get_context_data(self, pk=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_is_in_admins'] = False
+        context['user_is_in_data_editors'] = False
+        context['form_data_present'] = False
+        if self.request.user.groups.filter(name='Admins').exists():
+            context['user_is_in_admins'] = True
+        if self.request.user.groups.filter(name='DataEditors').exists():
+            context['user_is_in_data_editors'] = True
+        if pk:
+            scoreband_form = ScoreBand.objects.get(id=pk)
+            form = ScoreBandForm(initial=model_to_dict(scoreband_form))
+            context['form_data_present'] = True
+            context['pk'] = pk
+        else:
+            form = ScoreBandForm()
+        context['form'] = form
+        # Note that jQuery datatable has its own sort by function
+        context['scorebands'] = ScoreBand.objects.all().order_by('-created_at')
+        return context
+
+
+class CreateScoreBand(TemplateView):
+    template_name = 'scorebands.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scorebands')
+        form = ScoreBandForm(request.POST)
+        if not form.is_valid():
+            messages.add_message(request, messages.WARNING, f"Could not save Score Band: {form.errors}")
+            return redirect('/scorebands')
+        form_to_save = form.save(commit=False)
+        form_to_save.created_by = request.user
+        form_to_save.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully saved Score Band")
+        return redirect('/scorebands')
+
+
+class UpdateScoreBand(TemplateView):
+    template_name = 'scorebands.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/scorebands')
+        scoreband_object = ScoreBand.objects.get(pk=pk)
+        scoreband_object.title = request.POST['title']
+        scoreband_object.description = request.POST['description']
+        scoreband_object.rank = request.POST['rank']
+        scoreband_object.description = request.POST['upper_score_limit']
+        scoreband_object.description = request.POST['lower_score_limit']
+        scoreband_object.last_updated_by = request.user
+        scoreband_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Score Band")
+        return redirect('/scorebands')
 
 
 class JobClasses(TemplateView):

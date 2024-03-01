@@ -15,6 +15,9 @@ from .models import EligibleListCandidate
 from .models import EligibleListCandidateReferral
 from .models import ReferralStatus
 from .models import ScoringModel
+from .models import ScoreBandingModel
+from .models import ScoreBand
+from .models import ScoreBandingModelScoreBand
 from .models import JobClass
 from .models import EligibleListRule
 from .models import CandidateReferralStatus
@@ -164,6 +167,16 @@ class EligibleListCandidateReferralForm(forms.ModelForm):
         fields = ['id', 'eligible_list_candidate', 'referral', 'status', 'active', 'notes']
 
 
+class ScoreBandingModelScoreBandForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    score_banding_model = forms.ModelChoiceField(queryset=ScoreBandingModel.objects.all())
+    score_band = forms.ModelChoiceField(queryset=ScoreBand.objects.all())
+
+    class Meta:
+        model = ScoreBandingModelScoreBand
+        fields = ['id', 'score_banding_model', 'score_band']
+
+
 # Reference tables
 class ReferralStatusForm(forms.ModelForm):
     id = forms.HiddenInput()
@@ -183,6 +196,30 @@ class ScoringModelForm(forms.ModelForm):
     class Meta:
         model = ScoringModel
         fields = ['id', 'title', 'description']
+
+
+class ScoreBandingModelForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    title = forms.TextInput()
+    description = forms.TextInput()
+
+    class Meta:
+        model = ScoreBandingModel
+        fields = ['id', 'title', 'description']
+
+
+class ScoreBandForm(forms.ModelForm):
+    id = forms.HiddenInput()
+    title = forms.TextInput()
+    description = forms.TextInput()
+    rank = forms.IntegerField()
+    upper_score_limit = forms.FloatField()
+    lower_score_limit = forms.FloatField()
+
+    class Meta:
+        model = ScoreBand
+        fields = ['id', 'title', 'description', 'rank', 'upper_score_limit',
+                  'lower_score_limit']
 
 
 class JobClassForm(forms.ModelForm):

@@ -78,6 +78,11 @@ urlpatterns = [
     path('create_eligiblelistcandidatereferral_form', views.CreateEligibleListCandidateReferral.as_view(), name='create_eligiblelistcandidatereferral_form'),
     path('update_eligiblelistcandidatereferral_form/<int:pk>', views.UpdateEligibleListCandidateReferral.as_view(), name='update_eligiblelistcandidate_form'),
     path('toggle_active_status_eligiblelistcandidatereferral', views.ToggleActiveStatusEligibleListCandidateReferral.as_view(), name='toggle_active_status_eligiblelistcandidatereferral'),
+    # ScoreBandingModel (relational table)
+    path('scorebandingmodelscorebands', views.ScoreBandingModelScoreBands.as_view(), name='scorebandingmodelscorebands'),
+    path('scorebandingmodelscorebands/<int:pk>', views.ScoreBandingModelScoreBands.as_view(), name='scorebandingmodelscorebands'),
+    path('create_scorebandingmodelscoreband_form', views.CreateScoreBandingModelScoreBand.as_view(), name='create_scorebandingmodelscoreband_form'),
+    path('update_scorebandingmodelscoreband_form/<int:pk>', views.UpdateScoreBandingModelScoreBand.as_view(), name='update_scorebandingmodelscoreband_form'),
 
     # ReferralStatus (reference table)
     path('referralstatuses', views.ReferralStatuses.as_view(), name='referralstatuses'),
@@ -89,6 +94,16 @@ urlpatterns = [
     path('scoringmodels/<int:pk>', views.ScoringModels.as_view(), name='scoringmodels'),
     path('create_scoringmodel_form', views.CreateScoringModel.as_view(), name='create_scoringmodel_form'),
     path('update_scoringmodel_form/<int:pk>', views.UpdateScoringModel.as_view(), name='update_scoringmodel_form'),
+    # ScoreBandingModel (reference table)
+    path('scorebandingmodels', views.ScoreBandingModels.as_view(), name='scorebandingmodels'),
+    path('scorebandingmodels/<int:pk>', views.ScoreBandingModels.as_view(), name='scorebandingmodels'),
+    path('create_scorebandingmodel_form', views.CreateScoreBandingModel.as_view(), name='create_scorebandingmodel_form'),
+    path('update_scorebandingmodel_form/<int:pk>', views.UpdateScoreBandingModel.as_view(), name='update_scorebandingmodel_form'),
+    # ScoreBand (reference table)
+    path('scorebands', views.ScoreBands.as_view(), name='scorebands'),
+    path('scorebands/<int:pk>', views.ScoreBands.as_view(), name='scorebands'),
+    path('create_scoreband_form', views.CreateScoreBand.as_view(), name='create_scoreband_form'),
+    path('update_scoreband_form/<int:pk>', views.UpdateScoreBand.as_view(), name='update_scoreband_form'),
     # JobClass (reference table)
     path('jobclasses', views.JobClasses.as_view(), name='jobclasses'),
     path('jobclasses/<int:pk>', views.JobClasses.as_view(), name='jobclasses'),
