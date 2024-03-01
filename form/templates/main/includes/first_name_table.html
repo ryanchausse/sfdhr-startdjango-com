@@ -30,19 +30,19 @@
         <h6><a href="/eligiblelistcandidates">Eligible Lists with Candidates</a></h6>
         <h6><a href="/eligiblelistcandidatereferrals">Referrals with Candidates</a></h6>
         <hr />
-        {% if user_is_in_admins %}
-            <p>Data in Progress</p>
-            <h6><a href="/longrunningtasks">Long Running Tasks</a></h6>
-            <hr />
-        {% endif %}
         <p>Definition Data</p>
         <h6><a href="/referralstatuses">Referral Statuses</a></h6>
         <h6><a href="/candidatereferralstatuses">Candidate Referral Statuses</a></h6>
         <h6><a href="/scoringmodels">Scoring Models</a></h6>
         <h6><a href="/eligiblelistrules">Eligible List Rules</a></h6>
+        <h6><a href="/jobclasses">Job Classes</a></h6>
         {% if user_is_in_admins %}
+            <hr />
+            <p>Unused Data Models</p>
+            <h6><a href="/longrunningtasks">Long Running Tasks</a></h6>
             <h6><a href="/longrunningtaskstatuses">Long Running Task Statuses</a></h6>
             <h6><a href="/longrunningtasktypes">Long Running Task Types</a></h6>
         {% endif %}
+
     </div>
 </form>
