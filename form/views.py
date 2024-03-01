@@ -229,6 +229,7 @@ class AdoptEligibleList(TemplateView):
 
 
 class EligibleListPDF(TemplateView):
+    # Eligible List with Candidates
     template_name = 'eligible_lists.html'
 
     def get(self, request, pk, *args, **kwargs):
@@ -250,15 +251,43 @@ class EligibleListPDF(TemplateView):
             eligible_list_candidates=eligible_list_candidates).construct_el_pdf_and_save_to_file()
         # Email Eligible List to EIS Team
         async_task = email_score_report_or_el.delay(el_id=el_object.id, report_type='eligible_list')
-        messages.add_message(request, messages.SUCCESS, f"Email queued to be sent to EIS Team for Eligible List {el_object.code}.")
+        # messages.add_message(request, messages.SUCCESS, f"Email queued to be sent to EIS Team for Eligible List {el_object.code}.")
         # Optionally, record that the email has been sent by adding a bool
         # field named "emailed" to EligibleList model, set to true and save
         # the el_object
 
-        # Return file from /pdfs as pdf response
+        # Return file from /form/pdfs as pdf response
         return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
                             f'/pdfs/eligible_lists/eligible_list_{el_object.code}.pdf', 'rb'),
                             content_type='application/pdf')
+
+
+class EligibleListCSV(TemplateView):
+    # Eligible List with Candidates
+    template_name = 'eligible_lists.html'
+
+    def get(self, request, pk, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to perform this action")
+            return redirect('/eligible_lists')
+        el_object = EligibleList.objects.get(pk=pk)
+        eligible_list_candidates = EligibleListCandidate.objects.filter(
+            eligible_list = el_object,
+            active = True
+        ).order_by('-rank')
+        if not eligible_list_candidates:
+            messages.add_message(request, messages.WARNING, f"No candidates on Eligible List {el_object.code}")
+            return redirect('/eligible_lists')
+        # Create EL CSV, save, then send email to Requestor (TODO)
+        csv_constructed = EligibleListUtilities(
+            eligible_list=el_object,
+            eligible_list_candidates=eligible_list_candidates).construct_el_csv_and_save_to_file()
+
+        # Return file from /form/csvs as csv response
+        return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
+                            f'/csvs/eligible_lists/eligible_list_{el_object.code}.csv', 'rb'),
+                            content_type='application/csv')
 
 
 class ScoreReportPDF(TemplateView):
@@ -283,16 +312,44 @@ class ScoreReportPDF(TemplateView):
             eligible_list_candidates=eligible_list_candidates).construct_sr_pdf_and_save_to_file()
         # Email Score Report to EIS Team
         async_task = email_score_report_or_el.delay(el_id=el_object.id, report_type='score_report')
-        messages.add_message(request, messages.SUCCESS, (f'Email queued to be sent to EIS Team with Score Report for '
-                                                         f'Eligible List {el_object.code}.'))
+        # messages.add_message(request, messages.SUCCESS, (f'Email queued to be sent to EIS Team with Score Report for '
+        #                                                  f'Eligible List {el_object.code}.'))
         # Optionally, record that the email has been sent by adding a bool
         # field named "emailed" to EligibleList model, set to true and save
         # the el_object
 
-        # Return file from /pdfs as pdf response
+        # Return file from /form/pdfs as pdf response
         return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
                             f'/pdfs/score_reports/score_report_{el_object.code}.pdf', 'rb'),
                             content_type='application/pdf')
+
+
+class ScoreReportCSV(TemplateView):
+    # Score Report with Candidates
+    template_name = 'eligible_lists.html'
+
+    def get(self, request, pk, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to perform this action")
+            return redirect('/eligible_lists')
+        el_object = EligibleList.objects.get(pk=pk)
+        eligible_list_candidates = EligibleListCandidate.objects.filter(
+            eligible_list = el_object,
+            active = True
+        ).order_by('-rank')
+        if not eligible_list_candidates:
+            messages.add_message(request, messages.WARNING, f"No candidates on Eligible List {el_object.code}")
+            return redirect('/eligible_lists')
+        # Create SR CSV, save, then send email to Requestor (TODO)
+        csv_constructed = EligibleListUtilities(
+            eligible_list=el_object,
+            eligible_list_candidates=eligible_list_candidates).construct_sr_csv_and_save_to_file()
+
+        # Return file from /form/csvs as csv response
+        return FileResponse(open(os.path.abspath(os.path.dirname(__file__)) +
+                            f'/csvs/score_reports/score_report_{el_object.code}.csv', 'rb'),
+                            content_type='application/csv')
 
 
 class Candidates(TemplateView):

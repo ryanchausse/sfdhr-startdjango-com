@@ -31,8 +31,10 @@
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
                         <th>Adopted</th>
-                        <th>Score Report</th>
-                        <th>Eligible List</th>
+                        <th>Eligible List PDF</th>
+                        <th>Eligible List CSV</th>
+                        <th>Score Report PDF</th>
+                        <th>Score Report CSV</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -50,8 +52,10 @@
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
                         <th>Adopted</th>
-                        <th>Score Report</th>
-                        <th>Eligible List</th>
+                        <th>Eligible List PDF</th>
+                        <th>Eligible List CSV</th>
+                        <th>Score Report PDF</th>
+                        <th>Score Report CSV</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -92,10 +96,16 @@
                                     </td>
                                 {% endif %}
                                 <td>
+                                    <a href='/eligible_list_pdf/{{ eligible_list.id }}' target="_blank">Eligible List PDF</a>
+                                </td>
+                                <td>
+                                    <a href='/eligible_list_csv/{{ eligible_list.id }}'>Eligible List CSV</a>
+                                </td>
+                                <td>
                                     <a href='/score_report_pdf/{{ eligible_list.id }}' target="_blank">Score Report PDF</a>
                                 </td>
                                 <td>
-                                    <a href='/eligible_list_pdf/{{ eligible_list.id }}' target="_blank">Eligible List PDF</a>
+                                    <a href='/score_report_csv/{{ eligible_list.id }}'>Score Report CSV</a>
                                 </td>
                                 <td>{{ eligible_list.created_at }}</td>
                                 <td>{{ eligible_list.updated_at }}</td>

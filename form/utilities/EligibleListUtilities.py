@@ -47,7 +47,7 @@ class EligibleListUtilities:
 
 
     # Eligible Lists
-    def build_eligible_list_form(self, filename=None):
+    def build_eligible_list_pdf(self, filename=None):
         doc = EligibleListDocTemplate(filename, rightMargin=15, leftMargin=15,
                                       topMargin=10, bottomMargin=10,
                                       title=f'Eligible List {self.eligible_list.code}')
@@ -147,7 +147,24 @@ class EligibleListUtilities:
         filename = os.path.abspath(os.path.dirname(__file__)) + f'/../pdfs/eligible_lists/eligible_list_{self.eligible_list.code}.pdf'
         width, height = letter
         pageinfo = f"Eligible List {self.eligible_list.code}"
-        self.build_eligible_list_form(filename=filename)
+        self.build_eligible_list_pdf(filename=filename)
+        return True
+
+    def build_eligible_list_csv(self, filename):
+        with open(filename, 'w', newline='') as file:
+            writer = csv.writer(file)
+            fields = ["Eligible List", "Candidate", "Rank", "Score"]
+            writer.writerow(fields)
+            for el_candidate in self.eligible_list_candidates:
+                # We have only passed in Active EL candidates. This may change.
+                writer.writerow([self.eligible_list.code, el_candidate.candidate, el_candidate.rank, el_candidate.score])
+        return True
+
+    def construct_el_csv_and_save_to_file(self):
+        if not self.eligible_list_candidates:
+            raise ValueError('No candidates on Eligible List')
+        filename = os.path.abspath(os.path.dirname(__file__)) + f'/../csvs/eligible_lists/eligible_list_{self.eligible_list.code}.csv'
+        self.build_eligible_list_csv(filename=filename)
         return True
 
 
@@ -232,12 +249,12 @@ class EligibleListUtilities:
                 rank_tally[eligible_list_candidate.rank] += 1
             if not eligible_list_candidate.rank in rank_and_final_score.keys():
                 rank_and_final_score[eligible_list_candidate.rank] = eligible_list_candidate.score
-
-        for rank in rank_tally.keys():
+        sorted_rank_tally = dict(sorted(rank_tally.items()))
+        for rank in sorted_rank_tally.keys():
             data.append([rank,
                          round(rank_and_final_score[rank], 5),
                          rank_tally[rank],
-                         ])
+                        ])
         grid = [('ALIGN', (0, 0), (3, 0), 'CENTER'),
                 ('FONTSIZE', (0, 0), (3, 0), 12)]
         t = Table(data,
@@ -264,4 +281,33 @@ class EligibleListUtilities:
         width, height = letter
         pageinfo = f"Score Report for Eligible List {self.eligible_list.code}"
         self.build_score_report_form(filename=filename)
+        return True
+
+    def build_score_report_csv(self, filename):
+        with open(filename, 'w', newline='') as file:
+            writer = csv.writer(file)
+            fields = ["Eligible List", "Rank", "Final Score", "Number of Eligibles"]
+            writer.writerow(fields)
+            # Calculate how many ranks there are, with how many are on each rank
+            # TODO: sanity checks. We take ranks and scores from scoring module.
+            rank_tally = {} # Counts number of candidates with a certain rank
+            rank_and_final_score = {} # Creates a map of each rank and the final score
+            for eligible_list_candidate in self.eligible_list_candidates:
+                if not eligible_list_candidate.rank in rank_tally.keys():
+                    rank_tally[eligible_list_candidate.rank] = 1
+                else:
+                    rank_tally[eligible_list_candidate.rank] += 1
+                if not eligible_list_candidate.rank in rank_and_final_score.keys():
+                    rank_and_final_score[eligible_list_candidate.rank] = eligible_list_candidate.score
+            # sorted_ranks_and_scores = dict(sorted(rank_and_final_score.items()))
+            sorted_rank_tally = dict(sorted(rank_tally.items()))
+            for rank in sorted_rank_tally.keys():
+                writer.writerow([self.eligible_list.code, rank, round(rank_and_final_score[rank], 5), rank_tally[rank]])
+        return True
+
+    def construct_sr_csv_and_save_to_file(self):
+        if not self.eligible_list_candidates:
+            raise ValueError('No candidates on Eligible List')
+        filename = os.path.abspath(os.path.dirname(__file__)) + f'/../csvs/score_reports/score_report_{self.eligible_list.code}.csv'
+        self.build_score_report_csv(filename=filename)
         return True
