@@ -58,3 +58,14 @@ def email_score_report_or_el(el_id, report_type='score_report'):
         # Do we need to return something?
         return email.send(fail_silently=False)
     return False
+
+@shared_task
+def process_received_sr_webhook_event(request):
+    logger = get_task_logger(name='process_webhook_from_smartrecruiters')
+    # Here, we can parse the message from SR
+    if request.method == 'POST' and request.body:
+        # Here, route to functions dependent on the type of event being sent to
+        # us. This likely will involve a DSL which validates and transforms SR
+        # data into our data model for model updates, creation, etc.
+        print(request.body)
+    return True

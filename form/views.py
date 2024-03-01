@@ -1701,6 +1701,18 @@ class UpdateEligibleListRule(TemplateView):
         return redirect('/eligiblelistrules')
 
 
+# Common / utilitarian views
+class ReceiveSRWebhook(View):
+    # Expects JSON
+    def post(self, request, *args, **kwargs):
+        # Put caller authentication / authorization logic here
+        async_task = process_received_sr_webhook_event.delay(request)
+        # Need to make this HTTP response better. Acknowledges receipt of
+        # webhook which has been added to task queue and will be processed by
+        # an async Celery worker
+        return HttpResponse("200 OK")
+
+
 def handler404(request, exception, template_name="404.html"):
     """
     Custom 404 page

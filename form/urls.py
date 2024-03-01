@@ -134,4 +134,7 @@ urlpatterns = [
 
     # Project Roadmap
     path('roadmap', views.Roadmap.as_view(), name='roadmap'),
+
+    # Receive webhooks from SmartRecruiters for data changes
+    path('receive_sr_webhook', views.ReceiveSRWebhook.as_view(), name='receive_sr_webhook'),
 ]
