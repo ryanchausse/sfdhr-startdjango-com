@@ -234,7 +234,7 @@ class EligibleListPDF(TemplateView):
     def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         if not permitted_to_edit_data(request):
-            messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
+            messages.add_message(request, messages.WARNING, f"You are not permitted to perform this action")
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
         eligible_list_candidates = EligibleListCandidate.objects.filter(
@@ -242,7 +242,7 @@ class EligibleListPDF(TemplateView):
             active = True
         )
         if not eligible_list_candidates:
-            messages.add_message(request, messages.WARNING, f"No candidates on Eligible List {el_object}")
+            messages.add_message(request, messages.WARNING, f"No candidates on Eligible List {el_object.code}")
             return redirect('/eligible_lists')
         # Create EL PDF, save, then send email to EIS (or post on SFDHR website directly)
         pdf_constructed = EligibleListUtilities(
@@ -267,7 +267,7 @@ class ScoreReportPDF(TemplateView):
     def get(self, request, pk, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         if not permitted_to_edit_data(request):
-            messages.add_message(request, messages.WARNING, f"You are not permitted to edit or access data")
+            messages.add_message(request, messages.WARNING, f"You are not permitted to perform this action")
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
         eligible_list_candidates = EligibleListCandidate.objects.filter(
