@@ -1056,7 +1056,7 @@ class CreateScoreBandingModelScoreBand(TemplateView):
         if not permitted_to_edit_data(request):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/scorebandingmodelscorebands')
-        form = EligibleListCandidateReferralForm(request.POST)
+        form = ScoreBandingModelScoreBandForm(request.POST)
         if not form.is_valid():
             messages.add_message(request, messages.WARNING, f"Could not save Score Banding Model Score Band: {form.errors}")
             return redirect('/scorebandingmodelscorebands')
