@@ -26,7 +26,7 @@ from jsignature.widgets import JSignatureWidget
 
 class EligibleListForm(forms.ModelForm):
     id = forms.HiddenInput()
-    code = forms.TextInput(attrs={'required': True})
+    code = forms.TextInput()
     job_class = forms.ModelChoiceField(queryset=JobClass.objects.all())
     specialty = forms.TextInput()
     eligible_list_rule = forms.ModelChoiceField(queryset=EligibleListRule.objects.all())

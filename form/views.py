@@ -198,7 +198,6 @@ class PostEligibleList(TemplateView):
         el_id = request.POST['el_id']
         el_object = EligibleList.objects.get(pk=el_id)
         el_object.posted = datetime.datetime.now()
-        # TODO: Create EL PDF, then send email to EIS (or post on SFDHR website directly)
         el_object.last_updated_by = request.user
         el_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully posted Eligible List")
