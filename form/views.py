@@ -158,7 +158,10 @@ class CreateEligibleList(TemplateView):
             return redirect('/eligible_lists')
         form = EligibleListForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Eligible List: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Eligible List")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/eligible_lists')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -329,7 +332,10 @@ class CreateCandidate(TemplateView):
             return redirect('/candidates')
         form = CandidateForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Candidate: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Candidate")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/candidates')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -394,7 +400,10 @@ class CreatePosition(TemplateView):
             return redirect('/positions')
         form = PositionForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Position: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Position")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/positions')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -457,7 +466,10 @@ class CreateReferral(TemplateView):
             return redirect('/referrals')
         form = ReferralForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Referral: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Referral")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/referrals')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -528,7 +540,10 @@ class CreateDepartment(TemplateView):
             return redirect('/departments')
         form = DepartmentForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Department: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Department")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/departments')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -593,7 +608,10 @@ class CreateJob(TemplateView):
             return redirect('/jobs')
         form = JobForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Job: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Job")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/jobs')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -659,7 +677,10 @@ class CreateApplication(TemplateView):
             return redirect('/applications')
         form = ApplicationForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Application: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Application")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/applications')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -721,7 +742,10 @@ class CreateLongRunningTask(TemplateView):
             return redirect('/longrunningtasks')
         form = LongRunningTaskForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/longrunningtasks')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -795,7 +819,10 @@ class CreateLongRunningTaskType(TemplateView):
             return redirect('/longrunningtasktypes')
         form = LongRunningTaskTypeForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task Type: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task Type")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/longrunningtasktypes')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -856,7 +883,10 @@ class CreateLongRunningTaskStatus(TemplateView):
             return redirect('/longrunningtaskstatuses')
         form = LongRunningTaskStatusForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task Status: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Long Running Task Status")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/longrunningtaskstatuses')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -922,7 +952,10 @@ class CreateEligibleListCandidate(TemplateView):
             return redirect('/eligiblelistcandidates')
         form = EligibleListCandidateForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Candidate: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Candidate")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/eligiblelistcandidates')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1011,7 +1044,10 @@ class CreateEligibleListCandidateReferral(TemplateView):
             return redirect('/eligiblelistcandidatereferrals')
         form = EligibleListCandidateReferralForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Candidate Referral: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Candidate Referral")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/eligiblelistcandidatereferrals')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1058,7 +1094,10 @@ class CreateScoreBandingModelScoreBand(TemplateView):
             return redirect('/scorebandingmodelscorebands')
         form = ScoreBandingModelScoreBandForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Score Banding Model Score Band: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Score Banding Model Score Band")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/scorebandingmodelscorebands')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1168,7 +1207,10 @@ class CreateCandidateReferralStatus(TemplateView):
             return redirect('/candidatereferralstatuses')
         form = CandidateReferralStatusForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Candidate Referral Status: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Candidate Referral Status")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/candidatereferralstatuses')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1232,7 +1274,10 @@ class CreateReferralStatus(TemplateView):
             return redirect('/referralstatuses')
         form = ReferralStatusForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Referral Status: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Referral Status")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/referralstatuses')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1296,7 +1341,10 @@ class CreateScoringModel(TemplateView):
             return redirect('/scoringmodels')
         form = ScoringModelForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Scoring Model: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Scoring Model")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/scoringmodels')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1360,7 +1408,10 @@ class CreateScoreBandingModel(TemplateView):
             return redirect('/scorebandingmodels')
         form = ScoreBandingModelForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Score Banding Model: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Score Banding Model")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/scorebandingmodels')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1424,7 +1475,10 @@ class CreateScoreBand(TemplateView):
             return redirect('/scorebands')
         form = ScoreBandForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Score Band: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Score Band")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/scorebands')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1491,7 +1545,10 @@ class CreateJobClass(TemplateView):
             return redirect('/jobclasses')
         form = JobClassForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Job Class: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Job Class")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/jobclasses')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
@@ -1556,7 +1613,10 @@ class CreateEligibleListRule(TemplateView):
             return redirect('/eligiblelistrules')
         form = EligibleListRuleForm(request.POST)
         if not form.is_valid():
-            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Rule: {form.errors}")
+            messages.add_message(request, messages.WARNING, f"Could not save Eligible List Rule")
+            if form.non_field_errors():
+                for non_field_error in form.non_field_errors():
+                    messages.add_message(request, messages.WARNING, f"{non_field_error}")
             return redirect('/eligiblelistrules')
         form_to_save = form.save(commit=False)
         form_to_save.created_by = request.user
