@@ -61,6 +61,7 @@
                                             <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="elcandidate_id" value="{{ eligiblelistcandidate.id }}">
+                                                <input type="hidden" name="eligible_list_id" value="{{ eligiblelistcandidate.eligible_list.id }}">
                                                 <button type="submit" class="btn btn-success"" id="button-submit">Active</button>
                                             </form>
                                         </td>
@@ -69,6 +70,7 @@
                                         <form id='mark_active_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
                                             {% csrf_token %}
                                             <input type="hidden" name="elcandidate_id" value="{{ eligiblelistcandidate.id }}">
+                                            <input type="hidden" name="eligible_list_id" value="{{ eligiblelistcandidate.eligible_list.id }}">
                                             <button type="submit" class="btn btn-danger"" id="button-submit">Inactive</button>
                                         </form>
                                     </td>

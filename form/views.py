@@ -965,6 +965,8 @@ class ToggleActiveStatusEligibleListCandidate(TemplateView):
         eligiblelistcandidate_object.last_updated_by = request.user
         eligiblelistcandidate_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully toggled Active status of Eligible List Candidate")
+        if 'eligible_list_id' in request.POST:
+            return redirect(f"/eligible_lists/{request.POST['eligible_list_id']}")
         return redirect(f'/eligiblelistcandidates')
 
 
