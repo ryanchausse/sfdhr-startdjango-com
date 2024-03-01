@@ -74,10 +74,8 @@ from .tasks import *
 
 def permitted_to_edit_data(request):
     if request.user.groups.filter(name='DataEditors').exists():
-        print('User in DataEditors group')
         return True
     elif request.user.groups.filter(name='Admins').exists():
-        print('User in Admins group')
         return True
     else:
         return False
