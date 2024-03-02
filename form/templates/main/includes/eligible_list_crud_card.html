@@ -140,6 +140,14 @@
                         {{ form.scoring_model }}
                     </div>
                     <br />
+                    <!-- TODO: implement JS onSelect() to hide/show this div if Scoring Model is/is not CCT -->
+                    <div id="score_banding_model_div" class="fieldWrapper" style="margin-left: 1em;">
+                        {{ form.score_banding_model.errors }}
+                        <label for="{{ form.score_banding_model.id_for_label }}">Score Banding Model (Continuous Class-Based Tests only)</label>
+                        <br />
+                        {{ form.score_banding_model }}
+                    </div>
+                    <br />
                     <!-- <div class="fieldWrapper" style="margin-left: 1em;">
                         {{ form.posted.errors }}
                         <label for="{{ form.posted.id_for_label }}">Posted</label>
@@ -196,7 +204,6 @@
                         <th>Job Class</th>
                         <th>Specialty</th>
                         <th>Eligible List Rule</th>
-                        <th>Scoring Model</th>
                         <th>Posted</th>
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
@@ -205,6 +212,8 @@
                         <th>Eligible List CSV</th>
                         <th>Score Report PDF</th>
                         <th>Score Report CSV</th>
+                        <th>Scoring Model</th>
+                        <th>Score Banding Model</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -217,7 +226,6 @@
                         <th>Job Class</th>
                         <th>Specialty</th>
                         <th>Eligible List Rule</th>
-                        <th>Scoring Model</th>
                         <th>Posted</th>
                         <th>Inspection Start</th>
                         <th>Inspection End</th>
@@ -226,6 +234,8 @@
                         <th>Eligible List CSV</th>
                         <th>Score Report PDF</th>
                         <th>Score Report CSV</th>
+                        <th>Scoring Model</th>
+                        <th>Score Banding Model</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         <th>Created By</th>
@@ -240,7 +250,6 @@
                                 <td>{{ eligible_list.job_class }}</td>
                                 <td>{{ eligible_list.specialty }}</td>
                                 <td>{{ eligible_list.eligible_list_rule }}</td>
-                                <td>{{ eligible_list.scoring_model }}</td>
                                 {% if eligible_list.posted %}
                                     <td>{{ eligible_list.posted }}</td>
                                 {% else %}
@@ -277,6 +286,8 @@
                                 <td>
                                     <a href='/score_report_csv/{{ eligible_list.id }}'>Score Report CSV</a>
                                 </td>
+                                <td>{{ eligible_list.scoring_model }}</td>
+                                <td>{{ eligible_list.score_banding_model }}</td>
                                 <td>{{ eligible_list.created_at }}</td>
                                 <td>{{ eligible_list.updated_at }}</td>
                                 <td>{{ eligible_list.created_by }}</td>

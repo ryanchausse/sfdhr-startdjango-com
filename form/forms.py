@@ -30,10 +30,11 @@ from jsignature.widgets import JSignatureWidget
 class EligibleListForm(forms.ModelForm):
     id = forms.HiddenInput()
     code = forms.TextInput()
-    job_class = forms.ModelChoiceField(queryset=JobClass.objects.all())
+    job_class = forms.ModelChoiceField(queryset=JobClass.objects.all(), required=False)
     specialty = forms.TextInput()
-    eligible_list_rule = forms.ModelChoiceField(queryset=EligibleListRule.objects.all())
-    scoring_model = forms.ModelChoiceField(queryset=ScoringModel.objects.all())
+    eligible_list_rule = forms.ModelChoiceField(queryset=EligibleListRule.objects.all(), required=False)
+    scoring_model = forms.ModelChoiceField(queryset=ScoringModel.objects.all(), required=False)
+    score_banding_model = forms.ModelChoiceField(queryset=ScoreBandingModel.objects.all(), required=False)
     # posted = forms.DateField(required=False,
     #                          widget=DateInput(attrs={'type': 'date'}))
     inspection_start = forms.DateTimeField(required=False,
@@ -46,7 +47,8 @@ class EligibleListForm(forms.ModelForm):
     class Meta:
         model = EligibleList
         fields = ['id', 'code', 'job_class', 'specialty', 'inspection_start',
-                  'inspection_end', 'eligible_list_rule', 'scoring_model']
+                  'inspection_end', 'eligible_list_rule', 'scoring_model',
+                  'score_banding_model']
 
 
 class CandidateForm(forms.ModelForm):

@@ -184,7 +184,8 @@ class UpdateEligibleList(TemplateView):
         el_object.specialty = request.POST['specialty']
         el_object.eligible_list_rule = EligibleListRule.objects.get(pk=request.POST['eligible_list_rule'])
         el_object.scoring_model = ScoringModel.objects.get(pk=request.POST['scoring_model'])
-        # Form widget does not handle nulls well
+        el_object.score_banding_model = ScoreBandingModel.objects.get(pk=request.POST['score_banding_model'])
+        # Form widget and internals do not handle nulls well for these date types
         el_object.inspection_start = request.POST['inspection_start'] if request.POST['inspection_start'] else None
         el_object.inspection_end = request.POST['inspection_end'] if request.POST['inspection_start'] else None
         el_object.last_updated_by = request.user

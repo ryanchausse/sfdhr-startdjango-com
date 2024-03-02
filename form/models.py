@@ -10,8 +10,6 @@ from django.core.exceptions import ValidationError as ExceptionValidationError
 
 # Mixins
 class SingleInstanceMixin(object):
-    """Makes sure that no more than one instance of a given model is created."""
-
     def clean(self):
         model = self.__class__
         if (model.objects.count() > 0 and self.id != model.objects.get().id):
@@ -298,6 +296,7 @@ class EligibleList(models.Model):
     specialty = models.CharField(max_length=255, blank=True, null=True, default='')
     eligible_list_rule = models.ForeignKey(EligibleListRule, blank=True, null=True, on_delete=models.CASCADE)
     scoring_model = models.ForeignKey(ScoringModel, blank=True, null=True, on_delete=models.CASCADE)
+    score_banding_model = models.ForeignKey(ScoreBandingModel, blank=True, null=True, default=None, on_delete=models.CASCADE)
     posted = models.DateTimeField(blank=True, null=True)
     inspection_start = models.DateTimeField(blank=True, null=True)
     inspection_end = models.DateTimeField(blank=True, null=True)

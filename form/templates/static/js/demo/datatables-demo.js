@@ -1,7 +1,7 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function() {
   $('#eligible_list_table').DataTable({
-    order: [[1, 'desc']]
+    order: [[0, 'asc']]
   });
   $('#candidate_table').DataTable({
     order: [[1, 'desc']]

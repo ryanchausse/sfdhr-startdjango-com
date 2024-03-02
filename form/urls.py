@@ -28,9 +28,9 @@ urlpatterns = [
     path('update_eligible_list_form/<int:pk>', views.UpdateEligibleList.as_view(), name='update_eligible_list_form'),
     path('post_eligible_list', views.PostEligibleList.as_view(), name='post_eligible_list'),
     path('adopt_eligible_list', views.AdoptEligibleList.as_view(), name='adopt_eligible_list'),
-    path('score_report_pdf/<int:pk>', views.ScoreReportPDF.as_view(), name='score_report_pdf'),
     path('eligible_list_pdf/<int:pk>', views.EligibleListPDF.as_view(), name='eligible_list_pdf'),
     path('eligible_list_csv/<int:pk>', views.EligibleListCSV.as_view(), name='eligible_list_csv'),
+    path('score_report_pdf/<int:pk>', views.ScoreReportPDF.as_view(), name='score_report_pdf'),
     path('score_report_csv/<int:pk>', views.ScoreReportCSV.as_view(), name='score_report_csv'),
     # Candidates
     path('candidates', views.Candidates.as_view(), name='candidates'),
