@@ -89,11 +89,11 @@
                         {% for longrunningtaskstatus in longrunningtaskstatuses %}
                             <tr>
                                 <td><a href="/longrunningtaskstatuses/{{ longrunningtaskstatus.id }}">{{ longrunningtaskstatus.status }}</a></td>
-                                <td>{{ longrunningtaskstatus.description }}</td>
-                                <td>{{ longrunningtaskstatus.created_at }}</td>
-                                <td>{{ longrunningtaskstatus.updated_at }}</td>
-                                <td>{{ longrunningtaskstatus.created_by }}</td>
-                                <td>{{ longrunningtaskstatus.last_updated_by }}</td>
+                                <td>{{ longrunningtaskstatus.description|default_if_none:"" }}</td>
+                                <td>{{ longrunningtaskstatus.created_at|default_if_none:"" }}</td>
+                                <td>{{ longrunningtaskstatus.updated_at|default_if_none:"" }}</td>
+                                <td>{{ longrunningtaskstatus.created_by|default_if_none:"" }}</td>
+                                <td>{{ longrunningtaskstatus.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

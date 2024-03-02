@@ -100,13 +100,13 @@
                         {% for candidate in candidates %}
                             <tr>
                                 <td><a href="/candidates/{{ candidate.id }}">{{ candidate.sr_uuid }}</a></td>
-                                <td>{{ candidate.last_name }}</td>
-                                <td>{{ candidate.first_name }}</td>
-                                <td>{{ candidate.email }}</td>
-                                <td>{{ candidate.created_at }}</td>
-                                <td>{{ candidate.updated_at }}</td>
-                                <td>{{ candidate.created_by }}</td>
-                                <td>{{ candidate.last_updated_by }}</td>
+                                <td>{{ candidate.last_name|default_if_none:"" }}</td>
+                                <td>{{ candidate.first_name|default_if_none:"" }}</td>
+                                <td>{{ candidate.email|default_if_none:"" }}</td>
+                                <td>{{ candidate.created_at|default_if_none:"" }}</td>
+                                <td>{{ candidate.updated_at|default_if_none:"" }}</td>
+                                <td>{{ candidate.created_by|default_if_none:"" }}</td>
+                                <td>{{ candidate.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

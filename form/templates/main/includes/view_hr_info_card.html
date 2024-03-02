@@ -69,9 +69,9 @@
                         {% for eligible_list in eligible_lists %}
                             <tr>
                                 <td><a href="/eligible_lists/{{ eligible_list.id }}">{{ eligible_list.code }}</a></td>
-                                <td>{{ eligible_list.job_class }}</td>
-                                <td>{{ eligible_list.specialty }}</td>
-                                <td>{{ eligible_list.eligible_list_rule }}</td>
+                                <td>{{ eligible_list.job_class|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.specialty|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.eligible_list_rule|default_if_none:"" }}</td>
                                 {% if eligible_list.posted %}
                                     <td>{{ eligible_list.posted }}</td>
                                 {% else %}
@@ -83,8 +83,8 @@
                                         </form>
                                     </td>
                                 {% endif %}
-                                <td>{{ eligible_list.inspection_start }}</td>
-                                <td>{{ eligible_list.inspection_end }}</td>
+                                <td>{{ eligible_list.inspection_start|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.inspection_end|default_if_none:"" }}</td>
                                 {% if eligible_list.adopted %}
                                     <td>{{ eligible_list.adopted }}</td>
                                 {% else %}
@@ -108,12 +108,12 @@
                                 <td>
                                     <a href='/score_report_csv/{{ eligible_list.id }}'>Score Report CSV</a>
                                 </td>
-                                <td>{{ eligible_list.scoring_model }}</td>
-                                <td>{{ eligible_list.score_banding_model }}</td>
-                                <td>{{ eligible_list.created_at }}</td>
-                                <td>{{ eligible_list.updated_at }}</td>
-                                <td>{{ eligible_list.created_by }}</td>
-                                <td>{{ eligible_list.last_updated_by }}</td>
+                                <td>{{ eligible_list.scoring_model|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.score_banding_model|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.created_at|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.updated_at|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.created_by|default_if_none:"" }}</td>
+                                <td>{{ eligible_list.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
@@ -149,10 +149,10 @@
                         {% for position in positions %}
                             <tr>
                                 <td><a href="/positions/{{ position.id }}">{{ position.number }}</a></td>
-                                <td>{{ position.created_at }}</td>
-                                <td>{{ position.updated_at }}</td>
-                                <td>{{ position.created_by }}</td>
-                                <td>{{ position.last_updated_by }}</td>
+                                <td>{{ position.created_at|default_if_none:"" }}</td>
+                                <td>{{ position.updated_at|default_if_none:"" }}</td>
+                                <td>{{ position.created_by|default_if_none:"" }}</td>
+                                <td>{{ position.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
@@ -198,9 +198,9 @@
                         {% for eligible_list_candidate_referral in eligible_list_candidate_referrals %}
                             <tr>
                                 <td><a href="/eligiblelistcandidatereferrals/{{ eligible_list_candidate_referral.id }}">{{ eligible_list_candidate_referral.id }}</a></td>
-                                <td>{{ eligible_list_candidate_referral.eligible_list_candidate }}</td>
-                                <td>{{ eligible_list_candidate_referral.referral }}</td>
-                                <td>{{ eligible_list_candidate_referral.status }}</td>
+                                <td>{{ eligible_list_candidate_referral.eligible_list_candidate|default_if_none:"" }}</td>
+                                <td>{{ eligible_list_candidate_referral.referral|default_if_none:"" }}</td>
+                                <td>{{ eligible_list_candidate_referral.status|default_if_none:"" }}</td>
                                 {% if eligible_list_candidate_referral.active %}
                                     <td>
                                         <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidatereferral" method="post">
@@ -218,11 +218,11 @@
                                     </form>
                                 </td>
                                 {% endif %}
-                                <td>{{ eligible_list_candidate_referral.notes }}</td>
-                                <td>{{ eligible_list_candidate_referral.created_at }}</td>
-                                <td>{{ eligible_list_candidate_referral.updated_at }}</td>
-                                <td>{{ eligible_list_candidate_referral.created_by }}</td>
-                                <td>{{ eligible_list_candidate_referral.last_updated_by }}</td>
+                                <td>{{ eligible_list_candidate_referral.notes|default_if_none:"" }}</td>
+                                <td>{{ eligible_list_candidate_referral.created_at|default_if_none:"" }}</td>
+                                <td>{{ eligible_list_candidate_referral.updated_at|default_if_none:"" }}</td>
+                                <td>{{ eligible_list_candidate_referral.created_by|default_if_none:"" }}</td>
+                                <td>{{ eligible_list_candidate_referral.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

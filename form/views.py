@@ -796,10 +796,12 @@ class UpdateApplication(TemplateView):
 class LongRunningTasks(TemplateView):
     """
     LongRunningTask CRUD page
+    Unused, needs update to match pattern
     """
     template_name = 'longrunningtasks.html'
 
     def get_context_data(self, pk=None, **kwargs):
+        # Unused, needs update to match pattern
         context = super().get_context_data(**kwargs)
         context['user_is_in_admins'] = False
         context['form_data_present'] = False
@@ -819,6 +821,7 @@ class LongRunningTasks(TemplateView):
 
 
 class CreateLongRunningTask(TemplateView):
+    # Unused, needs update to match pattern
     template_name = 'longrunningtasks.html'
 
     def post(self, request, *args, **kwargs):
@@ -841,6 +844,7 @@ class CreateLongRunningTask(TemplateView):
 
 
 class UpdateLongRunningTask(TemplateView):
+    # Unused, needs update to match pattern
     template_name = 'longrunningtasks.html'
 
     def post(self, request, pk=None, *args, **kwargs):
@@ -873,6 +877,7 @@ class UpdateLongRunningTask(TemplateView):
 class LongRunningTaskTypes(TemplateView):
     """
     LongRunningTaskType CRUD page
+    Unused, needs update to match pattern
     """
     template_name = 'longrunningtasktypes.html'
 
@@ -896,6 +901,7 @@ class LongRunningTaskTypes(TemplateView):
 
 
 class CreateLongRunningTaskType(TemplateView):
+    # Unused, needs update to match pattern
     template_name = 'longrunningtasktypes.html'
 
     def post(self, request, *args, **kwargs):
@@ -918,6 +924,7 @@ class CreateLongRunningTaskType(TemplateView):
 
 
 class UpdateLongRunningTaskType(TemplateView):
+    # Unused, needs update to match pattern
     template_name = 'longrunningtasktypes.html'
 
     def post(self, request, pk=None, *args, **kwargs):
@@ -937,6 +944,7 @@ class UpdateLongRunningTaskType(TemplateView):
 class LongRunningTaskStatuses(TemplateView):
     """
     LongRunningTaskStatus CRUD page
+    Unused, needs update to match pattern
     """
     template_name = 'longrunningtaskstatuses.html'
 
@@ -960,6 +968,7 @@ class LongRunningTaskStatuses(TemplateView):
 
 
 class CreateLongRunningTaskStatus(TemplateView):
+    # Unused, needs update to match pattern
     template_name = 'longrunningtaskstatuses.html'
 
     def post(self, request, *args, **kwargs):
@@ -982,6 +991,7 @@ class CreateLongRunningTaskStatus(TemplateView):
 
 
 class UpdateLongRunningTaskStatus(TemplateView):
+    # Unused, needs update to match pattern
     template_name = 'longrunningtaskstatuses.html'
 
     def post(self, request, pk=None, *args, **kwargs):

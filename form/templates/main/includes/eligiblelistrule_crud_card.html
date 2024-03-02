@@ -98,12 +98,12 @@
                         {% for eligiblelistrule in eligiblelistrules %}
                             <tr>
                                 <td><a href="/eligiblelistrules/{{ eligiblelistrule.id }}">{{ eligiblelistrule.title }}</a></td>
-                                <td>{{ eligiblelistrule.description }}</td>
-                                <td>{{ eligiblelistrule.number_of_reachable_ranks }}</td>
-                                <td>{{ eligiblelistrule.created_at }}</td>
-                                <td>{{ eligiblelistrule.updated_at }}</td>
-                                <td>{{ eligiblelistrule.created_by }}</td>
-                                <td>{{ eligiblelistrule.last_updated_by }}</td>
+                                <td>{{ eligiblelistrule.description|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistrule.number_of_reachable_ranks|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistrule.created_at|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistrule.updated_at|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistrule.created_by|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistrule.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

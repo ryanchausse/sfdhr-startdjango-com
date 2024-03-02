@@ -89,11 +89,11 @@
                         {% for referralstatus in referralstatuses %}
                             <tr>
                                 <td><a href="/referralstatuses/{{ referralstatus.id }}">{{ referralstatus.status }}</a></td>
-                                <td>{{ referralstatus.description }}</td>
-                                <td>{{ referralstatus.created_at }}</td>
-                                <td>{{ referralstatus.updated_at }}</td>
-                                <td>{{ referralstatus.created_by }}</td>
-                                <td>{{ referralstatus.last_updated_by }}</td>
+                                <td>{{ referralstatus.description|default_if_none:"" }}</td>
+                                <td>{{ referralstatus.created_at|default_if_none:"" }}</td>
+                                <td>{{ referralstatus.updated_at|default_if_none:"" }}</td>
+                                <td>{{ referralstatus.created_by|default_if_none:"" }}</td>
+                                <td>{{ referralstatus.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

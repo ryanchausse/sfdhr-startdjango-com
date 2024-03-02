@@ -120,11 +120,11 @@
                         {% for eligiblelistcandidate in eligiblelistcandidates %}
                             <tr>
                                 <td><a href="/eligiblelistcandidates/{{ eligiblelistcandidate.id }}">{{ eligiblelistcandidate.id }}</a></td>
-                                <td>{{ eligiblelistcandidate.eligible_list }}</td>
-                                <td>{{ eligiblelistcandidate.candidate }}</td>
-                                <td>{{ eligiblelistcandidate.score | floatformat:5 }}</td>
-                                <td>{{ eligiblelistcandidate.rank }}</td>
-                                <td>{{ eligiblelistcandidate.notes }}</td>
+                                <td>{{ eligiblelistcandidate.eligible_list|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidate.candidate|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidate.score|floatformat:5|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidate.rank|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidate.notes|default_if_none:"" }}</td>
                                 {% if eligiblelistcandidate.active %}
                                     <td>
                                         <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidate" method="post">
@@ -142,10 +142,10 @@
                                     </form>
                                 </td>
                                 {% endif %}
-                                <td>{{ eligiblelistcandidate.created_at }}</td>
-                                <td>{{ eligiblelistcandidate.updated_at }}</td>
-                                <td>{{ eligiblelistcandidate.created_by }}</td>
-                                <td>{{ eligiblelistcandidate.last_updated_by }}</td>
+                                <td>{{ eligiblelistcandidate.created_at|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidate.updated_at|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidate.created_by|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidate.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

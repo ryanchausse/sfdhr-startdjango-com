@@ -89,11 +89,11 @@
                         {% for scorebandingmodel in scorebandingmodels %}
                             <tr>
                                 <td><a href="/scorebandingmodels/{{ scorebandingmodel.id }}">{{ scorebandingmodel.title }}</a></td>
-                                <td>{{ scorebandingmodel.description }}</td>
-                                <td>{{ scorebandingmodel.created_at }}</td>
-                                <td>{{ scorebandingmodel.updated_at }}</td>
-                                <td>{{ scorebandingmodel.created_by }}</td>
-                                <td>{{ scorebandingmodel.last_updated_by }}</td>
+                                <td>{{ scorebandingmodel.description|default_if_none:"" }}</td>
+                                <td>{{ scorebandingmodel.created_at|default_if_none:"" }}</td>
+                                <td>{{ scorebandingmodel.updated_at|default_if_none:"" }}</td>
+                                <td>{{ scorebandingmodel.created_by|default_if_none:"" }}</td>
+                                <td>{{ scorebandingmodel.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

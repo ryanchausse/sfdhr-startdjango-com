@@ -80,10 +80,10 @@
                         {% for position in positions %}
                             <tr>
                                 <td><a href="/positions/{{ position.id }}">{{ position.number }}</a></td>
-                                <td>{{ position.created_at }}</td>
-                                <td>{{ position.updated_at }}</td>
-                                <td>{{ position.created_by }}</td>
-                                <td>{{ position.last_updated_by }}</td>
+                                <td>{{ position.created_at|default_if_none:"" }}</td>
+                                <td>{{ position.updated_at|default_if_none:"" }}</td>
+                                <td>{{ position.created_by|default_if_none:"" }}</td>
+                                <td>{{ position.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

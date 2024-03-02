@@ -199,24 +199,24 @@
                         {% for longrunningtask in longrunningtasks %}
                             <tr>
                                 <td><a href="/longrunningtasks/{{ longrunningtask.id }}">{{ longrunningtask.id }}</a></td>
-                                <td>{{ longrunningtask.type }}</td>
-                                <td>{{ longrunningtask.status }}</td>
-                                <td>{{ longrunningtask.description }}</td>
-                                <td>{{ longrunningtask.referral_statuses }}</td>
-                                <td>{{ longrunningtask.candidate_referral_statuses }}</td>
-                                <td>{{ longrunningtask.candidates }}</td>
-                                <td>{{ longrunningtask.positions }}</td>
-                                <td>{{ longrunningtask.eligible_lists }}</td>
-                                <td>{{ longrunningtask.referrals }}</td>
-                                <td>{{ longrunningtask.departments }}</td>
-                                <td>{{ longrunningtask.jobs }}</td>
-                                <td>{{ longrunningtask.applications }}</td>
-                                <td>{{ longrunningtask.eligible_list_candidates }}</td>
-                                <td>{{ longrunningtask.eligible_list_candidate_referrals }}</td>
-                                <td>{{ longrunningtask.created_at }}</td>
-                                <td>{{ longrunningtask.updated_at }}</td>
-                                <td>{{ longrunningtask.created_by }}</td>
-                                <td>{{ longrunningtask.last_updated_by }}</td>
+                                <td>{{ longrunningtask.type|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.status|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.description|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.referral_statuses|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.candidate_referral_statuses|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.candidates|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.positions|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.eligible_lists|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.referrals|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.departments|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.jobs|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.applications|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.eligible_list_candidates|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.eligible_list_candidate_referrals|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.created_at|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.updated_at|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.created_by|default_if_none:"" }}</td>
+                                <td>{{ longrunningtask.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

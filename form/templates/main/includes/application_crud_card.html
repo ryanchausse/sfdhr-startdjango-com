@@ -98,12 +98,12 @@
                         {% for application in applications %}
                             <tr>
                                 <td><a href="/applications/{{ application.id }}">{{ application.candidate }}</a></td>
-                                <td>{{ application.position }}</td>
-                                <td>{{ application.job }}</td>
-                                <td>{{ application.created_at }}</td>
-                                <td>{{ application.updated_at }}</td>
-                                <td>{{ application.created_by }}</td>
-                                <td>{{ application.last_updated_by }}</td>
+                                <td>{{ application.position|default_if_none:"" }}</td>
+                                <td>{{ application.job|default_if_none:"" }}</td>
+                                <td>{{ application.created_at|default_if_none:"" }}</td>
+                                <td>{{ application.updated_at|default_if_none:"" }}</td>
+                                <td>{{ application.created_by|default_if_none:"" }}</td>
+                                <td>{{ application.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

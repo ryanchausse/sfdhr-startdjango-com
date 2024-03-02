@@ -100,13 +100,13 @@
                         {% for referral in referrals %}
                             <tr>
                                 <td><a href="/referrals/{{ referral.id }}">{{ referral.id }}</a></td>
-                                <td>{{ referral.eligible_list }}</td>
-                                <td>{{ referral.position }}</td>
-                                <td>{{ referral.status }}</td>
-                                <td>{{ referral.created_at }}</td>
-                                <td>{{ referral.updated_at }}</td>
-                                <td>{{ referral.created_by }}</td>
-                                <td>{{ referral.last_updated_by }}</td>
+                                <td>{{ referral.eligible_list|default_if_none:"" }}</td>
+                                <td>{{ referral.position|default_if_none:"" }}</td>
+                                <td>{{ referral.status|default_if_none:"" }}</td>
+                                <td>{{ referral.created_at|default_if_none:"" }}</td>
+                                <td>{{ referral.updated_at|default_if_none:"" }}</td>
+                                <td>{{ referral.created_by|default_if_none:"" }}</td>
+                                <td>{{ referral.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

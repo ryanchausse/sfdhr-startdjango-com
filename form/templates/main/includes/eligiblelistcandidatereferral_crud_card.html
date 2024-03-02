@@ -126,10 +126,10 @@
                         {% for eligiblelistcandidatereferral in eligiblelistcandidatereferrals %}
                             <tr>
                                 <td><a href="/eligiblelistcandidatereferrals/{{ eligiblelistcandidatereferral.id }}">{{ eligiblelistcandidatereferral.id }}</a></td>
-                                <td>{{ eligiblelistcandidatereferral.eligible_list_candidate }}</td>
-                                <td>{{ eligiblelistcandidatereferral.referral }}</td>
-                                <td>{{ eligiblelistcandidatereferral.status }}</td>
-                                <td>{{ eligiblelistcandidatereferral.notes }}</td>
+                                <td>{{ eligiblelistcandidatereferral.eligible_list_candidate|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidatereferral.referral|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidatereferral.status|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidatereferral.notes|default_if_none:"" }}</td>
                                 {% if eligiblelistcandidatereferral.active %}
                                     <td>
                                         <form id='mark_inactive_el_form' action="/toggle_active_status_eligiblelistcandidatereferral" method="post">
@@ -147,10 +147,10 @@
                                     </form>
                                 </td>
                                 {% endif %}
-                                <td>{{ eligiblelistcandidatereferral.created_at }}</td>
-                                <td>{{ eligiblelistcandidatereferral.updated_at }}</td>
-                                <td>{{ eligiblelistcandidatereferral.created_by }}</td>
-                                <td>{{ eligiblelistcandidatereferral.last_updated_by }}</td>
+                                <td>{{ eligiblelistcandidatereferral.created_at|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidatereferral.updated_at|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidatereferral.created_by|default_if_none:"" }}</td>
+                                <td>{{ eligiblelistcandidatereferral.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

@@ -116,14 +116,14 @@
                         {% for scoreband in scorebands %}
                             <tr>
                                 <td><a href="/scorebands/{{ scoreband.id }}">{{ scoreband.title }}</a></td>
-                                <td>{{ scoreband.description }}</td>
-                                <td>{{ scoreband.rank }}</td>
-                                <td>{{ scoreband.upper_score_limit }}</td>
-                                <td>{{ scoreband.lower_score_limit }}</td>
-                                <td>{{ scoreband.created_at }}</td>
-                                <td>{{ scoreband.updated_at }}</td>
-                                <td>{{ scoreband.created_by }}</td>
-                                <td>{{ scoreband.last_updated_by }}</td>
+                                <td>{{ scoreband.description|default_if_none:"" }}</td>
+                                <td>{{ scoreband.rank|default_if_none:"" }}</td>
+                                <td>{{ scoreband.upper_score_limit|default_if_none:"" }}</td>
+                                <td>{{ scoreband.lower_score_limit|default_if_none:"" }}</td>
+                                <td>{{ scoreband.created_at|default_if_none:"" }}</td>
+                                <td>{{ scoreband.updated_at|default_if_none:"" }}</td>
+                                <td>{{ scoreband.created_by|default_if_none:"" }}</td>
+                                <td>{{ scoreband.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

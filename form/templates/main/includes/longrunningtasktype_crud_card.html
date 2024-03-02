@@ -89,11 +89,11 @@
                         {% for longrunningtasktype in longrunningtasktypes %}
                             <tr>
                                 <td><a href="/longrunningtasktypes/{{ longrunningtasktype.id }}">{{ longrunningtasktype.type }}</a></td>
-                                <td>{{ longrunningtasktype.description }}</td>
-                                <td>{{ longrunningtasktype.created_at }}</td>
-                                <td>{{ longrunningtasktype.updated_at }}</td>
-                                <td>{{ longrunningtasktype.created_by }}</td>
-                                <td>{{ longrunningtasktype.last_updated_by }}</td>
+                                <td>{{ longrunningtasktype.description|default_if_none:"" }}</td>
+                                <td>{{ longrunningtasktype.created_at|default_if_none:"" }}</td>
+                                <td>{{ longrunningtasktype.updated_at|default_if_none:"" }}</td>
+                                <td>{{ longrunningtasktype.created_by|default_if_none:"" }}</td>
+                                <td>{{ longrunningtasktype.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

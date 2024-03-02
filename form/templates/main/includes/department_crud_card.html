@@ -98,12 +98,12 @@
                         {% for department in departments %}
                             <tr>
                                 <td><a href="/departments/{{ department.id }}">{{ department.code }}</a></td>
-                                <td>{{ department.title }}</td>
-                                <td>{{ department.description }}</td>
-                                <td>{{ department.created_at }}</td>
-                                <td>{{ department.updated_at }}</td>
-                                <td>{{ department.created_by }}</td>
-                                <td>{{ department.last_updated_by }}</td>
+                                <td>{{ department.title|default_if_none:"" }}</td>
+                                <td>{{ department.description|default_if_none:"" }}</td>
+                                <td>{{ department.created_at|default_if_none:"" }}</td>
+                                <td>{{ department.updated_at|default_if_none:"" }}</td>
+                                <td>{{ department.created_by|default_if_none:"" }}</td>
+                                <td>{{ department.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

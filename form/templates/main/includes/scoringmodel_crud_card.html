@@ -89,11 +89,11 @@
                         {% for scoringmodel in scoringmodels %}
                             <tr>
                                 <td><a href="/scoringmodels/{{ scoringmodel.id }}">{{ scoringmodel.title }}</a></td>
-                                <td>{{ scoringmodel.description }}</td>
-                                <td>{{ scoringmodel.created_at }}</td>
-                                <td>{{ scoringmodel.updated_at }}</td>
-                                <td>{{ scoringmodel.created_by }}</td>
-                                <td>{{ scoringmodel.last_updated_by }}</td>
+                                <td>{{ scoringmodel.description|default_if_none:"" }}</td>
+                                <td>{{ scoringmodel.created_at|default_if_none:"" }}</td>
+                                <td>{{ scoringmodel.updated_at|default_if_none:"" }}</td>
+                                <td>{{ scoringmodel.created_by|default_if_none:"" }}</td>
+                                <td>{{ scoringmodel.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

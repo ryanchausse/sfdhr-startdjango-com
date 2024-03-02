@@ -89,11 +89,11 @@
                         {% for candidatereferralstatus in candidatereferralstatuses %}
                             <tr>
                                 <td><a href="/candidatereferralstatuses/{{ candidatereferralstatus.id }}">{{ candidatereferralstatus.status }}</a></td>
-                                <td>{{ candidatereferralstatus.description }}</td>
-                                <td>{{ candidatereferralstatus.created_at }}</td>
-                                <td>{{ candidatereferralstatus.updated_at }}</td>
-                                <td>{{ candidatereferralstatus.created_by }}</td>
-                                <td>{{ candidatereferralstatus.last_updated_by }}</td>
+                                <td>{{ candidatereferralstatus.description|default_if_none:"" }}</td>
+                                <td>{{ candidatereferralstatus.created_at|default_if_none:"" }}</td>
+                                <td>{{ candidatereferralstatus.updated_at|default_if_none:"" }}</td>
+                                <td>{{ candidatereferralstatus.created_by|default_if_none:"" }}</td>
+                                <td>{{ candidatereferralstatus.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}

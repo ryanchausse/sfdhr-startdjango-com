@@ -98,12 +98,12 @@
                         {% for jobclass in jobclasses %}
                             <tr>
                                 <td><a href="/jobclasses/{{ jobclass.id }}">{{ jobclass.title }}</a></td>
-                                <td>{{ jobclass.description }}</td>
-                                <td>{{ jobclass.code }}</td>
-                                <td>{{ jobclass.created_at }}</td>
-                                <td>{{ jobclass.updated_at }}</td>
-                                <td>{{ jobclass.created_by }}</td>
-                                <td>{{ jobclass.last_updated_by }}</td>
+                                <td>{{ jobclass.description|default_if_none:"" }}</td>
+                                <td>{{ jobclass.code|default_if_none:"" }}</td>
+                                <td>{{ jobclass.created_at|default_if_none:"" }}</td>
+                                <td>{{ jobclass.updated_at|default_if_none:"" }}</td>
+                                <td>{{ jobclass.created_by|default_if_none:"" }}</td>
+                                <td>{{ jobclass.last_updated_by|default_if_none:"" }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
