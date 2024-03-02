@@ -461,7 +461,7 @@ class EligibleListCandidate(models.Model):
 class EligibleListCandidateReferral(models.Model):
     eligible_list_candidate = models.ForeignKey(EligibleListCandidate, on_delete=models.CASCADE)
     referral = models.ForeignKey(Referral, on_delete=models.CASCADE)
-    status = models.ForeignKey(CandidateReferralStatus, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.ForeignKey(CandidateReferralStatus, null=True, blank=True, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     notes = models.CharField(max_length=255, blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)

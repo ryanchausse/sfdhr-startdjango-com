@@ -180,11 +180,23 @@ class UpdateEligibleList(TemplateView):
             return redirect('/eligible_lists')
         el_object = EligibleList.objects.get(pk=pk)
         el_object.code = request.POST['code']
-        el_object.job_class = JobClass.objects.get(pk=request.POST['job_class'])
+        if 'job_class' in request.POST and request.POST['job_class']:
+            el_object.job_class = JobClass.objects.get(pk=request.POST['job_class'])
+        else:
+            el_object.job_class = None
         el_object.specialty = request.POST['specialty']
-        el_object.eligible_list_rule = EligibleListRule.objects.get(pk=request.POST['eligible_list_rule'])
-        el_object.scoring_model = ScoringModel.objects.get(pk=request.POST['scoring_model'])
-        el_object.score_banding_model = ScoreBandingModel.objects.get(pk=request.POST['score_banding_model'])
+        if 'eligible_list_rule' in request.POST and request.POST['eligible_list_rule']:
+            el_object.eligible_list_rule = EligibleListRule.objects.get(pk=request.POST['eligible_list_rule'])
+        else:
+            el_object.eligible_list_rule = None
+        if 'scoring_model' in request.POST and request.POST['scoring_model']:
+            el_object.scoring_model = ScoringModel.objects.get(pk=request.POST['scoring_model'])
+        else:
+            el_object.scoring_model = None
+        if 'score_banding_model' in request.POST and request.POST['score_banding_model']:
+            el_object.score_banding_model = ScoreBandingModel.objects.get(pk=request.POST['score_banding_model'])
+        else:
+            el_object.score_banding_model = None
         # Form widget and internals do not handle nulls well for these date types
         el_object.inspection_start = request.POST['inspection_start'] if request.POST['inspection_start'] else None
         el_object.inspection_end = request.POST['inspection_end'] if request.POST['inspection_start'] else None
@@ -690,8 +702,14 @@ class UpdateJob(TemplateView):
         job_object = Job.objects.get(pk=pk)
         job_object.title = request.POST['title']
         job_object.description = request.POST['description']
-        job_object.department = Department.objects.get(pk=request.POST['department'])
-        job_object.job_class = JobClass.objects.get(pk=request.POST['job_class'])
+        if 'department' in request.POST and request.POST['department']:
+            job_object.department = Department.objects.get(pk=request.POST['department'])
+        else:
+            job_object.department = None
+        if 'job_class' in request.POST and request.POST['job_class']:
+            job_object.job_class = JobClass.objects.get(pk=request.POST['job_class'])
+        else:
+            job_object.job_class = None
         job_object.last_updated_by = request.user
         job_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Job")
@@ -757,9 +775,18 @@ class UpdateApplication(TemplateView):
             messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
             return redirect('/applications')
         application_object = Application.objects.get(pk=pk)
-        application_object.candidate = Candidate.objects.get(pk=request.POST['candidate'])
-        application_object.position = Position.objects.get(pk=request.POST['position'])
-        application_object.job = Job.objects.get(pk=request.POST['job'])
+        if 'candidate' in request.POST and request.POST['candidate']:
+            application_object.candidate = Candidate.objects.get(pk=request.POST['candidate'])
+        else:
+            application_object.candidate = None
+        if 'position' in request.POST and request.POST['position']:
+            application_object.position = Position.objects.get(pk=request.POST['position'])
+        else:
+            application_object.position = None
+        if 'job' in request.POST and request.POST['job']:
+            application_object.job = Job.objects.get(pk=request.POST['job'])
+        else:
+            application_object.job = None
         application_object.last_updated_by = request.user
         application_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Application")
@@ -1115,6 +1142,32 @@ class CreateEligibleListCandidateReferral(TemplateView):
         return redirect('/eligiblelistcandidatereferrals')
 
 
+class UpdateEligibleListCandidateReferral(TemplateView):
+    template_name = 'eligiblelistcandidatereferrals.html'
+
+    def post(self, request, pk=None, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not permitted_to_edit_data(request):
+            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
+            return redirect('/eligiblelistcandidatereferrals')
+        eligiblelistcandidatereferral_object = EligibleListCandidateReferral.objects.get(pk=pk)
+        eligiblelistcandidatereferral_object.eligible_list_candidate = EligibleListCandidate.objects.get(pk=request.POST['eligible_list_candidate'])
+        eligiblelistcandidatereferral_object.referral = Referral.objects.get(pk=request.POST['referral'])
+        if 'status' in request.POST and request.POST['status']:
+            eligiblelistcandidatereferral_object.status = CandidateReferralStatus.objects.get(pk=request.POST['status'])
+        else:
+            eligiblelistcandidatereferral_object.status = None
+        if 'active' in request.POST and request.POST['active'] == 'on':
+            eligiblelistcandidatereferral_object.active = True
+        else:
+            eligiblelistcandidatereferral_object.active = False
+        eligiblelistcandidatereferral_object.notes = request.POST['notes']
+        eligiblelistcandidatereferral_object.last_updated_by = request.user
+        eligiblelistcandidatereferral_object.save()
+        messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List Candidate Referral")
+        return redirect('/eligiblelistcandidatereferrals')
+
+
 class ScoreBandingModelScoreBands(TemplateView):
     """
     ScoreBandingModelScoreBand (relational table) CRUD page
@@ -1180,32 +1233,6 @@ class UpdateScoreBandingModelScoreBand(TemplateView):
         scorebandingmodelscoreband_object.save()
         messages.add_message(request, messages.SUCCESS, "Successfully updated Score Banding Model Score Band")
         return redirect('/scorebandingmodelscorebands')
-
-
-class UpdateEligibleListCandidateReferral(TemplateView):
-    template_name = 'eligiblelistcandidatereferrals.html'
-
-    def post(self, request, pk=None, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if not permitted_to_edit_data(request):
-            messages.add_message(request, messages.WARNING, f"You are not permitted to edit data")
-            return redirect('/eligiblelistcandidatereferrals')
-        eligiblelistcandidatereferral_object = EligibleListCandidateReferral.objects.get(pk=pk)
-        eligiblelistcandidatereferral_object.eligible_list_candidate = EligibleListCandidate.objects.get(pk=request.POST['eligible_list_candidate'])
-        eligiblelistcandidatereferral_object.referral = Referral.objects.get(pk=request.POST['referral'])
-        if request.POST['status']:
-            eligiblelistcandidatereferral_object.status = CandidateReferralStatus.objects.get(pk=request.POST['status'])
-        else:
-            eligiblelistcandidatereferral_object.status = None
-        if 'active' in request.POST and request.POST['active'] == 'on':
-            eligiblelistcandidatereferral_object.active = True
-        else:
-            eligiblelistcandidatereferral_object.active = False
-        eligiblelistcandidatereferral_object.notes = request.POST['notes']
-        eligiblelistcandidatereferral_object.last_updated_by = request.user
-        eligiblelistcandidatereferral_object.save()
-        messages.add_message(request, messages.SUCCESS, "Successfully updated Eligible List Candidate Referral")
-        return redirect('/eligiblelistcandidatereferrals')
 
 
 class ToggleActiveStatusEligibleListCandidateReferral(TemplateView):
